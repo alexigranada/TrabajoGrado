@@ -11,10 +11,10 @@ import plotly.express as px
 import plotly.graph_objects as go
 #import matplotlib.pyplot as plt #Graficas y limpiar datos
 
-ruta = 'C:/Datos/Estaciones Dagua/Temperatura_AEROPUERTO BUENAVENTUR [53115010].csv' #Ruta del archivo
+ruta = 'Datos/Estaciones/Temperatura estaciones dia/Temperatura_MISION LA [54075040].csv' #Ruta del archivo
 df = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 
-print(df.head())
+print(df)
 
 ''' Creamos el formato de la fecha'''
 fechaformato = "%Y-%m-%d"
@@ -43,5 +43,6 @@ fig.show()
 
 ''' Imprimir datos nulos'''
 df_nulos = df[df['ValorMax'].isnull() & df['ValorMin'].isnull()]
-
 print(df_nulos)
+title_csv = f'Datos_faltantes_{name}.csv'
+df_nulos.to_csv(title_csv, sep=';', index=False)

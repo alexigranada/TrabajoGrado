@@ -5,9 +5,9 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt #Graficas y limpiar datos
 import numpy as np
 
-ruta_hora = 'datos_exportados.csv' #Ruta del archivo
-data_hora = pd.read_csv(ruta_hora, delimiter=',') #Cargamos archivo
-print(data_hora)
+ruta = 'Datos/Estaciones/Temperatura_hora.csv' #Ruta del archivo
+data = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
+print(data['Fecha'])
 #data_hora = pd.read_csv(ruta_hora, delimiter=';') #Cargamos archivo
 #print('Registros, columnas:')
 #print(data_hora.shape)
@@ -46,12 +46,17 @@ for estacion, grupo in estaciones:
 #estacion_hora = nombre_estacion_hora.get_group(str(grupo_estaciones_hora[0][0]))
 print('Entra')
 
-hora = data_hora['Fecha']
-valor = data_hora['Valor']
+'''Formateamos fecha'''
+formato_fecha = '%Y-%m-%d %H:%M'
+data['Fecha'] = pd.to_datetime(data['Fecha'], format=formato_fecha)
+
+
+hora = data['Fecha']
+valor = data['Valor']
 print(hora)
 print(valor)
 
-plt.figure(dpi=50, figsize=(10,5))
+plt.figure()
 plt.plot(hora, valor, color = 'coral') #, linewidth=10, linestyle='--'
 
 plt.title('Ahora si')
