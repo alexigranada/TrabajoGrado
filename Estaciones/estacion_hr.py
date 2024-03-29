@@ -7,5 +7,7 @@ Exploración de temperatura de las estaciones del IDEAM
 
 '''Importamos librerias'''
 import pandas as pd #Leer datos
-import plotly.express as px
-import plotly.graph_objects as go
+import plotly.express as px #Para graficas simples
+import plotly.graph_objects as go #Para graficas complejas
+
+'''Cargamos datos'''
