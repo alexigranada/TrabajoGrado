@@ -7,7 +7,7 @@ Gestion de tablas para llenar vacios constantes y ajustar nombre de columnas
 
 import pandas as pd #Leer datos
 
-ruta = 'Estaciones/Temperatura estaciones dia/Temperatura_MISION LA [54075040].csv' #Ruta del archivo
+ruta = 'Datos/Estaciones/Temperatura estaciones dia/Temperatura_MISION LA [54075040].csv' #Ruta del archivo
 data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 
 #data.info()
