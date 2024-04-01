@@ -2,9 +2,9 @@ import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
 
-ruta_e1 = 'Datos/Estaciones/Temperatura estaciones dia/Temperatura_AEROPUERTO BUENAVENTUR [53115010].csv'
-ruta_e2 = 'Datos/Estaciones/Temperatura estaciones dia/Temperatura_COLPUERTOS [53115020].csv'
-ruta_e3 = 'Datos/Estaciones/Temperatura estaciones dia/Temperatura_BAJO CALIMA [54075020].csv'
+ruta_e1 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_AEROPUERTO BUENAVENTUR [53115010].csv'
+ruta_e2 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_COLPUERTOS [53115020].csv'
+ruta_e3 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_BAJO CALIMA [54075020].csv'
 
 df_e1 = pd.read_csv(ruta_e1, delimiter=';')
 df_e2 = pd.read_csv(ruta_e2, delimiter=';')
@@ -16,13 +16,13 @@ df_e1['Fecha'] = pd.to_datetime(df_e1['Fecha'], format=fechaformato)
 df_e2['Fecha'] = pd.to_datetime(df_e2['Fecha'], format=fechaformato)
 df_e3['Fecha'] = pd.to_datetime(df_e3['Fecha'], format=fechaformato)
 
-temp_min_e1 = df_e1['ValorMin'][:50]
+temp_min_e1 = df_e1['ValorMin']#[:50]
 temp_min_e2 = df_e2['ValorMin']#[:32]
 temp_min_e3 = df_e3['ValorMin']#[:32]
-temp_max_e1 = df_e1['ValorMax'][:50]
+temp_max_e1 = df_e1['ValorMax']#[:50]
 temp_max_e2 = df_e2['ValorMax']#[:32]
 temp_max_e3 = df_e3['ValorMax']#[:32]
-time = df_e2['Fecha']
+time = df_e1['Fecha']
 
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=time, y=temp_max_e1, mode='lines', name='TempMax AER BUENAV ', line=dict(color='#EF553B')))
@@ -36,7 +36,7 @@ fig.update_layout(title = 'Temperatura estación AERO. BUENAV vs COLPUERTOS',
                   xaxis = dict(title='Años'),
                   yaxis = dict(title='Temperatura (°C)'),
                   title_x = 0.5)
-#fig.show()
+fig.show()
 
 ''' Calcula la correlación entre las temperaturas de las dos estaciones meteorológicas '''
 correlacion_min_e1_e3 = temp_min_e1.corr(temp_min_e3)

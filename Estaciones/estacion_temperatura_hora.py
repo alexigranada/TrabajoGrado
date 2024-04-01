@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt #Graficas y limpiar datos
 import numpy as np
 
-ruta_hora = 'D:/Python_TG/Estaciones/Temperatura_hora.csv' #Ruta del archivo
+ruta_hora = 'Datos/Estaciones/Temperatura_hora.csv' #Ruta del archivo
 
 data_hora = pd.read_csv(ruta_hora, delimiter=',') #Cargamos archivo
 #print('Registros, columnas:')
@@ -48,9 +48,9 @@ grupo_estaciones_hora = pd.DataFrame(nombre_estacion_hora)
 
 
 ''' Agrupamos por categoria'''
-estacion_hora = nombre_estacion_hora.get_group(str(grupo_estaciones_hora[0][10]))
+estacion_hora = nombre_estacion_hora.get_group(str(grupo_estaciones_hora[0][1]))
 print('Entra')
-name = str(grupo_estaciones_hora[0][10])
+name = str(grupo_estaciones_hora[0][1])
 #estacion_hora.to_csv(f'datos_{name}.csv', index=False)
 print(estacion_hora)
 ''' Creamos el formato de la fecha'''
@@ -80,20 +80,20 @@ print(valores_nulos_hora)
 #print(unir_df)
 
 ''' Ploteamos las graficas'''
-#temp_hora = estacion_hora['Valor']
-#time_hora = estacion_hora['Fecha']
+temp_hora = estacion_hora['Valor']
+time_hora = estacion_hora['Fecha']
 
-#title = f'Patron de la Temperatura estación: {name}'
+title = f'Patron de la Temperatura estación: {name}'
 
-#fig = go.Figure()
-#fig.add_trace(go.Scatter(x=time_hora, y=temp_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=time_hora, y=temp_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
 
 
-#fig.update_layout(xaxis = dict(title='Horas'),
-#                  yaxis = dict(title='Temperatura (°C)'),
-#                  title = title,
-#                  title_x = 0.5)
-#fig.show()
+fig.update_layout(xaxis = dict(title='Horas'),
+                  yaxis = dict(title='Temperatura (°C)'),
+                  title = title,
+                  title_x = 0.5)
+fig.show()
 
 '''
 fig = px.line(df_final_estacion_max, x='Fecha', y='Valor', title=title)

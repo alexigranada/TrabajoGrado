@@ -1,67 +1,11 @@
 '''Importamos librerias'''
-import pandas as pd #Leer datos
-import plotly.express as px
-import plotly.graph_objects as go
-import matplotlib.pyplot as plt #Graficas y limpiar datos
-import numpy as np
+from datetime import datetime, timedelta
 
-ruta = 'Datos/Estaciones/Temperatura_hora.csv' #Ruta del archivo
-data = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
-print(data['Fecha'])
-#data_hora = pd.read_csv(ruta_hora, delimiter=';') #Cargamos archivo
-#print('Registros, columnas:')
-#print(data_hora.shape)
-#print('Tabulación de los datos:')
-#print(data_hora.head()) 
+start_date = datetime(2024, 3, 29, 0, 0)  # Fecha de inicio
+end_date = datetime(2024, 3, 29, 23, 59)  # Fecha de fin
 
-'''Miramos las variables categoricas y numericas'''
-#data_max.info()
-'''
-object seria una varible de tipo categoria
-int64 entero 
-float64 real
-'''
-'''Pandas busca las variables numericas y nos mostrará información estadistica'''
-#print(data.describe())
-'''Si la desviación estantar (std) es igual a cero, eso quiere decir que los valores numericos no son iguales
-Eliminamos información irrelevante de los datos'''
-#data_hora.drop(columns=['Entidad', 'AreaOperativa', 'Departamento', 'Categoria', 'FechaInstalacion', 'FechaSuspension', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion'], inplace=True)
-
-''' Agrupar por la columna 'NombreEstación' '''
-#nombre_estacion_hora = data_hora.groupby('NombreEstacion')
-
-'''
-for estacion, grupo in estaciones:
-    print(f"Grupo para la categoría '{estacion}':")
-    print(grupo)
-    print("\n")
-'''
-''' Convertimos en DataFrame'''
-#estacion_hora = pd.DataFrame(data_hora)
-#grupo_estaciones_min = pd.DataFrame(nombre_estacion_min)
-#print('Dataset')
-#print(estacion_hora)
-
-#''' Agrupamos por categoria'''
-#estacion_hora = nombre_estacion_hora.get_group(str(grupo_estaciones_hora[0][0]))
-print('Entra')
-
-'''Formateamos fecha'''
-formato_fecha = '%Y-%m-%d %H:%M'
-data['Fecha'] = pd.to_datetime(data['Fecha'], format=formato_fecha)
-
-
-hora = data['Fecha']
-valor = data['Valor']
-print(hora)
-print(valor)
-
-plt.figure()
-plt.plot(hora, valor, color = 'coral') #, linewidth=10, linestyle='--'
-
-plt.title('Ahora si')
-#plt.legend(['Temp Máx','Temp Mín', 'Temp Promedio']) 
-plt.xlabel('Hora')
-plt.ylabel('Temperatura (°C)')
-plt.show()
-print('Final 0')
+current_date = start_date
+while current_date <= end_date:
+    print(current_date)
+    current_date += timedelta(minutes=1)
+    print(current_date.strftime('%Y-%m-%d %H:%M'))

@@ -11,7 +11,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 #import matplotlib.pyplot as plt #Graficas y limpiar datos
 
-ruta = 'Datos/Estaciones/Temperatura estaciones dia/Temperatura_MISION LA [54075040].csv' #Ruta del archivo
+ruta = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_AEROPUERTO BUENAVENTUR [53115010].csv' #Ruta del archivo
 df = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 
 print(df)
@@ -42,7 +42,8 @@ fig.update_layout(title = title,
 fig.show()
 
 ''' Imprimir datos nulos'''
-df_nulos = df[df['ValorMax'].isnull() & df['ValorMin'].isnull()]
+#df_nulos = df[df['ValorMax'].isnull() & df['ValorMin'].isnull()]
+df_nulos = df[df['ValorMax'].isnull()]
 print(df_nulos)
-title_csv = f'Datos_faltantes_{name}.csv'
+title_csv = f'Datos_faltantes_max_{name}.csv'
 df_nulos.to_csv(title_csv, sep=';', index=False)

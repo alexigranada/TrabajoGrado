@@ -41,7 +41,7 @@ print(data1.head())
 #print(data)
 
 '''Eliminamos información irrelevante de los datos'''
-#data1.drop(columns=['Categoria', 'Entidad', 'AreaOperativa', 'Departamento', 'FechaInstalacion', 'FechaSuspension', 'IdParametro', 'Etiqueta', 'DescripcionSerie', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion'], inplace=True)
+#data1.drop(columns=['Categoria', 'Entidad', 'AreaOperativa', 'Departamento', 'Municipio', 'FechaInstalacion', 'FechaSuspension', 'IdParametro', 'Etiqueta', 'DescripcionSerie', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion'], inplace=True)
 
 ''' Agrupar por la columna 'NombreEstación' '''
 agrupar_estacion = data1.groupby('NombreEstacion')
