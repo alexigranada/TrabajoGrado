@@ -36,7 +36,7 @@ import cftime
 
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-file = 'C:/Datos/GCM/CESM2 WACCM/Pr/pr_day_CESM2-WACCM_ssp585_r3i1p1f1_gn_20450101-20541231.nc'
+file = 'Datos/pr_day_CESM2-WACCM_historical_r3i1p1f1_gn_19900101-19991231.nc'
 ds = xr.open_dataset(file)
 
 '''Cargamos los datos de temperatura'''
@@ -87,8 +87,8 @@ ds_roi = ds.sel(lon=slice(min_lon, max_lon), lat=slice(max_lat, min_lat))
 ds_roi_v = ds.sel(lon=slice(min_lon_v, max_lon_v), lat=slice(max_lat_v, min_lat_v))
 #print(ds_roi)
 ''' 5. Guardar el conjunto de datos recortado si es necesario '''
-ds_roi.to_netcdf('C:/Datos/GCM/CESM2 WACCM/Pr/pr_day_CESM2-WACCM_ssp585_r3i1p1f1_gn_20450101-20541231_Colombia.nc')
-ds_roi_v.to_netcdf('C:/Datos/GCM/CESM2 WACCM/Pr/pr_day_CESM2-WACCM_ssp585_r3i1p1f1_gn_20450101-20541231_Valle_Cauca.nc')
+ds_roi.to_netcdf('Datos/pr_day_CESM2-WACCM_historical_r3i1p1f1_gn_19900101-19991231_Colombia.nc')
+ds_roi_v.to_netcdf('Datos/pr_day_CESM2-WACCM_historical_r3i1p1f1_gn_19900101-19991231_Valle_Cauca.nc')
 
 ''' Cargamos Shapes del Valle y la cuenca '''
 #geojson_valle = 'C:/Datos/Valle_Cauca_4326.geojson'
