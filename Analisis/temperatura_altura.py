@@ -6,6 +6,10 @@ Gradiente termico vertical: relación del cambio de temperatura en función de l
 """
 
 import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
 import plotly.graph_objects as go
 
 ''' Carga de datos '''
@@ -18,7 +22,6 @@ dato1 = pd.read_csv(r1, delimiter=';')
 dato2 = pd.read_csv(r2, delimiter=';')
 dato3 = pd.read_csv(r3, delimiter=';')
 dato4 = pd.read_csv(r4, delimiter=';')
-#print(dato1)
 
 ''' Ajuste de fecha '''
 dato1['Fecha'] = pd.to_datetime(dato1['Fecha'], format='%Y-%m-%d')
@@ -26,124 +29,63 @@ dato2['Fecha'] = pd.to_datetime(dato2['Fecha'], format='%Y-%m-%d')
 dato3['Fecha'] = pd.to_datetime(dato3['Fecha'], format='%Y-%m-%d')
 dato4['Fecha'] = pd.to_datetime(dato4['Fecha'], format='%Y-%m-%d')
 
-'''Separamos las columnas 'Fecha' y 'ValorMedio' '''
-#dato1 = dato1[['Fecha', 'ValorMedio']]
+''' Selecionamos los días de cada año (Día Multianual)'''
+print('Aeropuerto Btra')
+year_1 = dato1[dato1['Fecha'].dt.year == 2014]
+mes_1 = year_1[year_1['Fecha'].dt.month == 8]
+dia_1 = mes_1[mes_1['Fecha'].dt.day == 27]
+print(mes_1)
+max_mean_1 = dia_1['ValorMax'].mean()
+print(max_mean_1)
 
-''' Agrupamos por la clave 'fecha' '''
-#df2 = dato2.groupby(pd.Grouper(key='Fecha', freq='10D')).mean() #'ME' Mensual
-#df1 = dato1.groupby(pd.Grouper(key='Fecha', freq='10D'))['ValorMedio'].mean().reset_index() #'ME' Mensual - 'W' Semanal Inicia Domingo
-#df2 = dato2.groupby(pd.Grouper(key='Fecha', freq='ME'))['ValorMedio'].mean().reset_index() #'ME' Mensual
-#df3 = dato3.groupby(pd.Grouper(key='Fecha', freq='ME'))['ValorMedio'].mean().reset_index() #'ME' Mensual
-#df4 = dato4.groupby(pd.Grouper(key='Fecha', freq='ME'))['ValorMedio'].mean().reset_index() #'ME' Mensual
+print('B. Calima')
+year_2 = dato2[dato2['Fecha'].dt.year == 2014]
+mes_2 = year_2[year_2['Fecha'].dt.month == 8]
+dia_2 = mes_2[mes_2['Fecha'].dt.day == 27]
+print(mes_2)
+max_mean_2 = dia_2['ValorMax'].mean()
+print(max_mean_2)
 
-#print(df1.head())
-##print(df2)
-##data_frame1 = pd.DataFrame(pd.to_datetime(df1.index), df1['ValorMedio'])
-##print(data_frame1['ValorMedio'])
+''' Probamos con una regresión lineal multiple'''
+x = mes_1[['ValorMax']]#[:26:]
+y = mes_2['ValorMax']#[:26:]
 
-#df1_mes = df1[df1['Fecha'].dt.year==1990]
-##df1_enero_2000 = df1_enero[df1_enero['Fecha'].dt.year == 2000]
+print(x)
 
-#print(df1_mes)
-##df1_dm = pd.DataFrame(df1_mes)
+print(y)
+''' Dividir el conjunto de datos en conjuntos de entrenamiento y prueba '''
+#x_train = x[:26:] 
+#x_test = x[27::] 
+#y_train = y[:26:] 
+#y_test = y[27::]
 
-##df_mul = pd.DataFrame(df_año)
-##print(df1_mes.iloc[1::3])
-#print(f'Promedio decadal 1: {df1_mes['ValorMedio'].iloc[1::3].mean()}')
+#print(x_test)
+#print(x_train)
+#print(y_test)
+#print(y_train)
 
-#for i in range(1, 13): #iterar desde 1 hasta 12 cada 1
-#    df1_mes = df1[df1['Fecha'].dt.month==i]
-#    print(f'Mes: {i}')
-#    for j in range(1, len(df1_mes)):
-#        print(f'Semana: {j}, promedio: {df1_mes['ValorMedio'].iloc[j::3].mean()}')
-#print(f'Decadal Enero 2000: {df1_enero_2000['Fecha'][1]}')
+''' Iniciamos el modelo de Regresion Lineal'''
+#modelo = LinearRegression()
 
-año = dato2['Fecha'].dt.year.unique()
-print(año)
+''' Entrenamos el modelo '''
+#modelo.fit(x_train, y_train)
 
-''' Creamos lista para almacenar las decadas por año'''
-d_m = []
+''' Realizamos predicciones '''
+#y_pred = modelo.predict(x_test)
 
-for a in año:
-    # Dividir los datos en periodos de 10 días
-    #print(a)
-    df_year = dato2[dato2['Fecha'].dt.year == a]
-    particiones = [grupo for _, grupo in df_year.groupby(pd.Grouper(key='Fecha', freq='10D'))]
-    mean = [particion['ValorMedio'].mean() for particion in particiones]
-    #d_m.append({})
-    #dm = pd.DataFrame({'Año': a, 'PromedioDecadal': mean})
-    #print(f'Año {a}: {mean}')
-    for i, media in enumerate(mean):
-        d_m.append({'Año': a, 'Periodo (10D)': i+1, 'ValorDecadal': media})
+''' Evaluamos el podelo'''
+#print(f'Mean Absolute Error: {metrics.mean_absolute_error(y_test, y_pred)}')
+#print(f'Mean Squared Error: {metrics.mean_squared_error(y_test, y_pred)}')
+#print(f'Root Mean Squared Error: {np.sqrt(metrics.mean_squared_error(y_test, y_pred))}')
+#print(f'Coeficiente de determinación R2: {metrics.r2_score(y_test, y_pred)}')
 
+'''Mostramos los coeficientes de la ecuación'''
+#print('Coeficientes del Modelo')
+#print(f'Intercepto: {modelo.intercept_}')
+#print(f'coeficientes: {modelo.coef_}')
 
-    ''' Ahora particiones contendrá una lista de DataFrames, donde cada DataFrame contiene los datos de un periodo de 10 días '''
-    #for i, promedio in enumerate(mean): # i (indice-clave) - promedio (valor)
-        #print(f"Decadal {i+1}: {promedio}")
+#nuevos_valores = pd.DataFrame({'ValorMax': [32, 32.4, 32.6]})
 
-    
-    ''' imprime cada periodo por 10 días'''
-    #for i, periodo in enumerate(particiones):
-    #    print(f"Periodo {i+1}:")
-    #    print(periodo)
-df_dm = pd.DataFrame(d_m)
-print(df_dm[4:41:])
-'''Ploteamos gráficas'''
-'''
-aer_bv = df1['ValorMedio']
-b_c = df2['ValorMedio']
-col_pto = df3['ValorMedio']
-la_mis = df4['ValorMedio']
-time = df2['Fecha']
+#predicion = modelo.predict(nuevos_valores)
 
-fig = go.Figure()
-
-fig.add_trace(go.Scatter(x=time, y=aer_bv, mode='lines', name='Aer. Btura Altura: 28 m.', line=dict(color='#EF553B')))
-fig.add_trace(go.Scatter(x=time, y=b_c, mode='lines', name='Bajo Calima Altura: 66 m.', line=dict(color='#00CC96')))
-fig.add_trace(go.Scatter(x=time, y=col_pto, mode='lines', name='ColPuertos Altura: 10 m.', line=dict(color='#636EFA')))
-fig.add_trace(go.Scatter(x=time, y=la_mis, mode='lines', name='La Misión Altura: 14 m.', line=dict(color='#A569BD')))
-
-fig.update_layout(title = 'Temperatura decadal multianual (1990 - 2023) Estaciones IDEAM',
-                  xaxis = dict(title='Años'),
-                  yaxis = dict(title='Temperatura (°C)'),
-                  title_x = 0.5,
-                  template='plotly_white') #'plotly_white' - 'plotly_dark' - 'ggplot2' - 'seaborn - 'simple_white'
-fig.show()
-'''
-
-''' Parte No 2 
-Si queremos agregar varias columnas del DataFrame o Multiples estadisticas a los valores'''
-#df1_plus = dato1.groupby(pd.Grouper(key='Fecha', freq='10D')).agg({'ValorMedio': ['mean', 'std'], #Si son varios argumentos los pasamos como un arreglo
-                                                              #'ValorMax': 'mean'}).reset_index()# Pasamos las estadisticas como un diccionario y argumento
-
-#print(df1_plus.columns)
-
-#df1_plus.columns = ['_'.join(col) for col in df1_plus]
-#print(df1_plus)
-
-#print('Finalizado sin errores')
-
-'''
-#Filtering for SP state and price up or equal 115
-sp_above_mean = df[(df['price'] >= 115) & (df['seller_state'] == 'SP')]
-
-#Filtering by the quantile - we can remove outliers with this
-q1 = df['price'].quantile(0.01)
-q2 = df['price'].quantile(0.99)
-df_price_outliers = df[(df['price'] >= q1) & (df['price'] <= q2)]
-
-#Creando una nueva columna con apply 
-df['price_status'] = df['price'].apply(lambda x: 'UP' if x >= df['price'].mean() else 'DOWN') 
-#Creando una nueva columna usando map 
-df['seller_by_paid'] = df['paid_type'].map(credit_cards)
-
-#Calculo de estadisticas
-df['price'].apply(['min', 'max', 'std', 'median'])
-
-df.apply({
-    'price': ['min', 'max', 'std', 'median'],
-    'freight_value': ['min', 'max', 'std', 'median', 'mean']
-})
-'''
-
-#df_enero_multianual = df1_enero.groupby(df1_enero['Fecha'].dt.year)['ValorMedio'].mean()
+#print(f'El valor de las nuevas predicciones es: {predicion}')
