@@ -5,16 +5,19 @@ import numpy as np
 ruta_e1 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_AEROPUERTO BUENAVENTUR [53115010].csv'
 ruta_e2 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_COLPUERTOS [53115020].csv'
 ruta_e3 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_BAJO CALIMA [54075020].csv'
+ruta_e4 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_MISION LA [54075040].csv'
 
 df_e1 = pd.read_csv(ruta_e1, delimiter=';')
 df_e2 = pd.read_csv(ruta_e2, delimiter=';')
 df_e3 = pd.read_csv(ruta_e3, delimiter=';')
+df_e4 = pd.read_csv(ruta_e4, delimiter=';')
 
 ''' Creamos el formato de la fecha'''
 fechaformato = "%Y-%m-%d"
 df_e1['Fecha'] = pd.to_datetime(df_e1['Fecha'], format=fechaformato)
 df_e2['Fecha'] = pd.to_datetime(df_e2['Fecha'], format=fechaformato)
 df_e3['Fecha'] = pd.to_datetime(df_e3['Fecha'], format=fechaformato)
+df_e4['Fecha'] = pd.to_datetime(df_e4['Fecha'], format=fechaformato)
 
 temp_min_e1 = df_e1['ValorMin']#[:50]
 temp_min_e2 = df_e2['ValorMin']#[:32]

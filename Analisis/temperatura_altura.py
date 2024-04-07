@@ -30,29 +30,41 @@ dato3['Fecha'] = pd.to_datetime(dato3['Fecha'], format='%Y-%m-%d')
 dato4['Fecha'] = pd.to_datetime(dato4['Fecha'], format='%Y-%m-%d')
 
 ''' Selecionamos los días de cada año (Día Multianual)'''
-print('Aeropuerto Btra')
-year_1 = dato1[dato1['Fecha'].dt.year == 2014]
-mes_1 = year_1[year_1['Fecha'].dt.month == 8]
-dia_1 = mes_1[mes_1['Fecha'].dt.day == 27]
-print(mes_1)
-max_mean_1 = dia_1['ValorMax'].mean()
-print(max_mean_1)
+#print('Aeropuerto Btra')
+#year_1 = dato1[dato1['Fecha'].dt.year == 2014]
+#mes_1 = year_1[year_1['Fecha'].dt.month == 8]
+#dia_1 = mes_1[mes_1['Fecha'].dt.day == 27]
+#print(mes_1)
+#max_mean_1 = dia_1['ValorMax'].mean()
+#print(max_mean_1)
 
+''' Imprimimos el día multianual por mes'''
+#year_2 = dato2[dato2['Fecha'].dt.year == 2014]
 print('B. Calima')
-year_2 = dato2[dato2['Fecha'].dt.year == 2014]
-mes_2 = year_2[year_2['Fecha'].dt.month == 8]
-dia_2 = mes_2[mes_2['Fecha'].dt.day == 27]
-print(mes_2)
-max_mean_2 = dia_2['ValorMax'].mean()
-print(max_mean_2)
+for m in range(1,13):
+    mes_2 = dato2[dato2['Fecha'].dt.month == m]#Iteramos por mes
+    print(f'mes: {m}')
+    for d in range(1,32):    
+        dia_2 = mes_2[mes_2['Fecha'].dt.day == d]
+        max_mean_2 = dia_2['ValorMin'].mean()
+        #print(max_mean_2)
+
+#year_3 = dato3[dato3['Fecha'].dt.year == 2014]
+print('Colpuertos')
+for m in range(1,13):
+    mes_3 = dato3[dato3['Fecha'].dt.month == m]#Iteramos por mes
+    print(f'Mes: {m}')
+    for d in range(1,32):    
+        dia_3 = mes_3[mes_3['Fecha'].dt.day == d]
+        max_mean_3 = dia_3['ValorMax'].mean()
+        print(f'Día{d}: {max_mean_3}')
 
 ''' Probamos con una regresión lineal multiple'''
-x = mes_1[['ValorMax']]#[:26:]
-y = mes_2['ValorMax']#[:26:]
+#x = mes_1[['ValorMax']]#[:26:]
+#y = mes_2['ValorMax']#[:26:]
 
-print(x)
-
-print(y)
+#print(x)
+#print(y)
 ''' Dividir el conjunto de datos en conjuntos de entrenamiento y prueba '''
 #x_train = x[:26:] 
 #x_test = x[27::] 
