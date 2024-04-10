@@ -11,8 +11,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt #Graficas y limpiar datos
 
-rutadia = 'C:/Datos/Estaciones/Día pluviométrico 2000-2023.csv' #Ruta del archivo
-data_dia = pd.read_csv(rutadia, delimiter=',') #Cargamos archivo
+ruta = 'Datos/excel.csv' #Ruta del archivo
+data = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
 #print('Registros, Columnas:')
 #print(data_dia.shape)
 #print('Tabulación de los datos:')
@@ -32,7 +32,7 @@ Eliminamos información irrelevante de los datos'''
 #data_dia.drop(columns=['Entidad', 'AreaOperativa', 'Departamento', 'Categoria', 'FechaInstalacion', 'FechaSuspension', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion'], inplace=True)
 
 ''' Agrupar por la columna 'NombreEstación' '''
-nombre_estacion_dia = data_dia.groupby('NombreEstacion')
+nombre_estacion_dia = data.groupby('NombreEstacion')
 
 '''
 for estacion, grupo in estaciones:
@@ -42,17 +42,16 @@ for estacion, grupo in estaciones:
 '''
 ''' Convertimos en DataFrame'''
 grupo_estaciones_dia = pd.DataFrame(nombre_estacion_dia)
-
+name = str(grupo_estaciones_dia[0][1])
 ''' Agrupamos por categoria'''
-estacion_dia = nombre_estacion_dia.get_group(str(grupo_estaciones_dia[0][137]))
-print(estacion_dia)
+estacion_dia = nombre_estacion_dia.get_group(str(grupo_estaciones_dia[0][1]))
+print(estacion_dia['Fecha'])
 
 ''' Creamos el formato de la fecha'''
-fechaformato_dia = "%m/%d/%Y %H:%M"
-estacion_dia['Fecha'] = pd.to_datetime(estacion_dia['Fecha'], format=fechaformato_dia)
+estacion_dia['Fecha'] = pd.to_datetime(estacion_dia['Fecha'], format='%Y-%m-%d %H:%M')
 
 ''' Crear un rango de fechas completo '''
-rango_fechas_completo_dia = pd.date_range(start=estacion_dia['Fecha'].min(), end=estacion_dia['Fecha'].max())
+rango_fechas_completo_dia = pd.date_range(start='1989-12-01', end='1999-12-31')
 print('Rango Fechas:')
 print(rango_fechas_completo_dia)
 
@@ -63,15 +62,13 @@ print('Estación día:')
 print(df_final_estacion_dia)
 
 '''' Calculamos los valores nulos'''
-valores_nulos_dia = df_final_estacion_dia['Valor'].isnull().sum()
-print('Datos faltantes día: ')
-print(valores_nulos_dia)
+#valores_nulos_dia = df_final_estacion_dia['Valor'].isnull().sum()
+#print('Datos faltantes día: ')
+#print(valores_nulos_dia)
 
 ''' Ploteamos las graficas'''
 prec_dia = df_final_estacion_dia['Valor']
 time_dia = df_final_estacion_dia['Fecha']
-
-name = str(grupo_estaciones_dia[0][137])
 title = f'Patron día pluviométrico estación: {name}'
 
 ''' Crear una figura y ejes '''
@@ -86,6 +83,9 @@ ax.set_ylabel('Precipitación (mm/dia)')
 ax.set_title(title)
 plt.show()
 
+''' Exportar el DataFrame nulos max a un archivo CSV '''
+title = f'Pluviometrico_dia_1990_{name}.csv'
+df_final_estacion_dia.to_csv(title, sep=';', index=False)
 
 ''' Usando Plotly'''
 '''
