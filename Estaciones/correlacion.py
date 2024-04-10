@@ -47,6 +47,11 @@ correlacion_max_e1_e3 = temp_max_e1.corr(temp_max_e3)
 print('Correlacion Temp. Min E1 vs E3', correlacion_min_e1_e3)
 print('Correlacion Temp. Max E1 vs E3', correlacion_max_e1_e3)
 
+
+
+
+''' PARTE Numero 2'''
+
 '''Convermitos TempMin como predictor'''
 X = []
 temp_min_np = temp_min_e1.to_numpy()

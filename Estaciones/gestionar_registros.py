@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Mar  24 23:33:48 2024
-Gestion de tablas para llenar vacios constantes y ajustar nombre de columnas
+Gestion de tablas para llenar vacios constantes y ajustar nombre de columnas,
+Unión de registros
 @author: Arturo A. Granada G.
 """
 
 import pandas as pd #Leer datos
 
-ruta = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_1990-2000_COLPUERTOS [53115020].csv' #Ruta del archivo
-data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
+#ruta = 'Datos/Estaciones/IDEAM/Estaciones Dagua/dia pluvio 1 1990/excel.csv' #Ruta del archivo
+#ruta2 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/dia pluvio 1 1990/excel.csv'
+
+#data = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
+#data2 = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
 
 #data.info()
 #print(data.head())
@@ -16,51 +20,59 @@ data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 #print(data['Valor_y'])# Mín
 
 ''' Eliminamos columnas inecesarias'''
-data.drop(columns=['CodigoEstacion_y', 'CodigoEstacion_x', 'NombreEstacion_y', 'Latitud_y', 'Longitud_y', 
-                   'Altitud_y', 'IdParametro_y', 'Etiqueta_y', 'DescripcionSerie_y',
-                   'IdParametro_x', 'Etiqueta_x', 'DescripcionSerie_x'], inplace=True)
+#data.drop(columns=['Entidad', 'AreaOperativa', 'Departamento', 'Categoria', 'FechaInstalacion', 'FechaSuspension', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion', 'Municipio'], inplace=True)
+#data2.drop(columns=['Entidad', 'AreaOperativa', 'Departamento', 'Categoria', 'FechaInstalacion', 'FechaSuspension', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion', 'Municipio'], inplace=True)
 
 ''' Renombramos Columnas'''
-data = data.rename(columns={'NombreEstacion_x': 'NombreEstacion', 'Latitud_x':'Latitud', 'Longitud_x':'Longitud', 
-                            'Altitud_x':'Altitud', 'Valor_x':'ValorMin', 'Valor_y':'ValorMax'})
+#data = data.rename(columns={'NombreEstacion_x': 'NombreEstacion', 'Latitud_x':'Latitud', 'Longitud_x':'Longitud', 
+#                            'Altitud_x':'Altitud', 'Valor_x':'ValorMin', 'Valor_y':'ValorMax'})
 
 ''' Llenamos valores faltantes (Constantes)'''
-name = str(data['NombreEstacion'][0])
-lat = data['Latitud'][0]
-lon = data['Longitud'][0]
-altura = data['Altitud'][0]
+#name = str(data['NombreEstacion'][0])
+#lat = data['Latitud'][0]
+#lon = data['Longitud'][0]
+#altura = data['Altitud'][0]
 
-data['NombreEstacion'] = data['NombreEstacion'].fillna(name)
-data['Latitud'] = data['Latitud'].fillna(lat)
-data['Longitud'] = data['Longitud'].fillna(lon)
-data['Altitud'] = data['Altitud'].fillna(altura)
+#data['NombreEstacion'] = data['NombreEstacion'].fillna(name)
+#data['Latitud'] = data['Latitud'].fillna(lat)
+#data['Longitud'] = data['Longitud'].fillna(lon)
+#data['Altitud'] = data['Altitud'].fillna(altura)
 
 ''' Sumar las variables correspondientes (Crear promedio)'''
-data['ValorMedio'] = (data['ValorMax'] + data['ValorMin'])/2
-data.info()
-print(data.head())
-print(data)
+#data['ValorMedio'] = (data['ValorMax'] + data['ValorMin'])/2
+#data.info()
+#print(data.head())
+#print(data)
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'Temperatura_1999-2000_{name}.csv'
-data.to_csv(title, sep=';', index=False)
+#title = f'Temperatura_1999-2000_{name}.csv'
+#data.to_csv(title, sep=';', index=False)
 
 ''' UNIR AÑOS 1990 A 2023'''
-#ruta1 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_1999-2000_MISION LA [54075040].csv'
-#ruta2 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_MISION LA [54075040].csv'
-#dato1 = pd.read_csv(ruta1, delimiter=';')
-#dato2 = pd.read_csv(ruta2, delimiter=';')
+ruta1 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/VA_dia/Pluviometrico_dia_1990_QUEREMAL [53100040].csv' #Ruta del archivo
+ruta2 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/VA_dia/Pluviometrico_dia_QUEREMAL [53100040].csv'
+
+data1= pd.read_csv(ruta1, delimiter=';') #Cargamos archivo
+data2 = pd.read_csv(ruta2, delimiter=';') #Cargamos archivo
+
+print(data1['Fecha'])
+
+'''Eliminamos columnas innecesarias'''
+data1.drop(columns=['CodigoEstacion', 'Entidad', 'AreaOperativa', 'Departamento', 'Categoria', 'FechaInstalacion', 'FechaSuspension', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion', 'Municipio', 'DescripcionSerie', 'IdParametro', 'Etiqueta'], inplace=True)
+#data2.drop(columns=['Entidad', 'AreaOperativa', 'Departamento', 'Categoria', 'FechaInstalacion', 'FechaSuspension', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion', 'Municipio'], inplace=True)
+print(data1.head())
+print(data2.head())
 
 ''' Antes de concatenar ajustamos el formato de la fecha'''
-#dato1['Fecha'] = pd.to_datetime(dato1['Fecha'], format='%Y-%m-%d')
-#dato2['Fecha'] = pd.to_datetime(dato2['Fecha'], format='%Y-%m-%d')
+data1['Fecha'] = pd.to_datetime(data1['Fecha'], format='%Y-%m-%d')
+data2['Fecha'] = pd.to_datetime(data2['Fecha'], format='%m/%d/%Y %H:%M')
 
-#d_1990_2000 = pd.merge(dato1, dato2, on='Fecha') #Unir si se tienen columnar diferentes
-#d_1990_2000 = pd.concat([dato1, dato2])
-#name = str(d_1990_2000['NombreEstacion'].iloc[0])
+###d_1990_2000 = pd.merge(dato1, dato2, on='Fecha') #Unir si se tienen columnas diferentes
+d1_d2 = pd.concat([data1, data2])
+name = str(d1_d2['NombreEstacion'].iloc[650])
 
 #print(d_1990_2000)
 
 ''' Exportar el DataFrame nulos max a un archivo CSV '''
-#title = f'Temperatura_dia_{name}.csv'
-#d_1990_2000.to_csv(title, sep=';', index=False)
+title = f'Pluviometrico_dia_{name}.csv'
+d1_d2.to_csv(title, sep=';', index=False)
