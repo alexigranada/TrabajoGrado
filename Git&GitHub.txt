@@ -1,0 +1,111 @@
+:::: GUÍA INICIAL GIT ::::
+1. Instalamos Git
+2. en consola CDM miramos la intalación y versión 'git version'
+3. Iniciamos consola en nuestra carpeta
+4. Pasamos cualquier nombre al git de manera global:
+	git config --global user.name 'Granada'
+5. Miramos nuestro usuario: 
+	git config --global user.name
+6. Pasamos el email de usuario de GitHub
+	git config --global user.email 'granadalexi@gmail.com'
+7. Iniciamos en la consola:  git init
+8. Añadimos archivos:        git add .
+9. Creamos el primer commit: git commit -m namecommit
+
+
+:::: GUÍA INICIAL GITHub ::::
+1. Creamos el repositorio en Git y copiamos la dirección: https://github.com/alexigranada/alexigranada.git
+2. Pasamos la primera linea creada en el repositorio: git remote add origin https://github.com/alexigranada/alexgranada.git
+2.2. git branch -M main
+2.3. git push -u origin main
+3. Se inicia autentificación y ¡Listo!
+
+
+:::: PARA HACER RESPALDO EN AVANCE 'BACKUP' ::::
+0. Si hemos instalado librerias: pip freeze > requirements.txt
+1. Iniciamos consola en el proyecto: git add .
+2. Creamos commit para la nueva versión: git commit -m NuevaVersion ('month'-day-year)
+3. Miramos las versiones y el estado actual: git log --oneline
+4. Subimos a gitHub (si ya estamos registrados): git push 
+
+
+:::: PARA TOMAR-CARGAR AVANCES ::::
+1. Antes de iniciar miramos en que rama (Branch) estamos: git branch	 
+ .1 Trarr los cambio (Subidos en GitHub): git pull
+2. git fetch
+
+
+:::: PARA MIRAR DIFERENCIAS ENTRE RAMAS ::::
+1. Miramos en que rama estamos: git branch
+2. Miramos diferancias entre ramas: git diff master name_branch (El orden de las ramas importa)
+:::: PARA UNIFICAR RAMAS ::::
+1. Nos paramos en la rama que va a recibir los cambios: git checkout master
+2. git merge name_branch master (La que tiene los cambios hacias la menos actualizada)
+
+
+:::: CREAR RAMA (BRANCH) ::::
+1. Para crear rama: git branch name_branch
+  .2 Para cambiar nombre de la rama git branch -m actual_name new_name
+2. Para cambiar a la rama deseada: git checkout name_branch
+3. Para eliminar una rama no deseada: git branch -d name_branch
+
+
+:::: CLONAR REPOSITORIO ::::
+1. Iniciamos VSC vacio (Sin carpeta)
+2. Pulsamos en la tercera pestaña 'Source Control (Ctrl+Shift+G)'
+3. Pulsamos: 'Clone Repository'
+4. Pasamos la URL del repositorio en 'Clone from Github'
+5. Seleccionamos la carpeta donde clonaremos el repositori
+6. Creamos entorno virtual en Python : python -m venv venv
+7. Activamos entorno: cd venv/Scripts .\Activate.ps
+8. desactivamos entorno y volvemos a la carperta inicia: deativate
+8.2 cd.. cd.. (volvemos dos niveles)
+9. Seleccionamos interprete Ctrl+Shitp+P (Python: Select Interpreter) venv/python.exe (Recomendato)
+8. Descargamos librerias necesarias: pip install -r requirements.txt
+
+
+:::: TAGS (Versiones) DEL PROYECTO:
+
+
+
+
+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
+
+git remote add origin https://github.com/alexigranada/website.git
+git remote add origin https://github.com/alexigranada/gismodel.git
+git branch -M main
+git push -u origin main
+
+Basic Commands
+- git init      : Utilizar en este proyecto Git
+- git add <file>: Pasar de working directori a staging area
+- git status    : Estado de los archivos
+- git commit    : Pasar de staging area a repositorio
+- git push      : Pasar a repositorio remoto
+- git pull      : Trae los cambios de otros desarrolladores
+- git clone     : Copia desde el servidor central
+
+Lineas:
+- touch name.txt : para crear un archivo
+- ls : para ver archivos en la carpeta
+- git commit -> Para iniciar repositorio
+	     -> git config --global user.email "granadalexi@gmail.com"
+	     -> git config --global user.name "Alexis Granada"
+	- ejecutamos de nuevo "git commit" y se abre un editor
+	- presionamos i, damos una descripción, escape, :wq
+
+- git diff <file.ext> : ver las diferencias entre ramas
+- git checkout -- <file> : descartar los cambios realizados en el archivo
+
+- git commit -m "Mensaje Descripción" (Nos evitamos entrar a la otra consola)
+
+- git branch :  añadir versiones
+
+- git branch <Version name> : crear una nueva versión
+
+- git checkout <Version name> : cambiarse a esa rama (o versión)
+
+- git branch : nos muestra que versión estamos
+
+Para agregar todos los archivos
+-git add .
