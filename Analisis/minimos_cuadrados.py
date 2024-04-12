@@ -32,9 +32,9 @@ print(f'Termino independiente (b): {b}')
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=t_d, y=t_ma, mode='markers', name='Datos reales, calculados'))
 fig.add_trace(go.Scatter(x=t_d, y=m*t_d+b, mode='lines', name='Linea de tendencia ajustada'))
-fig.update_layout(title ='Ajuste de Mínimos Cuadrados para Temperaturas Mensuales y Multianuales',
-                  xaxis = dict(title='Temperatura por día'),
-                  yaxis = dict(title='Temperatura multianul'),
+fig.update_layout(title ='Ajuste de Mínimos Cuadrados para Temperaturas Máx Mensuales y Multianuales',
+                  xaxis = dict(title='Temperatura máx por día'),
+                  yaxis = dict(title='Temperatura máx multianual'),
                   title_x = 0.5,
                   template = 'plotly_white')
 fig.show()
