@@ -46,12 +46,23 @@ fig.show()
 
 print(tmax1)
 ''' Reemplazamos los valores nulos por los valores calculados'''
-#tmax1['ValorMax'].fillna(tmax['ValorMaxMedia'], inplace=True)
-#tmax2['ValorMax'].fillna(tmax['ValorMaxMedia'], inplace=True)
+data1.loc[:1461:, 'ValorMax'] = data1.loc[:1461:, 'ValorMax'].fillna(data['ValorMaxMedia'])
+data2.loc[:1461:, 'ValorMax'] = data2.loc[:1461:, 'ValorMax'].fillna(data['ValorMaxMedia'])
 
-#tmin1['ValorMax'].fillna(tmin['ValorMinMedia'], inplace=True)
-#tmin2['ValorMax'].fillna(tmin['ValorMinMedia'], inplace=True)
-'''
+data1.loc[:1461:, 'ValorMin'] = data1.loc[:1461:, 'ValorMin'].fillna(data['ValorMinMedia'])
+data2.loc[:1461:, 'ValorMin'] = data2.loc[:1461:, 'ValorMin'].fillna(data['ValorMinMedia'])
+
+tmax = data['ValorMaxMedia'][:1461:]
+tmin = data['ValorMinMedia'][:1461:]
+
+tmax1 = data1['ValorMax'][:1461:]
+tmin1 = data1['ValorMin'][:1461:]
+
+tmax2 = data2['ValorMax'][:1461:]
+tmin2 = data2['ValorMin'][:1461:]
+#tmedia = (tmax + tmin) / 2
+ttime = data['Fecha'][:1461:]
+
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=ttime, y=tmax, mode='markers', name='Temp. DMA Máx', marker=dict(color='red', size=4)))
 fig.add_trace(go.Scatter(x=ttime, y=tmin, mode='markers', name='Temp. DMA Mín', marker=dict(color='red', size=4)))
@@ -67,5 +78,5 @@ fig.update_layout(title = 'Temperatura diaria multianual (1990 - 2020)',
                   title_x = 0.5,
                   template='plotly_white')
 fig.show()
-'''
+
 print('Finalizado con exito')
