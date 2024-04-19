@@ -1,4 +1,9 @@
-
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Apr  01 12:35:33 2024
+Calculo de analisis decadal multianual
+@author: Arturo A. Granada G.
+"""
 
 import pandas as pd
 import plotly.graph_objects as go

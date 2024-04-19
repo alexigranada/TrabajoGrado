@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Apr  01 12:35:33 2024
-Gradiente termico vertical: relación del cambio de temperatura en función de la altura
+Calculo díario multianual de 1990 a 2020
 @author: Arturo A. Granada G.
 """
 

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Apr  01 12:35:33 2024
+Gradiente termico vertical: relación del cambio de temperatura en función de la altura
+@author: Arturo A. Granada G.
+"""
+
 import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
@@ -6,34 +13,49 @@ ruta_e1 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_d
 ruta_e2 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_COLPUERTOS [53115020].csv'
 ruta_e3 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_BAJO CALIMA [54075020].csv'
 ruta_e4 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_MISION LA [54075040].csv'
+#ruta_e5 = 'Datos/Estaciones/CVC/Temperatura_Dia_Pacifico-BahiaMalaga[5300000203].csv'
+ruta_e5 = 'Datos/Estaciones/CVC/Bahia_Malaga_1.csv'
+
 
 df_e1 = pd.read_csv(ruta_e1, delimiter=';')
 df_e2 = pd.read_csv(ruta_e2, delimiter=';')
 df_e3 = pd.read_csv(ruta_e3, delimiter=';')
 df_e4 = pd.read_csv(ruta_e4, delimiter=';')
+df_e5 = pd.read_csv(ruta_e5, delimiter=';')
 
 ''' Creamos el formato de la fecha'''
 fechaformato = "%Y-%m-%d"
-df_e1['Fecha'] = pd.to_datetime(df_e1['Fecha'], format=fechaformato)
-df_e2['Fecha'] = pd.to_datetime(df_e2['Fecha'], format=fechaformato)
-df_e3['Fecha'] = pd.to_datetime(df_e3['Fecha'], format=fechaformato)
-df_e4['Fecha'] = pd.to_datetime(df_e4['Fecha'], format=fechaformato)
+df_e1['Fecha'] = pd.to_datetime(df_e1['Fecha'], format="%Y-%m-%d")
+df_e2['Fecha'] = pd.to_datetime(df_e2['Fecha'], format="%Y-%m-%d")
+df_e3['Fecha'] = pd.to_datetime(df_e3['Fecha'], format="%Y-%m-%d")
+df_e4['Fecha'] = pd.to_datetime(df_e4['Fecha'], format="%Y-%m-%d")
+df_e5['Fecha'] = pd.to_datetime(df_e4['Fecha'], format='%d/%m/%Y')
 
 temp_min_e1 = df_e1['ValorMin']#[:50]
 temp_min_e2 = df_e2['ValorMin']#[:32]
 temp_min_e3 = df_e3['ValorMin']#[:32]
+temp_min_e4 = df_e4['ValorMin']#[:32]
+temp_min_e5 = df_e5['ValorMin']#[:32]
+
 temp_max_e1 = df_e1['ValorMax']#[:50]
 temp_max_e2 = df_e2['ValorMax']#[:32]
 temp_max_e3 = df_e3['ValorMax']#[:32]
-time = df_e1['Fecha']
+temp_max_e4 = df_e4['ValorMax']#[:32]
+temp_max_e5 = df_e5['ValorMax']#[:32]
+time = df_e3['Fecha']
 
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=time, y=temp_max_e1, mode='lines', name='TempMax AER BUENAV ', line=dict(color='#EF553B')))
 fig.add_trace(go.Scatter(x=time, y=temp_max_e2, mode='lines', name='TempMax COLPUERTOS', line=dict(color='#636EFA')))
 fig.add_trace(go.Scatter(x=time, y=temp_max_e3, mode='lines', name='TempMax B. CALIMA', line=dict(color='#00CC96')))
+fig.add_trace(go.Scatter(x=time, y=temp_max_e4, mode='lines', name='TempMax La Misión', line=dict(color='#03A9F4 ')))
+fig.add_trace(go.Scatter(x=time, y=temp_max_e5, mode='lines', name='TempMax P-Bahía Malaga', line=dict(color='#FFEB3B')))
+
 fig.add_trace(go.Scatter(x=time, y=temp_min_e1, mode='lines', name='TempMin AER BUENAV ', line=dict(color='#EF553B')))
 fig.add_trace(go.Scatter(x=time, y=temp_min_e2, mode='lines', name='TempMin COLPUERTOS', line=dict(color='#636EFA')))
 fig.add_trace(go.Scatter(x=time, y=temp_min_e3, mode='lines', name='TempMin B. CALIMA', line=dict(color='#00CC96')))
+fig.add_trace(go.Scatter(x=time, y=temp_min_e4, mode='lines', name='TempMin La Misión', line=dict(color='#03A9F4 ')))
+fig.add_trace(go.Scatter(x=time, y=temp_min_e5, mode='lines', name='TempMin P-Bahía Malaga', line=dict(color='#FFEB3B')))
 
 fig.update_layout(title = 'Temperatura estación AERO. BUENAV vs COLPUERTOS',
                   xaxis = dict(title='Años'),
