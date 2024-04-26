@@ -13,8 +13,8 @@ ruta_e1 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_d
 ruta_e2 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_COLPUERTOS [53115020].csv'
 ruta_e3 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_BAJO CALIMA [54075020].csv'
 ruta_e4 = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_MISION LA [54075040].csv'
-#ruta_e5 = 'Datos/Estaciones/CVC/Temperatura_Dia_Pacifico-BahiaMalaga[5300000203].csv'
-ruta_e5 = 'Datos/Estaciones/CVC/Bahia_Malaga_1.csv'
+ruta_e5 = 'Datos/Estaciones/CVC/Temperatura_Dia_Pacifico-BahiaMalaga[5300000203].csv'
+#ruta_e5 = 'Datos/Estaciones/CVC/Bahia_Malaga_1.csv'
 
 
 df_e1 = pd.read_csv(ruta_e1, delimiter=';')
