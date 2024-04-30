@@ -70,6 +70,7 @@ fig.update_layout(title = 'Decadal (10 días) Multianual (1990 - 2000)',
                   template='plotly_white') #'plotly_white' - 'plotly_dark' - 'ggplot2' - 'seaborn - 'simple_white'
 fig.show()
 
+
 print('Finalizado...')
 '''Ploteamos gráficas'''
 '''

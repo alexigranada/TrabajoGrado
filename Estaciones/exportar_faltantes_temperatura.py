@@ -11,39 +11,39 @@ import plotly.express as px
 import plotly.graph_objects as go
 #import matplotlib.pyplot as plt #Graficas y limpiar datos
 
-ruta = 'Datos/Estaciones/IDEAM/Estaciones Dagua/Temperatura dia/Temperatura_dia_AEROPUERTO BUENAVENTUR [53115010].csv' #Ruta del archivo
+ruta = 'Datos/Hora/1. La Cumbre/Precipitacion_LaCumbre_Hora.csv' #Ruta del archivo
 df = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 
 print(df)
 
 ''' Creamos el formato de la fecha'''
-fechaformato = "%Y-%m-%d"
-df['Fecha'] = pd.to_datetime(df['Fecha'], format=fechaformato)
+df['Fecha (UTC-05:00)'] = pd.to_datetime(df['Fecha (UTC-05:00)'], format='%Y-%m-%d %H:%M:%S')
 
 ''' Ploteamos datos con Plotly'''
-#'''
-temp_max = df['ValorMax']
-temp_min = df['ValorMin']
-temp_media = df['ValorMedio']
-time = df['Fecha']
 
-name = str(df['NombreEstacion'][0])
-title = f'Patron de la Temperatura estación: {name}'
+variable = df['Valor (Millimetres)']
+#temp_min = df['ValorMin']
+#temp_media = df['ValorMedio']
+time = df['Fecha (UTC-05:00)']
+
+#name = str(df['NombreEstacion'][0])
+title = f'Patron de la Precipiación estación: La Cumbre'
 
 fig = go.Figure()
-fig.add_trace(go.Scatter(x=time, y=temp_max, mode='lines', name='Temp. Máx', line=dict(color='#EF553B')))
-fig.add_trace(go.Scatter(x=time, y=temp_media, mode='lines', name='Temp. Media', line=dict(color='#00CC96')))
-fig.add_trace(go.Scatter(x=time, y=temp_min, mode='lines', name='Temp. Mín', line=dict(color='#636EFA')))
+fig.add_trace(go.Bar(x=time, y=variable, name='Prec. Hora', marker_color='#03A9F4'))
+#fig.add_trace(go.Scatter(x=time, y=temp, mode='lines', name='Temp. Máx', line=dict(color='#636EFA')))#EF553B
+#fig.add_trace(go.Scatter(x=time, y=temp_media, mode='lines', name='Temp. Media', line=dict(color='#00CC96')))
+#fig.add_trace(go.Scatter(x=time, y=temp_min, mode='lines', name='Temp. Mín', line=dict(color='#636EFA')))
 
 fig.update_layout(title = title,
                   xaxis = dict(title='Años'),
-                  yaxis = dict(title='Temperatura (°C)'),
+                  yaxis = dict(title='Precipitación(mm/h)'),
                   title_x = 0.5)
 fig.show()
 
 ''' Imprimir datos nulos'''
 #df_nulos = df[df['ValorMax'].isnull() & df['ValorMin'].isnull()]
-df_nulos = df[df['ValorMax'].isnull()]
+df_nulos = df[df['Valor (Millimetres)'].isnull()]
 print(df_nulos)
-title_csv = f'Datos_faltantes_max_{name}.csv'
-df_nulos.to_csv(title_csv, sep=';', index=False)
+#title_csv = f'Precipitacion_faltantes_LaCumbre.csv'
+#df_nulos.to_csv(title_csv, sep=';', index=False)

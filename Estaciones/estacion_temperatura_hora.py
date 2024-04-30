@@ -12,13 +12,13 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt #Graficas y limpiar datos
 import numpy as np
 
-ruta_hora = 'Datos/Estaciones/Temperatura_hora.csv' #Ruta del archivo
+ruta_hora = 'Datos/Estaciones/La Cumbre/DataSetExport-TEMPERATURA.TA2_AUT_60@5311500121.csv' #Ruta del archivo
 
 data_hora = pd.read_csv(ruta_hora, delimiter=',') #Cargamos archivo
-#print('Registros, columnas:')
-#print(data_hora.shape)
-#print('Tabulación de los datos:')
-#print(data_hora.head()) 
+print('Registros, columnas:')
+print(data_hora.shape)
+print('Tabulación de los datos:')
+print(data_hora.head()) 
 
 '''Miramos las variables categoricas y numericas'''
 #data_max.info()
@@ -31,10 +31,10 @@ float64 real
 #print(data.describe())
 '''Si la desviación estantar (std) es igual a cero, eso quiere decir que los valores numericos no son iguales
 Eliminamos información irrelevante de los datos'''
-data_hora.drop(columns=['Entidad', 'AreaOperativa', 'Departamento', 'Categoria', 'FechaInstalacion', 'FechaSuspension', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion'], inplace=True)
+#data_hora.drop(columns=['Entidad', 'AreaOperativa', 'Departamento', 'Categoria', 'FechaInstalacion', 'FechaSuspension', 'Frecuencia', 'Grado', 'Calificador', 'NivelAprobacion'], inplace=True)
 
 ''' Agrupar por la columna 'NombreEstación' '''
-nombre_estacion_hora = data_hora.groupby('NombreEstacion')
+#nombre_estacion_hora = data_hora.groupby('NombreEstacion')
 
 '''
 for estacion, grupo in estaciones:
@@ -43,16 +43,16 @@ for estacion, grupo in estaciones:
     print("\n")
 '''
 ''' Convertimos en DataFrame'''
-grupo_estaciones_hora = pd.DataFrame(nombre_estacion_hora)
+#grupo_estaciones_hora = pd.DataFrame(nombre_estacion_hora)
 #grupo_estaciones_min = pd.DataFrame(nombre_estacion_min)
 
 
 ''' Agrupamos por categoria'''
-estacion_hora = nombre_estacion_hora.get_group(str(grupo_estaciones_hora[0][1]))
-print('Entra')
-name = str(grupo_estaciones_hora[0][1])
+#estacion_hora = nombre_estacion_hora.get_group(str(grupo_estaciones_hora[0][1]))
+#print('Entra')
+#name = str(grupo_estaciones_hora[0][1])
 #estacion_hora.to_csv(f'datos_{name}.csv', index=False)
-print(estacion_hora)
+#print(estacion_hora)
 ''' Creamos el formato de la fecha'''
 #fechaformato_hora = "%Y-%m-%d %H:%M"
 #estacion_hora['Fecha'] = pd.to_datetime(estacion_hora['Fecha'], format=fechaformato_hora)
@@ -67,9 +67,9 @@ print(estacion_hora)
 #print(df_final_estacion_hora)
 
 '''' Calculamos los valores nulos'''
-valores_nulos_hora = estacion_hora['Valor'].isnull().sum()
-print('Datos faltantes hora: ')
-print(valores_nulos_hora)
+#valores_nulos_hora = estacion_hora['Valor'].isnull().sum()
+#print('Datos faltantes hora: ')
+#print(valores_nulos_hora)
 
 ''' Fusionar los DataFrames en base a la columna 'Fecha'''
 #unir_df = pd.merge(df_final_estacion_max, df_final_estacion_min, on='Fecha')
@@ -80,20 +80,20 @@ print(valores_nulos_hora)
 #print(unir_df)
 
 ''' Ploteamos las graficas'''
-temp_hora = estacion_hora['Valor']
-time_hora = estacion_hora['Fecha']
+#temp_hora = estacion_hora['Valor']
+#time_hora = estacion_hora['Fecha']
 
-title = f'Patron de la Temperatura estación: {name}'
+#title = f'Patron de la Temperatura estación: {name}'
 
-fig = go.Figure()
-fig.add_trace(go.Scatter(x=time_hora, y=temp_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
+#fig = go.Figure()
+#fig.add_trace(go.Scatter(x=time_hora, y=temp_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
 
 
-fig.update_layout(xaxis = dict(title='Horas'),
-                  yaxis = dict(title='Temperatura (°C)'),
-                  title = title,
-                  title_x = 0.5)
-fig.show()
+#fig.update_layout(xaxis = dict(title='Horas'),
+#                  yaxis = dict(title='Temperatura (°C)'),
+#                  title = title,
+#                  title_x = 0.5)
+#fig.show()
 
 '''
 fig = px.line(df_final_estacion_max, x='Fecha', y='Valor', title=title)
