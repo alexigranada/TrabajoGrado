@@ -37,7 +37,7 @@ print('Estación hora:')
 print(df_hora)
 df_hora.info()
 
-'''Promediamos por hora'''
+'''Promediamos o sumamos por hora'''
 #data.set_index('Fecha (UTC-05:00)', inplace=True)
 #data_hora = data.resample('H').sum()
 #print(data_hora)

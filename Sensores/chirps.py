@@ -24,23 +24,24 @@ import cftime
 import datetime
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-ruta = 'Datos/CHIRPS Dia Valle/data.nc'
+ruta = 'Datos/Estaciones/IDEAM/Hora/CHIRPS Dia Valle/data.nc'
 ds = xr.open_dataset(ruta)
 print(ds)
 
 precipitacion = ds['prcp']
-print(precipitacion)
+#print(precipitacion['X'])
+#print(precipitacion['Y'])
 
 ''' Seleccionamos pixel de interes'''
-lat_1 = 3.645 #Latitud del pixel (Mirarlo en en el DF cortado)
-lon_1 = -76.564 #Longitud del pixel
+lat_1 = 3.675 #Latitud del pixel (Mirarlo en en el DF cortado)
+lon_1 = -76.525 #Longitud del pixel
 
 '''Seleccionamos pixel con el método 'Valor más cercano' '''
-preci = precipitacion.sel(X=lat_1, Y=lon_1, method='nearest') 
+preci = precipitacion.sel(X=lon_1, Y=lat_1, method = None)# 
 
 df_prec = preci.to_dataframe().reset_index() #Convertimos a DF
 print(df_prec)
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'CHIRPS_LaCumbre_Dia.csv'
+title = f'CHIRPS_Top-Right_LaCumbre_Dia.csv'
 df_prec.to_csv(title, sep=';', index=False)
