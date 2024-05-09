@@ -9,55 +9,57 @@ Unión de registros
 import pandas as pd #Leer datos
 import plotly.graph_objects as go
 
-ruta = 'Datos/Estaciones/La Cumbre/DataSetExport-TEMPERATURA.TAMX2_AUT_60@5311500121-20240425201123.csv' #Ruta del archivo
+#ruta = 'Datos/Estaciones/La Cumbre/DataSetExport-TEMPERATURA.TAMX2_AUT_60@5311500121-20240425201123.csv' #Ruta del archivo
 #ruta = 'Datos/Estaciones/Juanchaco/.csv'
 #ruta = 'Datos/Estaciones/Farallones/TEMPERATURA.TA2_AUT_60@26055100.csv'
 #ruta = 'Datos/Estaciones/IMarina/TEMPERATURA.TA2_AUT_60@5311500147.csv'
 #ruta = 'Datos/Estaciones/Colegio Vasco Nuñez/TEMPERATURA.TA2_AUT_60@5311500149.csv'
 #ruta = 'Datos/Estaciones/UPacifico/DIR VIENTO.DVMX_AUT_60@5311500056.csv'
-data = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
+ruta = 'Datos/Estaciones/IDEAM/Hora/Hora/1. La Cumbre/Precipitacion_LaCumbre_Hora_MedDif1h_0.csv'
+data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 #data2 = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
 
 data.info()
 print(data)
 
 ''' Antes de concatenar ajustamos el formato de la fecha'''
-data['Fecha (UTC-05:00)'] = pd.to_datetime(data['Fecha (UTC-05:00)'], format='%Y-%m-%d %H:%M:%S')
+data['Fecha (UTC-05:00)'] = pd.to_datetime(data['Fecha (UTC-05:00)'], format='%d/%m/%Y %H:%M')
 
 ''' Pasamos la columna de Texto a numerico'''
-data['Valor (Celsius)'] = pd.to_numeric(data['Valor (Celsius)'].str.replace(',','.'))
+#data['Valor (Celsius)'] = pd.to_numeric(data['Valor (Celsius)'].str.replace(',','.'))
 
 ''' Crear un rango de fechas completo '''
-rango_completo_hora = pd.date_range(start='2017-04-25 17:00:00', end='2022-02-15 21:00:00', freq='h')
+#rango_completo_hora = pd.date_range(start='2017-04-25 17:00:00', end='2022-02-15 21:00:00', freq='h')
 
 ''' Crear un DataFrame con las fechas completas '''
-df_completo_estacion_hora = pd.DataFrame({'Fecha (UTC-05:00)': rango_completo_hora})
-df_hora = pd.merge(df_completo_estacion_hora, data, on='Fecha (UTC-05:00)', how='left')
-print('Estación hora:')
-print(df_hora)
-df_hora.info()
+#df_completo_estacion_hora = pd.DataFrame({'Fecha (UTC-05:00)': rango_completo_hora})
+#df_hora = pd.merge(df_completo_estacion_hora, data, on='Fecha (UTC-05:00)', how='left')
+#print('Estación hora:')
+#print(df_hora)
+#df_hora.info()
 
 '''Promediamos o sumamos por hora'''
-#data.set_index('Fecha (UTC-05:00)', inplace=True)
-#data_hora = data.resample('H').sum()
-#print(data_hora)
+data.set_index('Fecha (UTC-05:00)', inplace=True)
+data_hora = data.resample('H').sum()
+data_hora.reset_index(inplace=True)
+print(data_hora)
 
 '''' Calculamos los valores nulos'''
-valores_nulos_hora = df_hora['Valor (Celsius)'].isnull().sum()
-print('Datos faltantes hora: ')
-print(valores_nulos_hora)
+#valores_nulos_hora = df_hora['Valor (Celsius)'].isnull().sum()
+#print('Datos faltantes hora: ')
+#print(valores_nulos_hora)
 
 ''' Ploteamos las graficas'''
-var_hora = df_hora['Valor (Celsius)']
-time_hora = df_hora['Fecha (UTC-05:00)']
+var_hora = data_hora['Valor (Millimetres)']
+time_hora = data_hora['Fecha (UTC-05:00)']
 
-title = f'Patron velocidad del viento estación: U. del Pacifico'
+title = f'Patron velocidad del viento estación: La Cumbre'
 
 fig = go.Figure()
 
-fig.add_trace(go.Scatter(x=time_hora, y=var_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
+#fig.add_trace(go.Scatter(x=time_hora, y=var_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
 
-#fig.add_trace(go.Bar(x=time_hora, y=var_hora, name='Prec. Hora', marker_color='#03A9F4'))
+fig.add_trace(go.Bar(x=time_hora, y=var_hora, name='Prec. Hora', marker_color='#03A9F4'))
 
 
 fig.update_layout(xaxis = dict(title='Horas'),
@@ -76,8 +78,8 @@ fig.update_layout(xaxis = dict(title='Horas'),
 fig.show()
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'TemMax_LaCumbre_Hora.csv'
-df_hora.to_csv(title, sep=';', index=False)
+title = f'Precipitacion_LaCumbre_Hora_Suma.csv'
+data_hora.to_csv(title, sep=';', index=False)
 
 
 
