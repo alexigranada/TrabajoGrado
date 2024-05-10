@@ -12,9 +12,9 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt #Graficas y limpiar datos
 import numpy as np
 
-ruta_hora = 'Datos/Estaciones/La Cumbre/DataSetExport-TEMPERATURA.TA2_AUT_60@5311500121.csv' #Ruta del archivo
+ruta_hora = 'Datos/Hora/V_Climaticas_LaCumbre_RL_Hora.csv' #Ruta del archivo
 
-data_hora = pd.read_csv(ruta_hora, delimiter=',') #Cargamos archivo
+data_hora = pd.read_csv(ruta_hora, delimiter=';') #Cargamos archivo
 print('Registros, columnas:')
 print(data_hora.shape)
 print('Tabulación de los datos:')
@@ -54,8 +54,7 @@ for estacion, grupo in estaciones:
 #estacion_hora.to_csv(f'datos_{name}.csv', index=False)
 #print(estacion_hora)
 ''' Creamos el formato de la fecha'''
-#fechaformato_hora = "%Y-%m-%d %H:%M"
-#estacion_hora['Fecha'] = pd.to_datetime(estacion_hora['Fecha'], format=fechaformato_hora)
+data_hora['Fecha (UTC-05:00)'] = pd.to_datetime(data_hora['Fecha (UTC-05:00)'], format='%d/%m/%Y %H:%M')
 
 ''' Crear un rango de fechas completo '''
 #rango_fechas_completo_hora = pd.date_range(start='2000-09-01 07:00', end='2020-09-11 13:00', freq='H')
@@ -80,20 +79,21 @@ for estacion, grupo in estaciones:
 #print(unir_df)
 
 ''' Ploteamos las graficas'''
-#temp_hora = estacion_hora['Valor']
-#time_hora = estacion_hora['Fecha']
+temp_hora = data_hora['Temp Media']
+time_hora = data_hora['Fecha (UTC-05:00)']
 
-#title = f'Patron de la Temperatura estación: {name}'
+title = f'Patron de la Temperatura estación: La Cumbre'
 
-#fig = go.Figure()
-#fig.add_trace(go.Scatter(x=time_hora, y=temp_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=time_hora, y=temp_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
 
 
-#fig.update_layout(xaxis = dict(title='Horas'),
-#                  yaxis = dict(title='Temperatura (°C)'),
-#                  title = title,
-#                  title_x = 0.5)
-#fig.show()
+fig.update_layout(xaxis = dict(title='Horas'),
+                  yaxis = dict(title='Temperatura (°C)'),
+                  title = title,
+                  template='plotly_white',
+                  title_x = 0.5)
+fig.show()
 
 '''
 fig = px.line(df_final_estacion_max, x='Fecha', y='Valor', title=title)
