@@ -46,20 +46,22 @@ print(lst_Hamburg_full[:3])# Preview the output.
 df = pd.DataFrame(lst_Hamburg_full) 
 headers = df.iloc[0]   # Rearrange the header.
 df = pd.DataFrame(df.values[1:], columns=headers)   # Rearrange the header.
+print(df.head())
 df = df[['longitude', 'latitude', 'time', "LST_Day_1km" ]].dropna() # Eliminar las filas con datos nulos.
 df[ "LST_Day_1km"] = pd.to_numeric(df[ "LST_Day_1km"], errors='coerce')    # Convert to numeric values.
 df['datetime'] = pd.to_datetime(df['time'], unit='ms')  # Convert datetime to datetime values.
-df = df[['time','datetime',  "LST_Day_1km"   ]] # take interest part
+df = df[['time', 'datetime',  "LST_Day_1km"]] # take interest part
 df.head()
 
 def kelvin_to_celcius(t_kelvin):
     t_celsius =  t_kelvin*0.02 - 273.15
     return t_celsius
+
 df['LST_Day_1km'] = df['LST_Day_1km'].apply(kelvin_to_celcius)
 df.head()
 
 '''Exportamos a CSV'''
-title = f'MODIS_LaCumbre_Dia.csv'
-df.to_csv(title, sep=';', index=False)
+#title = f'MODIS_LaCumbre_Dia.csv'
+#df.to_csv(title, sep=';', index=False)
 
 print('Finalizado')

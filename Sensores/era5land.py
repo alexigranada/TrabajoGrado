@@ -2,7 +2,7 @@
 """
 Created on Thu May 09 07:54:01 2024
 
-Descarga de datos MODIS LST (Temperatura superficial de la tierra)
+Descarga de datos ERA5 Land Hours (Temperatura cerca a la superficie de la tierra)
 
 @author: Arturo A. Granada G.
 """
@@ -20,10 +20,10 @@ print(ee.String('Hello from the Earth Engine servers!').getInfo())
 lst = ee.ImageCollection( 'ECMWF/ERA5_LAND/HOURLY' )
 
 ''' Fecha inicial de interés (inclusive) '''
-i_date = '2017-04-25' 
+i_date = '2022-01-01' 
 
 ''' Fecha final de interés (exclusiva) '''
-f_date = '2017-12-31' 
+f_date = '2022-12-31' 
 
 '''Selección de bandas y fechas apropiadas para LST '''
 banda = lst.select('temperature_2m').filterDate(i_date, f_date)
@@ -39,4 +39,26 @@ escala = 11132
 cumbre_full = banda.getRegion(cumbre_point, escala).getInfo()
 print(cumbre_full[:24])# Preview the output
 
+''' Convertimos a DF'''
+df = pd.DataFrame(cumbre_full) 
+headers = df.iloc[0]   # Rearrange the header.
+df = pd.DataFrame(df.values[1:], columns=headers)   # Rearrange the header.
+print(df.head())
+df = df[['longitude', 'latitude', 'time', 'temperature_2m' ]].dropna() # Eliminar las filas con datos nulos.
+df[ "temperature_2m"] = pd.to_numeric(df[ "temperature_2m"], errors='coerce')    # Convert to numeric values.
+df['datetime'] = pd.to_datetime(df['time'], unit='ms')  # Convert datetime to datetime values.
+df = df[['time', 'datetime',  'temperature_2m']] # take interest part
+df.head()
+
+def k_c (k):
+    c = k - 273.15
+    return c
+
+df['temperature_2m'] = df['temperature_2m'].apply(k_c)
+
+print(df.head())
+
+'''Exportamos a CSV'''
+title = f'ERA5_LaCumbre_Dia_2022.csv'
+df.to_csv(title, sep=';', index=False)
 print('Proceso Finalizado')
