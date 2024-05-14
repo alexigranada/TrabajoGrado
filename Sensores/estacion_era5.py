@@ -13,7 +13,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt #Graficas y limpiar datos
 
-e5 = 'Datos/ERA5/ERA5_LaCumbre_Hora.csv' #Ruta del archivo CHIRPS
+e5 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_Hora.csv' #Ruta del archivo CHIRPS
 es = 'Datos/Hora/V_Climaticas_LaCumbre_RL_Hora.csv' #Ruta del archivo Estatción
 
 era5 = pd.read_csv(e5, delimiter=';') #Cargamos archivo

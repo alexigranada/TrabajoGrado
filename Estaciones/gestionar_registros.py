@@ -16,20 +16,20 @@ import plotly.graph_objects as go
 #ruta = 'Datos/Estaciones/Colegio Vasco Nuñez/TEMPERATURA.TA2_AUT_60@5311500149.csv'
 #ruta = 'Datos/Estaciones/UPacifico/DIR VIENTO.DVMX_AUT_60@5311500056.csv'
 #ruta = 'Datos/Estaciones/IDEAM/Hora/Hora/1. La Cumbre/Precipitacion_LaCumbre_Hora_MedDif1h_0.csv'
-ruta = 'Datos/ERA5/ERA5_LaCumbre_Dia_2017.csv'
-ruta1 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2018.csv'
-ruta2 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2019.csv'
-ruta3 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2020.csv'
-ruta4 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2021.csv'
-ruta5 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2022.csv'
-data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
+ruta = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora.csv'
+ruta1 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_1.csv'
+ruta2 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_2.csv'
+#ruta3 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2020.csv'
+#ruta4 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2021.csv'
+#ruta5 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2022.csv'
+#data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 #data2 = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
 data = pd.read_csv(ruta, delimiter=';')
 data1 = pd.read_csv(ruta1, delimiter=';')
 data2 = pd.read_csv(ruta2, delimiter=';')
-data3 = pd.read_csv(ruta3, delimiter=';')
-data4 = pd.read_csv(ruta4, delimiter=';')
-data5 = pd.read_csv(ruta5, delimiter=';')
+#data3 = pd.read_csv(ruta3, delimiter=';')
+#data4 = pd.read_csv(ruta4, delimiter=';')
+#data5 = pd.read_csv(ruta5, delimiter=';')
 
 data.info()
 print(data)
@@ -38,11 +38,11 @@ print(data)
 data['datetime'] = pd.to_datetime(data['datetime'], format='%Y-%m-%d %H:%M:%S')
 data1['datetime'] = pd.to_datetime(data1['datetime'], format='%Y-%m-%d %H:%M:%S')
 data2['datetime'] = pd.to_datetime(data2['datetime'], format='%Y-%m-%d %H:%M:%S')
-data3['datetime'] = pd.to_datetime(data3['datetime'], format='%Y-%m-%d %H:%M:%S')
-data4['datetime'] = pd.to_datetime(data4['datetime'], format='%Y-%m-%d %H:%M:%S')
-data5['datetime'] = pd.to_datetime(data5['datetime'], format='%Y-%m-%d %H:%M:%S')
+#data3['datetime'] = pd.to_datetime(data3['datetime'], format='%Y-%m-%d %H:%M:%S')
+#data4['datetime'] = pd.to_datetime(data4['datetime'], format='%Y-%m-%d %H:%M:%S')
+#data5['datetime'] = pd.to_datetime(data5['datetime'], format='%Y-%m-%d %H:%M:%S')
 
-d_t = pd.concat([data, data1, data2, data3, data4, data5])
+d_t = pd.concat([data, data1, data2])
 
 d_t.info()
 print(d_t)
@@ -74,7 +74,7 @@ print(d_t)
 var_hora = d_t['temperature_2m']
 time_hora = d_t['datetime']
 
-title = f'Patron temperatura ERA5: La Cumbre'
+title = f'Patron temperatura ERA5: U. Pacífico'
 
 fig = go.Figure()
 
@@ -100,7 +100,7 @@ fig.update_layout(xaxis = dict(title='Horas'),
 fig.show()
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'ERA5_LaCumbre_Hora.csv'
+title = f'ERA5_UPacifico_Hora.csv'
 d_t.to_csv(title, sep=';', index=False)
 
 

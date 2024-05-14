@@ -20,34 +20,43 @@ print(ee.String('Hello from the Earth Engine servers!').getInfo())
 lst = ee.ImageCollection( 'ECMWF/ERA5_LAND/HOURLY' )
 
 ''' Fecha inicial de interés (inclusive) '''
-i_date = '2022-01-01' 
+i_date = '2022-12-30' 
 
 ''' Fecha final de interés (exclusiva) '''
-f_date = '2022-12-31' 
+f_date = '2023-01-01' 
 
 '''Selección de bandas y fechas apropiadas para LST '''
 banda = lst.select('temperature_2m').filterDate(i_date, f_date)
 
 ''' Definir la ubicación de interés como un punto. 
  Usaremos la ubicación de la Estación '''
-punto_lon = -76.56472222
+punto_lon = -76.564722222
 punto_lat = 3.64519444
 cumbre_point = ee.Geometry.Point(punto_lon, punto_lat)
 
+'''Descarga para Poligono'''
+cuenca_dagua = ee.Geometry.Polygon(
+    [[[-77.6, 4.3], 
+      [-76.2, 4.3], 
+      [-76.2, 3.2], 
+      [-77.6, 3.2]]])
+
 escala = 11132
 
+#cumbre_full = banda.getRegion(cuenca_dagua, escala).getInfo()
 cumbre_full = banda.getRegion(cumbre_point, escala).getInfo()
-print(cumbre_full[:24])# Preview the output
+#print(cumbre_full[:50])# Preview the output
 
 ''' Convertimos a DF'''
 df = pd.DataFrame(cumbre_full) 
 headers = df.iloc[0]   # Rearrange the header.
 df = pd.DataFrame(df.values[1:], columns=headers)   # Rearrange the header.
-print(df.head())
+print(df.head(50))
 df = df[['longitude', 'latitude', 'time', 'temperature_2m' ]].dropna() # Eliminar las filas con datos nulos.
 df[ "temperature_2m"] = pd.to_numeric(df[ "temperature_2m"], errors='coerce')    # Convert to numeric values.
 df['datetime'] = pd.to_datetime(df['time'], unit='ms')  # Convert datetime to datetime values.
 df = df[['time', 'datetime',  'temperature_2m']] # take interest part
+#df = df[['longitude', 'latitude','time', 'datetime',  'temperature_2m']] # take interest part
 df.head()
 
 def k_c (k):
@@ -56,9 +65,9 @@ def k_c (k):
 
 df['temperature_2m'] = df['temperature_2m'].apply(k_c)
 
-print(df.head())
+print(df.head(50))
 
 '''Exportamos a CSV'''
-title = f'ERA5_LaCumbre_Dia_2022.csv'
+title = f'ERA5_LaCumbre_Hora.csv'
 df.to_csv(title, sep=';', index=False)
 print('Proceso Finalizado')
