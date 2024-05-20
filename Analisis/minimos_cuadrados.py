@@ -23,41 +23,44 @@ import plotly.graph_objects as go
 ''' Importamos Datos'''
 #ruta_e5 = 'Datos/ERA5/LaCumbre/ERA5_LaCumbre_Hora.csv' #Ruta del archivo ERA5
 #ruta_estacion = 'Datos/Hora/V_Climaticas_LaCumbre_RL_Hora.csv' #Ruta del archivo Estatción
-ruta = 'Datos/Cumbre_12_Hora.csv'
+#ruta = 'Datos/Cumbre_12_Hora.csv'
+ruta = 'Datos/UP_12_Hora.csv'
 #era5 = pd.read_csv(ruta_e5, delimiter=';') #Cargamos archivo
+#ruta = 'Datos/ERA5/UPacifico/UP.csv'
 #estacion = pd.read_csv(ruta_estacion, delimiter=';')
 
 df = pd.read_csv(ruta, delimiter=';')
 print(df)
-df['Fecha (UTC-05:00)'] = pd.to_datetime(df['Fecha (UTC-05:00)'], format='%d/%m/%Y %H:%M')
-#t_d = df['Temp Media']#[:2000]
-#t_ma = df['ERA5']#[:2000]
+df['Fecha (UTC-05:00)'] = pd.to_datetime(df['Fecha (UTC-05:00)'], format='%Y-%m-%d %H:%M:%S')
+##t_d = df['Temp Media']#[:2000]
+##t_ma = df['ERA5']#[:2000]
 
 '''Promediamos o sumamos por hora'''
 #df.set_index('Fecha (UTC-05:00)', inplace=True)
 #df12 = df.resample('12h').mean()
 #df12.reset_index(inplace=True)
 
+''' Paso No 2'''
 t_d =  df['Temp Media']
-t_ma =  df['ERA5']
+t_ma =  df['temperature_2m']
 
-#t_d = np.array(t)
-#t_ma = np.array(ta)
+##t_d = np.array(t)
+##t_ma = np.array(ta)
 
 #print(t_d)
 
 ''' Exportar el DataFrame a un archivo CSV '''
-#title = f'Cumbre_12_Hora.csv'
+#title = f'UP_12_Hora.csv'
 #df12.to_csv(title, sep=';', index=False)
 
 ''' Creamos matrix A de diseño con con temperatura diaria y termino independiente'''
 A = np.vstack([t_d, np.ones(len(t_d))]).T
-#Y = t_ma.reshape(-1, 1)
+##Y = t_ma.reshape(-1, 1)
 
 ''' Calcular el ajuste de minimos cuadrados'''
 m, b = np.linalg.lstsq(A, t_ma, rcond=None)[0]
-#coeficientes = np.linalg.inv(A.T @ A) @ A.T @ Y
-#m, b = coeficientes.flatten()
+##coeficientes = np.linalg.inv(A.T @ A) @ A.T @ Y
+##m, b = coeficientes.flatten()
 ''' Imprimimos los coeficientes de la linea de tendencia'''
 print(f'Coeficiente (m): {m}')
 print(f'Término independiente (b): {b}')
@@ -67,7 +70,7 @@ fig = go.Figure()
 fig.add_trace(go.Scatter(x=t_d, y=t_ma, mode='markers', name='Valores reales - Valores ERA5'))
 fig.add_trace(go.Scatter(x=t_d, y=m*t_d+b, mode='lines', name='Linea de tendencia ajustada'))
 fig.update_layout(title ='Regresión Temperatura en promedio (12 horas)',
-                  xaxis = dict(title='Temperatura media estación La Cumbre'),
+                  xaxis = dict(title='Temperatura media estación U. Pacífico'),
                   yaxis = dict(title='Temperatura media ERA5'),
                   title_x = 0.5,
                   title_font_size=22,
@@ -92,6 +95,6 @@ print(f'Error Cuadrático Medio EMC: {ecm}')
 print(f'Error Absoluto Medio: {eam}')
 print(f'Coeficiente de correlación: {c_c}')
 
-correlacion = t_d.corr(t_ma)
-print('Correlacion Person Estacion La Cumbre vs ERA5 (Temperatura)', correlacion)
-print('Finalizado con exito.')
+#correlacion = t_d.corr(t_ma)
+#print('Correlacion Person Estacion La Cumbre vs ERA5 (Temperatura)', correlacion)
+#print('Finalizado con exito.')
