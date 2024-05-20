@@ -76,7 +76,7 @@ fig.update_layout(title ='Regresión Temperatura en promedio (12 horas)',
                   title_font_size=22,
                   template = 'seaborn')
 fig.show()
-fig.write_image("MC_12h_temperatura_era5_lacumbre.png", width=800, height=500, scale=4)
+fig.write_image("MC_12h_temperatura_era5_UP.png", width=800, height=500, scale=4)
 ''' Calcular predicciones '''
 prediccion = m * t_d + b
 
