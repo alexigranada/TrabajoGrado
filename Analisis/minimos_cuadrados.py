@@ -24,14 +24,14 @@ import plotly.graph_objects as go
 #ruta_e5 = 'Datos/ERA5/LaCumbre/ERA5_LaCumbre_Hora.csv' #Ruta del archivo ERA5
 #ruta_estacion = 'Datos/Hora/V_Climaticas_LaCumbre_RL_Hora.csv' #Ruta del archivo Estatción
 #ruta = 'Datos/Cumbre_12_Hora.csv'
-ruta = 'Datos/UP_12_Hora.csv'
+ruta = 'Datos/Ajuste_5h_Era5_MC.csv'
 #era5 = pd.read_csv(ruta_e5, delimiter=';') #Cargamos archivo
 #ruta = 'Datos/ERA5/UPacifico/UP.csv'
 #estacion = pd.read_csv(ruta_estacion, delimiter=';')
 
 df = pd.read_csv(ruta, delimiter=';')
 print(df)
-df['Fecha (UTC-05:00)'] = pd.to_datetime(df['Fecha (UTC-05:00)'], format='%Y-%m-%d %H:%M:%S')
+df['Fecha (UTC-05:00)'] = pd.to_datetime(df['Fecha (UTC-05:00)'], format='%d/%m/%Y %H:%M')
 ##t_d = df['Temp Media']#[:2000]
 ##t_ma = df['ERA5']#[:2000]
 
@@ -67,16 +67,16 @@ print(f'Término independiente (b): {b}')
 
 '''Ploteamos la gráfica'''
 fig = go.Figure()
-fig.add_trace(go.Scatter(x=t_d, y=t_ma, mode='markers', name='Valores reales - Valores ERA5'))
-fig.add_trace(go.Scatter(x=t_d, y=m*t_d+b, mode='lines', name='Linea de tendencia ajustada'))
-fig.update_layout(title ='Regresión Temperatura en promedio (12 horas)',
-                  xaxis = dict(title='Temperatura media estación U. Pacífico'),
-                  yaxis = dict(title='Temperatura media ERA5'),
+fig.add_trace(go.Scatter(x=t_d, y=t_ma, mode='markers', name='Valores reales - Valores ERA5', marker=dict(size=4)))
+fig.add_trace(go.Scatter(x=t_d, y=m*t_d+b, mode='lines', name='Línea de tendencia ajustada'))
+fig.update_layout(title ='Correlación de Temperatura entre estación U. Pacífico y ERA5-Land, ',
+                  xaxis = dict(title='Temperatura estación U. Pacífico (Hora)'),
+                  yaxis = dict(title='Temperatura hora ERA5-Land (Hora)'),
                   title_x = 0.5,
                   title_font_size=22,
                   template = 'seaborn')
-fig.show()
-fig.write_image("MC_12h_temperatura_era5_UP.png", width=800, height=500, scale=4)
+#fig.show()
+fig.write_image("MC_temperatura_era5_UP.png", width=800, height=500, scale=4)
 ''' Calcular predicciones '''
 prediccion = m * t_d + b
 
