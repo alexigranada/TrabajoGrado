@@ -16,36 +16,40 @@ import plotly.graph_objects as go
 #ruta = 'Datos/Estaciones/Colegio Vasco Nuñez/TEMPERATURA.TA2_AUT_60@5311500149.csv'
 #ruta = 'Datos/Estaciones/UPacifico/DIR VIENTO.DVMX_AUT_60@5311500056.csv'
 #ruta = 'Datos/Estaciones/IDEAM/Hora/Hora/1. La Cumbre/Precipitacion_LaCumbre_Hora_MedDif1h_0.csv'
-ruta = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora.csv'
-ruta1 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_1.csv'
-ruta2 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_2.csv'
+#ruta = 'Datos/Estaciones/Precipitacion_Lacumbre.csv'
+ruta = 'Datos/Estaciones/Precipitacion_UDelPacifico.csv'
+#ruta1 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_1.csv'
+#ruta2 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_2.csv'
 #ruta3 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2020.csv'
 #ruta4 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2021.csv'
 #ruta5 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2022.csv'
 #data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 #data2 = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
 data = pd.read_csv(ruta, delimiter=';')
-data1 = pd.read_csv(ruta1, delimiter=';')
-data2 = pd.read_csv(ruta2, delimiter=';')
+#data1 = pd.read_csv(ruta1, delimiter=';')
+#data2 = pd.read_csv(ruta2, delimiter=';')
 #data3 = pd.read_csv(ruta3, delimiter=';')
 #data4 = pd.read_csv(ruta4, delimiter=';')
 #data5 = pd.read_csv(ruta5, delimiter=';')
 
-data.info()
-print(data)
-
+#data.info()
+#print(data.iloc[79040])
+data.dropna(inplace=True)
 ''' Antes de concatenar ajustamos el formato de la fecha'''
-data['datetime'] = pd.to_datetime(data['datetime'], format='%Y-%m-%d %H:%M:%S')
-data1['datetime'] = pd.to_datetime(data1['datetime'], format='%Y-%m-%d %H:%M:%S')
-data2['datetime'] = pd.to_datetime(data2['datetime'], format='%Y-%m-%d %H:%M:%S')
+data['Fecha'] = pd.to_datetime(data['Fecha'], format='%d/%m/%Y %H:%M')
+#data1['datetime'] = pd.to_datetime(data1['datetime'], format='%Y-%m-%d %H:%M:%S')
+#data2['datetime'] = pd.to_datetime(data2['datetime'], format='%Y-%m-%d %H:%M:%S')
 #data3['datetime'] = pd.to_datetime(data3['datetime'], format='%Y-%m-%d %H:%M:%S')
 #data4['datetime'] = pd.to_datetime(data4['datetime'], format='%Y-%m-%d %H:%M:%S')
 #data5['datetime'] = pd.to_datetime(data5['datetime'], format='%Y-%m-%d %H:%M:%S')
 
-d_t = pd.concat([data, data1, data2])
+''' Eliminamos valores nulos'''
 
-d_t.info()
-print(d_t)
+
+#d_t = pd.concat([data, data1, data2])
+
+#d_t.info()
+#print(d_t)
 ''' Pasamos la columna de Texto a numerico'''
 #data['Valor (Celsius)'] = pd.to_numeric(data['Valor (Celsius)'].str.replace(',','.'))
 
@@ -60,10 +64,11 @@ print(d_t)
 #df_hora.info()
 
 '''Promediamos o sumamos por hora'''
-#data.set_index('Fecha (UTC-05:00)', inplace=True)
-#data_hora = data.resample('H').sum()
-#data_hora.reset_index(inplace=True)
-#print(data_hora)
+
+data.set_index('Fecha', inplace=True)
+data_hora = data.resample('h').sum()
+data_hora.reset_index(inplace=True)
+print(data_hora)
 
 '''' Calculamos los valores nulos'''
 #valores_nulos_hora = df_hora['Valor (Celsius)'].isnull().sum()
@@ -71,23 +76,23 @@ print(d_t)
 #print(valores_nulos_hora)
 
 ''' Ploteamos las graficas'''
-var_hora = d_t['temperature_2m']
-time_hora = d_t['datetime']
+#var_hora = d_t['temperature_2m']
+#time_hora = d_t['datetime']
 
-title = f'Patron temperatura ERA5: U. Pacífico'
+#title = f'Patron temperatura ERA5: U. Pacífico'
 
-fig = go.Figure()
+#fig = go.Figure()
 
-fig.add_trace(go.Scatter(x=time_hora, y=var_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
+#fig.add_trace(go.Scatter(x=time_hora, y=var_hora, mode='lines', name='Temp. Hora', line=dict(color='#EF553B')))
 
 #fig.add_trace(go.Bar(x=time_hora, y=var_hora, name='Prec. Hora', marker_color='#03A9F4'))
 
 
-fig.update_layout(xaxis = dict(title='Horas'),
-                  yaxis = dict(title='Temperatura (Celcius)'),
-                  title = title,
-                  template = 'plotly_white',
-                  title_x = 0.5)
+#fig.update_layout(xaxis = dict(title='Horas'),
+#                  yaxis = dict(title='Temperatura (Celcius)'),
+#                  title = title,
+#                  template = 'plotly_white',
+#                  title_x = 0.5)
 
 #figPolar = go.Figure(go.Barpolar(
 #    r=frecuencias,
@@ -97,15 +102,11 @@ fig.update_layout(xaxis = dict(title='Horas'),
 #    marker_line_width=1,  # Ancho de los bordes de las barras
 #))
 
-fig.show()
+#fig.show()
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'ERA5_UPacifico_Hora.csv'
-d_t.to_csv(title, sep=';', index=False)
-
-
-
-
+#title = f'Precipitacion_UDelPacifico_Hora.csv'
+#data_hora.to_csv(title, sep=';', index=False)
 
 '''' Calculamos los valores nulos'''
 #valores_nulos_hora = estacion_hora['Valor'].isnull().sum()

@@ -18,7 +18,7 @@ import plotly.graph_objects as go
 file = 'Datos/GCM/CESM2 WACCM/Temperature/tas_day_CESM2-WACCM_historical_r2i1p1f1_gn_20000101-20150101_Valle_Cauca.nc'
 ds = xr.open_dataset(file)
 longitud_tiempo = len(ds.time)
-ds_recortado = ds.isel(time=slice(0, longitud_tiempo - 2))
+ds_recortado = ds.isel(time=slice(0, longitud_tiempo - 2)) #Se realiza corte de los primeros dias de enero del ultimo año
 print(ds_recortado)
 
 ''' 2. Cargamos datos de las estaciones'''

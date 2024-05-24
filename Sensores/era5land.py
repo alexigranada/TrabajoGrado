@@ -27,7 +27,7 @@ f_date = '2023-01-01'
 
 '''Selección de bandas y fechas apropiadas para LST '''
 #   'temperature_2m'
-banda = lst.select('total_precipitation').filterDate(i_date, f_date)
+banda = lst.select('total_precipitation_hourly').filterDate(i_date, f_date)
 
 ''' Definir la ubicación de interés como un punto. 
  Usaremos la ubicación de la Estación '''
@@ -55,9 +55,9 @@ headers = df.iloc[0]   # Rearrange the header.
 df = pd.DataFrame(df.values[1:], columns=headers)   # Rearrange the header.
 #print(df.head(50))
 #df = df[['longitude', 'latitude', 'time', 'total_precipitation' ]].dropna() # Eliminar las filas con datos nulos.
-df[ "total_precipitation"] = pd.to_numeric(df[ "total_precipitation"], errors='coerce')    # Convert to numeric values.
+df[ "total_precipitation_hourly"] = pd.to_numeric(df[ "total_precipitation_hourly"], errors='coerce')    # Convert to numeric values.
 df['datetime'] = pd.to_datetime(df['time'], unit='ms')  # Convert datetime to datetime values.
-df = df[['time', 'datetime',  'total_precipitation']] # take interest part
+df = df[['time', 'datetime',  'total_precipitation_hourly']] # take interest part
 #df = df[['longitude', 'latitude','time', 'datetime',  'total_precipitation']] # take interest part
 #print(df.head(60))
 
@@ -74,11 +74,11 @@ def m_mm (m):
 ''' Aplicamos la función'''
 #df['temperature_2m'] = df['temperature_2m'].apply(k_c)
 
-df['total_precipitation'] = df['total_precipitation'].apply(m_mm)
+df['total_precipitation_hourly'] = df['total_precipitation_hourly'].apply(m_mm)
 print(df.head(50))
 
 '''Exportamos a CSV'''
-title = f'ERA5_Precipitacion_LaCumbre_Hora_6.csv'
+title = f'ERA5_Precipitacion_horly_LaCumbre_Hora_6.csv'
 df.to_csv(title, sep=';', index=False)
 print('Proceso Finalizado')
 print('Finalizado sin errores')

@@ -19,15 +19,16 @@ def descargar_datos_era5(years, months, output_dir):
                     'variable': [
                         '10m_u_component_of_wind',
                         '10m_v_component_of_wind',
-                        '2m_dewpoint_temperature',
+                        #'2m_dewpoint_temperature',
                         '2m_temperature',
-                        'evaporation_from_vegetation_transpiration',
-                        'leaf_area_index_high_vegetation',
-                        'leaf_area_index_low_vegetation',
-                        'surface_net_solar_radiation',
+                        #'evaporation_from_vegetation_transpiration',
+                        #'leaf_area_index_high_vegetation',
+                        #'leaf_area_index_low_vegetation',
+                        #'surface_net_solar_radiation',
                         'surface_pressure',
                         'total_evaporation',
                         'total_precipitation',
+                        #'total_precipitation_hourly',
                     ],
                     'month': str(month).zfill(2),
                     'time': [
@@ -55,11 +56,11 @@ def descargar_datos_era5(years, months, output_dir):
                     ],
                     'format': 'netcdf',
                     'area': [
-                        5, -78, 3,
-                        -75.5,
+                        4, -77.5, 3.3,
+                        -76.2,
                     ],
                 },
                 f"{output_dir}/era5_{str(month).zfill(2)}{str(year)}.nc"
             )
-descargar_datos_era5(range(2000, 2010), range(1, 13), "C:/Users/Administrator/Documents/ERA5_VC_9KM")
+descargar_datos_era5(range(2017, 2023), range(1, 13), "D:/Usuario/Documents/ERA5_VC_9KM")
 print('¡Completado!')
