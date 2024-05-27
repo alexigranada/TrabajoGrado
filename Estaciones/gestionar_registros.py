@@ -8,36 +8,36 @@ Unión de registros
 
 import pandas as pd #Leer datos
 import plotly.graph_objects as go
-
-#ruta = 'Datos/Estaciones/La Cumbre/DataSetExport-TEMPERATURA.TAMX2_AUT_60@5311500121-20240425201123.csv' #Ruta del archivo
+#ruta = 'Datos/Hora/2. U Del Pacifico/PRECIPITACION.PT_AUT_10@5311500056.csv' #Ruta del archivo
 #ruta = 'Datos/Estaciones/Juanchaco/.csv'
-#ruta = 'Datos/Estaciones/Farallones/TEMPERATURA.TA2_AUT_60@26055100.csv'
-#ruta = 'Datos/Estaciones/IMarina/TEMPERATURA.TA2_AUT_60@5311500147.csv'
-#ruta = 'Datos/Estaciones/Colegio Vasco Nuñez/TEMPERATURA.TA2_AUT_60@5311500149.csv'
+ruta = 'Datos/Estaciones/Farallones/PRECIPITACION_AUT_Farallones.csv'
+#ruta = 'Datos/Estaciones/IMarina/PRECIPITACION.PT_AUT_10@5311500147.csv'
+#ruta = 'Datos/Estaciones/Colegio Vasco Nuñez/PRECIPITACION_AUT@5311500149.csv'
 #ruta = 'Datos/Estaciones/UPacifico/DIR VIENTO.DVMX_AUT_60@5311500056.csv'
 #ruta = 'Datos/Estaciones/IDEAM/Hora/Hora/1. La Cumbre/Precipitacion_LaCumbre_Hora_MedDif1h_0.csv'
 #ruta = 'Datos/Estaciones/Precipitacion_Lacumbre.csv'
-ruta = 'Datos/Estaciones/Precipitacion_UDelPacifico.csv'
-#ruta1 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_1.csv'
+#ruta = 'Datos/MAYO/Precipitacion_UDelPacifico_Hora.csv'
+#ruta1 = 'Datos/Estaciones/Colegio Vasco Nuñez/VEL VIENTO.VV_AUT_10@5311500149.csv'
 #ruta2 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_2.csv'
 #ruta3 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2020.csv'
 #ruta4 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2021.csv'
 #ruta5 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2022.csv'
 #data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 #data2 = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
-data = pd.read_csv(ruta, delimiter=';')
-#data1 = pd.read_csv(ruta1, delimiter=';')
+#data = pd.read_csv(ruta, delimiter=',')
+data = pd.read_csv(ruta, delimiter=',')
 #data2 = pd.read_csv(ruta2, delimiter=';')
 #data3 = pd.read_csv(ruta3, delimiter=';')
 #data4 = pd.read_csv(ruta4, delimiter=';')
 #data5 = pd.read_csv(ruta5, delimiter=';')
 
 #data.info()
-#print(data.iloc[79040])
-data.dropna(inplace=True)
+print(data)
+#print(data1)
+#data.dropna(inplace=True)
 ''' Antes de concatenar ajustamos el formato de la fecha'''
-data['Fecha'] = pd.to_datetime(data['Fecha'], format='%d/%m/%Y %H:%M')
-#data1['datetime'] = pd.to_datetime(data1['datetime'], format='%Y-%m-%d %H:%M:%S')
+data['Fecha'] = pd.to_datetime(data['Fecha'], format='%Y-%m-%d %H:%M:%S')
+#data1['Fecha'] = pd.to_datetime(data1['Fecha'], format='%Y-%m-%d %H:%M:%S')
 #data2['datetime'] = pd.to_datetime(data2['datetime'], format='%Y-%m-%d %H:%M:%S')
 #data3['datetime'] = pd.to_datetime(data3['datetime'], format='%Y-%m-%d %H:%M:%S')
 #data4['datetime'] = pd.to_datetime(data4['datetime'], format='%Y-%m-%d %H:%M:%S')
@@ -51,7 +51,7 @@ data['Fecha'] = pd.to_datetime(data['Fecha'], format='%d/%m/%Y %H:%M')
 #d_t.info()
 #print(d_t)
 ''' Pasamos la columna de Texto a numerico'''
-#data['Valor (Celsius)'] = pd.to_numeric(data['Valor (Celsius)'].str.replace(',','.'))
+data['Valor'] = pd.to_numeric(data['Valor'].str.replace(',','.'))
 
 ''' Crear un rango de fechas completo '''
 #rango_completo_hora = pd.date_range(start='2017-04-25 17:00:00', end='2022-02-15 21:00:00', freq='h')
@@ -64,9 +64,8 @@ data['Fecha'] = pd.to_datetime(data['Fecha'], format='%d/%m/%Y %H:%M')
 #df_hora.info()
 
 '''Promediamos o sumamos por hora'''
-
 data.set_index('Fecha', inplace=True)
-data_hora = data.resample('h').sum()
+data_hora = data.resample('h').mean()
 data_hora.reset_index(inplace=True)
 print(data_hora)
 
@@ -105,8 +104,8 @@ print(data_hora)
 #fig.show()
 
 ''' Exportar el DataFrame a un archivo CSV '''
-#title = f'Precipitacion_UDelPacifico_Hora.csv'
-#data_hora.to_csv(title, sep=';', index=False)
+title = f'P_AUT_Farallones_Hora.csv'
+data_hora.to_csv(title, sep=';', index=False)
 
 '''' Calculamos los valores nulos'''
 #valores_nulos_hora = estacion_hora['Valor'].isnull().sum()

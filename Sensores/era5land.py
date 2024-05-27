@@ -20,19 +20,19 @@ print(ee.String('Hello from the Earth Engine servers!').getInfo())
 lst = ee.ImageCollection( 'ECMWF/ERA5_LAND/HOURLY' )
 
 ''' Fecha inicial de interés (inclusive) '''
-i_date = '2022-01-01' 
+i_date = '2020-05-18' 
 
 ''' Fecha final de interés (exclusiva) '''
-f_date = '2023-01-01' 
+f_date = '2021-10-25' 
 
 '''Selección de bandas y fechas apropiadas para LST '''
-#   'temperature_2m'
+#   'temperature_2m' - 'total_precipitation_hourly'
 banda = lst.select('total_precipitation_hourly').filterDate(i_date, f_date)
 
 ''' Definir la ubicación de interés como un punto. 
  Usaremos la ubicación de la Estación '''
-punto_lon = -76.564722222
-punto_lat = 3.64519444
+punto_lon = -77.002
+punto_lat = 3.883
 cumbre_point = ee.Geometry.Point(punto_lon, punto_lat)
 
 '''Descarga para Poligono'''
@@ -50,7 +50,7 @@ cumbre_full = banda.getRegion(cumbre_point, escala).getInfo()
 
 ''' Convertimos a DF'''
 df = pd.DataFrame(cumbre_full) 
-#print(df)
+print(df)
 headers = df.iloc[0]   # Rearrange the header.
 df = pd.DataFrame(df.values[1:], columns=headers)   # Rearrange the header.
 #print(df.head(50))
@@ -62,9 +62,9 @@ df = df[['time', 'datetime',  'total_precipitation_hourly']] # take interest par
 #print(df.head(60))
 
 ''' Convertir °K a °C'''
-#def k_c (k):
-#    c = k - 273.15
-#    return c
+def k_c (k):
+    c = k - 273.15
+    return c
 
 ''' Convertir metros cubicos a milimetros '''
 def m_mm (m):
@@ -78,7 +78,7 @@ df['total_precipitation_hourly'] = df['total_precipitation_hourly'].apply(m_mm)
 print(df.head(50))
 
 '''Exportamos a CSV'''
-title = f'ERA5_Precipitacion_horly_LaCumbre_Hora_6.csv'
+title = f'ERA5_TPrecipitation_horly_Colegio.csv'
 df.to_csv(title, sep=';', index=False)
 print('Proceso Finalizado')
 print('Finalizado sin errores')
