@@ -24,14 +24,14 @@ import plotly.graph_objects as go
 #ruta_e5 = 'Datos/ERA5/LaCumbre/ERA5_LaCumbre_Hora.csv' #Ruta del archivo ERA5
 #ruta_estacion = 'Datos/Hora/V_Climaticas_LaCumbre_RL_Hora.csv' #Ruta del archivo Estatción
 #ruta = 'Datos/Cumbre_12_Hora.csv'
-ruta = 'Datos/Ajuste_5h_Era5_MC.csv'
+ruta = 'Datos/Dup/MinimosCuadrados.csv'
 #era5 = pd.read_csv(ruta_e5, delimiter=';') #Cargamos archivo
 #ruta = 'Datos/ERA5/UPacifico/UP.csv'
 #estacion = pd.read_csv(ruta_estacion, delimiter=';')
 
 df = pd.read_csv(ruta, delimiter=';')
 print(df)
-df['Fecha (UTC-05:00)'] = pd.to_datetime(df['Fecha (UTC-05:00)'], format='%d/%m/%Y %H:%M')
+df['Fecha'] = pd.to_datetime(df['Fecha'], format='%d/%m/%Y %H:%M')
 ##t_d = df['Temp Media']#[:2000]
 ##t_ma = df['ERA5']#[:2000]
 
@@ -41,8 +41,8 @@ df['Fecha (UTC-05:00)'] = pd.to_datetime(df['Fecha (UTC-05:00)'], format='%d/%m/
 #df12.reset_index(inplace=True)
 
 ''' Paso No 2'''
-t_d =  df['Temp Media']
-t_ma =  df['temperature_2m']
+t_r =  df['Tmedia'] #t_d
+t_s =  df['t2mERA']
 
 ##t_d = np.array(t)
 ##t_ma = np.array(ta)
@@ -54,11 +54,11 @@ t_ma =  df['temperature_2m']
 #df12.to_csv(title, sep=';', index=False)
 
 ''' Creamos matrix A de diseño con con temperatura diaria y termino independiente'''
-A = np.vstack([t_d, np.ones(len(t_d))]).T
+A = np.vstack([t_r, np.ones(len(t_r))]).T
 ##Y = t_ma.reshape(-1, 1)
 
 ''' Calcular el ajuste de minimos cuadrados'''
-m, b = np.linalg.lstsq(A, t_ma, rcond=None)[0]
+m, b = np.linalg.lstsq(A, t_s, rcond=None)[0]
 ##coeficientes = np.linalg.inv(A.T @ A) @ A.T @ Y
 ##m, b = coeficientes.flatten()
 ''' Imprimimos los coeficientes de la linea de tendencia'''
@@ -67,29 +67,29 @@ print(f'Término independiente (b): {b}')
 
 '''Ploteamos la gráfica'''
 fig = go.Figure()
-fig.add_trace(go.Scatter(x=t_d, y=t_ma, mode='markers', name='Valores reales - Valores ERA5', marker=dict(size=4)))
-fig.add_trace(go.Scatter(x=t_d, y=m*t_d+b, mode='lines', name='Línea de tendencia ajustada'))
-fig.update_layout(title ='Correlación de Temperatura entre estación U. Pacífico y ERA5-Land, ',
+fig.add_trace(go.Scatter(x=t_r, y=t_s, mode='markers', name='Valores: reales - ERA5', marker=dict(color='#636EFA', size=4))) 
+fig.add_trace(go.Scatter(x=t_r, y=m * t_r + b, mode='lines', name='Línea de tendencia ajustada', line=dict(color='#EF553D')))
+fig.update_layout(title ='Correlación de Temperatura entre estación U. Pacífico y ERA5',
                   xaxis = dict(title='Temperatura estación U. Pacífico (Hora)'),
-                  yaxis = dict(title='Temperatura hora ERA5-Land (Hora)'),
+                  yaxis = dict(title='Temperatura ERA5-Land (Hora)'),
                   title_x = 0.5,
                   title_font_size=22,
                   template = 'seaborn')
 #fig.show()
 fig.write_image("MC_temperatura_era5_UP.png", width=800, height=500, scale=4)
 ''' Calcular predicciones '''
-prediccion = m * t_d + b
+prediccion = m * t_r + b
 
 ''' Calculamos error cuadratico para cada valor'''
-error2 = (t_ma - prediccion) ** 2
+error2 = (t_s - prediccion) ** 2
 ecm = np.mean(error2) #Calculamos la media de esos errores 'ECM'
 
 ''' Calculamos el error absoluto'''
-error_abs = np.abs(t_ma - prediccion)
+error_abs = np.abs(t_s - prediccion)
 eam = np.mean(error_abs)
 
 ''' Calculamos el coeficiente de correlación'''
-c_c = np.corrcoef(t_ma, prediccion)[0,1]
+c_c = np.corrcoef(t_s, prediccion)[0,1]
 
 print(f'Error Cuadrático Medio EMC: {ecm}')
 print(f'Error Absoluto Medio: {eam}')
@@ -97,4 +97,4 @@ print(f'Coeficiente de correlación: {c_c}')
 
 #correlacion = t_d.corr(t_ma)
 #print('Correlacion Person Estacion La Cumbre vs ERA5 (Temperatura)', correlacion)
-#print('Finalizado con exito.')
+print('Finalizado con exito.')

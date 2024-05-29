@@ -10,7 +10,7 @@ import pandas as pd #Leer datos
 import plotly.graph_objects as go
 #ruta = 'Datos/Hora/2. U Del Pacifico/PRECIPITACION.PT_AUT_10@5311500056.csv' #Ruta del archivo
 #ruta = 'Datos/Estaciones/Juanchaco/.csv'
-ruta = 'Datos/Estaciones/Farallones/PRECIPITACION_AUT_Farallones.csv'
+#ruta = 'Datos/Estaciones/Precipitacion_UDelPacifico.csv'
 #ruta = 'Datos/Estaciones/IMarina/PRECIPITACION.PT_AUT_10@5311500147.csv'
 #ruta = 'Datos/Estaciones/Colegio Vasco Nuñez/PRECIPITACION_AUT@5311500149.csv'
 #ruta = 'Datos/Estaciones/UPacifico/DIR VIENTO.DVMX_AUT_60@5311500056.csv'
@@ -25,7 +25,8 @@ ruta = 'Datos/Estaciones/Farallones/PRECIPITACION_AUT_Farallones.csv'
 #data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
 #data2 = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
 #data = pd.read_csv(ruta, delimiter=',')
-data = pd.read_csv(ruta, delimiter=',')
+ruta = 'Datos/VDV_Colegio.csv'
+data = pd.read_csv(ruta, delimiter=';')
 #data2 = pd.read_csv(ruta2, delimiter=';')
 #data3 = pd.read_csv(ruta3, delimiter=';')
 #data4 = pd.read_csv(ruta4, delimiter=';')
@@ -36,7 +37,7 @@ print(data)
 #print(data1)
 #data.dropna(inplace=True)
 ''' Antes de concatenar ajustamos el formato de la fecha'''
-data['Fecha'] = pd.to_datetime(data['Fecha'], format='%Y-%m-%d %H:%M:%S')
+data['Fecha'] = pd.to_datetime(data['Fecha'], format='%d/%m/%Y %H:%M')
 #data1['Fecha'] = pd.to_datetime(data1['Fecha'], format='%Y-%m-%d %H:%M:%S')
 #data2['datetime'] = pd.to_datetime(data2['datetime'], format='%Y-%m-%d %H:%M:%S')
 #data3['datetime'] = pd.to_datetime(data3['datetime'], format='%Y-%m-%d %H:%M:%S')
@@ -51,7 +52,7 @@ data['Fecha'] = pd.to_datetime(data['Fecha'], format='%Y-%m-%d %H:%M:%S')
 #d_t.info()
 #print(d_t)
 ''' Pasamos la columna de Texto a numerico'''
-data['Valor'] = pd.to_numeric(data['Valor'].str.replace(',','.'))
+#data['Valor'] = pd.to_numeric(data['Valor'])#.str.replace(',','.'))
 
 ''' Crear un rango de fechas completo '''
 #rango_completo_hora = pd.date_range(start='2017-04-25 17:00:00', end='2022-02-15 21:00:00', freq='h')
@@ -104,7 +105,7 @@ print(data_hora)
 #fig.show()
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'P_AUT_Farallones_Hora.csv'
+title = f'VDV_Colegio_Hora.csv'
 data_hora.to_csv(title, sep=';', index=False)
 
 '''' Calculamos los valores nulos'''
