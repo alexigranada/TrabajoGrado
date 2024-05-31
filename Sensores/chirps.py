@@ -43,5 +43,5 @@ df_prec = preci.to_dataframe().reset_index() #Convertimos a DF
 print(df_prec)
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'CHIRPS_Top-Right_LaCumbre_Dia.csv'
-df_prec.to_csv(title, sep=';', index=False)
+#title = f'CHIRPS_Top-Right_LaCumbre_Dia.csv'
+#df_prec.to_csv(title, sep=';', index=False)
