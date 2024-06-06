@@ -19,11 +19,11 @@ file = 'Datos/ERA5/ERA5-Land_17-22.nc'
 rch = 'Datos/CHIRPS/Dagua.nc'
 
 ds = xr.open_dataset(file)
-ch = xr.open_dataset(rch)
+#ch = xr.open_dataset(rch)
 #longitud_tiempo = len(ds.time)
 #print(longitud_tiempo)
 #ds_recortado = ds.isel(time=slice(0, longitud_tiempo - 2))
-print(ch)
+#print(ch)
 
 ''' 2. Cargamos datos de las estaciones'''
 #ruta = 'Datos/Variables Hora/V_Climaticas_LaCumbre_RL_Hora.csv'  #Ruta del archivo
@@ -36,8 +36,8 @@ print(ch)
 #print(estacion)
 
 ''' 3. Cargamos los datos de temperatura del DataSet'''
-#precipitacion = ds['tp']
-precipitacion = ch['prcp']
+precipitacion = ds['tp']
+#precipitacion = ch['prcp']
 
 #tas = ds['t2m'] - 273.15
 #u10 = ds['u10']
@@ -70,10 +70,10 @@ def pixel_ch (lon_x, lat_y):
 
 
 '''La Cumbre ERA'''
-#df_p1 = pixel_precipitacion(3.7, -76.6)
-#df_p2 = pixel_precipitacion(3.7, -76.5)
-#df_p3 = pixel_precipitacion(3.6, -76.5)
-#df_p4 = pixel_precipitacion(3.6, -76.5)
+df_p1 = pixel_precipitacion(-76.6,3.7)
+df_p2 = pixel_precipitacion(-76.5, 3.7)
+df_p3 = pixel_precipitacion(-76.6, 3.6)
+df_p4 = pixel_precipitacion(-76.5, 3.6)
 
 '''U Pacifico ERA'''
 #df_p1 = pixel_precipitacion(3.9, -77.1)
@@ -87,19 +87,20 @@ def pixel_ch (lon_x, lat_y):
 #df_p2 = pixel_precipitacion(-76.6, 3.3)
 
 '''Pacifico CHIRPS'''
-df_p1_1 = pixel_ch(-76.625, 3.425)
-df_p1_2 = pixel_ch(-76.575005, 3.425)
-df_p1_3 = pixel_ch(-76.625, 3.375)
-df_p1_4 = pixel_ch(-76.575005, 3.375)
+#df_p1_1 = pixel_ch(-76.625, 3.425)
+#df_p1_2 = pixel_ch(-76.575005, 3.425)
+#df_p1_3 = pixel_ch(-76.625, 3.375)
+#df_p1_4 = pixel_ch(-76.575005, 3.375)
 
 
-df_final = df_p1_1
-df_final['P_1_2'] = df_p1_2['prcp']
-df_final['P_1_3'] = df_p1_3['prcp']
-df_final['P_1_4'] = df_p1_4['prcp']
-#df_final['P3'] = df_p3['tp']
-#df_final['P4'] = df_p4['tp']
-#df_final['P5'] = df_p5['tp']
+#df_final = df_p1_1
+#df_final['P_1_2'] = df_p1_2['prcp']
+#df_final['P_1_3'] = df_p1_3['prcp']
+#df_final['P_1_4'] = df_p1_4['prcp']
+df_final = df_p1
+df_final['P2'] = df_p2['tp']
+df_final['P3'] = df_p3['tp']
+df_final['P4'] = df_p4['tp']
 print(df_final)
 
 #temp = tas.sel(latitude=lat_1, longitude=lon_1, method='nearest') #Seleccionamos pixel con el método 'Valor más cercano'
@@ -127,7 +128,7 @@ print(df_final)
 #df_patm = patm.to_dataframe().reset_index()
 
 '''Exportamos a CSV'''
-title = f'CH_Pt2_Farallones.csv'
+title = f'ERA_Pixel_PT_LaCumbre.csv'
 df_final.to_csv(title, sep=';', index=False)
 
 
