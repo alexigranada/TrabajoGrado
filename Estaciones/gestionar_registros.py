@@ -8,67 +8,47 @@ Unión de registros
 
 import pandas as pd #Leer datos
 import plotly.graph_objects as go
-#ruta = 'Datos/Hora/2. U Del Pacifico/PRECIPITACION.PT_AUT_10@5311500056.csv' #Ruta del archivo
-#ruta = 'Datos/Estaciones/Juanchaco/.csv'
-#ruta = 'Datos/Estaciones/Precipitacion_UDelPacifico.csv'
-#ruta = 'Datos/Estaciones/IMarina/PRECIPITACION.PT_AUT_10@5311500147.csv'
-#ruta = 'Datos/Estaciones/Colegio Vasco Nuñez/PRECIPITACION_AUT@5311500149.csv'
-#ruta = 'Datos/Estaciones/UPacifico/DIR VIENTO.DVMX_AUT_60@5311500056.csv'
-#ruta = 'Datos/Estaciones/IDEAM/Hora/Hora/1. La Cumbre/Precipitacion_LaCumbre_Hora_MedDif1h_0.csv'
-#ruta = 'Datos/Estaciones/Precipitacion_Lacumbre.csv'
-#ruta = 'Datos/MAYO/Precipitacion_UDelPacifico_Hora.csv'
-#ruta1 = 'Datos/Estaciones/Colegio Vasco Nuñez/VEL VIENTO.VV_AUT_10@5311500149.csv'
-#ruta2 = 'Datos/ERA5/UPacifico/ERA5_UPacifico_hora_2.csv'
-#ruta3 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2020.csv'
-#ruta4 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2021.csv'
-#ruta5 = 'Datos/ERA5/ERA5_LaCumbre_Dia_2022.csv'
-#data = pd.read_csv(ruta, delimiter=';') #Cargamos archivo
-#data2 = pd.read_csv(ruta, delimiter=',') #Cargamos archivo
-#data = pd.read_csv(ruta, delimiter=',')
-ruta = 'Datos/VDV_Colegio.csv'
-data = pd.read_csv(ruta, delimiter=';')
-#data2 = pd.read_csv(ruta2, delimiter=';')
-#data3 = pd.read_csv(ruta3, delimiter=';')
-#data4 = pd.read_csv(ruta4, delimiter=';')
-#data5 = pd.read_csv(ruta5, delimiter=';')
+
+ruta = 'Datos/Estaciones/Precipitacion/UPacifico.csv'
+data = pd.read_csv(ruta, delimiter=';') #, index_col='Fecha', parse_dates=['Fecha']
 
 #data.info()
 print(data)
-#print(data1)
-#data.dropna(inplace=True)
+
+
 ''' Antes de concatenar ajustamos el formato de la fecha'''
-data['Fecha'] = pd.to_datetime(data['Fecha'], format='%d/%m/%Y %H:%M')
-#data1['Fecha'] = pd.to_datetime(data1['Fecha'], format='%Y-%m-%d %H:%M:%S')
-#data2['datetime'] = pd.to_datetime(data2['datetime'], format='%Y-%m-%d %H:%M:%S')
-#data3['datetime'] = pd.to_datetime(data3['datetime'], format='%Y-%m-%d %H:%M:%S')
-#data4['datetime'] = pd.to_datetime(data4['datetime'], format='%Y-%m-%d %H:%M:%S')
-#data5['datetime'] = pd.to_datetime(data5['datetime'], format='%Y-%m-%d %H:%M:%S')
+data['Fecha'] = pd.to_datetime(data['Fecha'], format="%d/%m/%Y  %H:%M")
+
+#data['Fecha_dia'] = data['Fecha'].dt.date #Seleccionar solo el valor del día (Sin hora)
+#data['Fecha_dia'] = pd.to_datetime(data['Fecha_dia'], format="%Y-%m-%d")
+#data['Fecha'] = data['Fecha_dia']
+#print(data)
 
 ''' Eliminamos valores nulos'''
+##data.dropna(inplace=True)
 
+'''Concatenas registros'''
+##d_t = pd.concat([data, data1, data2])
 
-#d_t = pd.concat([data, data1, data2])
-
-#d_t.info()
-#print(d_t)
 ''' Pasamos la columna de Texto a numerico'''
-#data['Valor'] = pd.to_numeric(data['Valor'])#.str.replace(',','.'))
+##data['Valor'] = pd.to_numeric(data['Valor'])#.str.replace(',','.'))
 
 ''' Crear un rango de fechas completo '''
-#rango_completo_hora = pd.date_range(start='2017-04-25 17:00:00', end='2022-02-15 21:00:00', freq='h')
+rango_completo_hora = pd.date_range(start='2018-01-01 0:00', end='2022-02-22 23:00', freq='h')
 
 ''' Crear un DataFrame con las fechas completas '''
-#df_completo_estacion_hora = pd.DataFrame({'Fecha (UTC-05:00)': rango_completo_hora})
-#df_hora = pd.merge(df_completo_estacion_hora, data, on='Fecha (UTC-05:00)', how='left')
-#print('Estación hora:')
-#print(df_hora)
+df_completo_estacion_hora = pd.DataFrame({'Fecha': rango_completo_hora})
+
+df_hora = pd.merge(data, df_completo_estacion_hora,  on='Fecha', how='right')
+print('Estación hora:')
+print(df_hora)
 #df_hora.info()
 
 '''Promediamos o sumamos por hora'''
-data.set_index('Fecha', inplace=True)
-data_hora = data.resample('h').mean()
-data_hora.reset_index(inplace=True)
-print(data_hora)
+#data.set_index('Fecha', inplace=True)
+#data_hora = data.resample('h').mean()
+#data_hora.reset_index(inplace=True)
+#print(data_hora)
 
 '''' Calculamos los valores nulos'''
 #valores_nulos_hora = df_hora['Valor (Celsius)'].isnull().sum()
@@ -105,8 +85,8 @@ print(data_hora)
 #fig.show()
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'VDV_Colegio_Hora.csv'
-data_hora.to_csv(title, sep=';', index=False)
+title = f'UPacifico_Hora_completo.csv'
+df_hora.to_csv(title, sep=';', index=False)
 
 '''' Calculamos los valores nulos'''
 #valores_nulos_hora = estacion_hora['Valor'].isnull().sum()

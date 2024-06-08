@@ -27,12 +27,12 @@ import matplotlib.pyplot as plt #Graficas para datos
 #ch4 = 'Datos/CorrelacionPrecipitacion/LaCumbre/CH4Cumbre.csv'
 
 era = 'Datos/CorrelacionPrecipitacion/Farallones/ERAFarallones.csv'
-#ch1 = 'Datos/CorrelacionPrecipitacion/Farallones/CH1Farallones.csv' #Ruta del archivo CHIRPS
-ch2 = 'Datos/CorrelacionPrecipitacion/Farallones/CH2Farallones.csv'
+ch1 = 'Datos/CorrelacionPrecipitacion/Farallones/CH1Farallones.csv' #Ruta del archivo CHIRPS
+#ch2 = 'Datos/CorrelacionPrecipitacion/Farallones/CH2Farallones.csv'
 
 df_era = pd.read_csv(era, delimiter=',', index_col='Fecha',  parse_dates=['Fecha'])
-#df_ch1 = pd.read_csv(ch1, delimiter=',', index_col='Fecha',  parse_dates=['Fecha'])
-df_ch2 = pd.read_csv(ch2, delimiter=',', index_col='Fecha',  parse_dates=['Fecha'])
+df_ch1 = pd.read_csv(ch1, delimiter=',', index_col='Fecha',  parse_dates=['Fecha'])
+#df_ch2 = pd.read_csv(ch2, delimiter=',', index_col='Fecha',  parse_dates=['Fecha'])
 #df_ch3 = pd.read_csv(ch3, delimiter=',', index_col='Fecha',  parse_dates=['Fecha'])
 #df_ch4 = pd.read_csv(ch4, delimiter=',', index_col='Fecha',  parse_dates=['Fecha'])
 #df_ch5 = pd.read_csv(ch5, delimiter=',', index_col='Fecha',  parse_dates=['Fecha'])
@@ -45,32 +45,32 @@ era_dia = df_era.resample('D').sum()
 
 '''Convertimos datos ERA y CHIRPS a semanal'''
 era_sem = df_era.resample('W').sum()
-ch_sem = df_ch2.resample('W').sum()
+ch_sem = df_ch1.resample('W').sum()
 
 '''Convertimos datos ERA y CHIRPS a Mensual'''
 era_mes = df_era.resample('ME').sum()
-ch_mes = df_ch2.resample('ME').sum()
+ch_mes = df_ch1.resample('ME').sum()
 
 '''Datos día'''
 #estacion = df_dia['Precipitacion'][:90]
 
-#era5 = era_dia['P2']#[:90] --CAMBIAR--
-#chirps1 = df_ch2['P_2_1']#[:90]df_ch3
-#chirps2 = df_ch2['P_2_2']
-#chirps3 = df_ch2['P_2_3']
-#chirps4 = df_ch2['P_2_4']
+era5 = era_dia['P1']#[:90] --CAMBIAR--
+chirps1 = df_ch1['P_1_1']#[:90]df_ch3
+chirps2 = df_ch1['P_1_2']
+chirps3 = df_ch1['P_1_3']
+chirps4 = df_ch1['P_1_4']
 
-#era5 = era_sem['P2']
-#chirps1 = ch_sem['P_2_1']#[:90]df_ch3
-#chirps2 = ch_sem['P_2_2']
-#chirps3 = ch_sem['P_2_3']
-#chirps4 = ch_sem['P_2_4']
+#era5 = era_sem['P4']
+#chirps1 = ch_sem['P_4_1']#[:90]df_ch3
+#chirps2 = ch_sem['P_4_2']
+#chirps3 = ch_sem['P_4_3']
+#chirps4 = ch_sem['P_4_4']
 
-era5 = era_mes['P2']
-chirps1 = ch_mes['P_2_1']#[:90]df_ch3
-chirps2 = ch_mes['P_2_2']
-chirps3 = ch_mes['P_2_3']
-chirps4 = ch_mes['P_2_4']
+#era5 = era_mes['P4']
+#chirps1 = ch_mes['P_4_1']#[:90]df_ch3
+#chirps2 = ch_mes['P_4_2']
+#chirps3 = ch_mes['P_4_3']
+#chirps4 = ch_mes['P_4_4']
 
 #time = era_mes.index
 
