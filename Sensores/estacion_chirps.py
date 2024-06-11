@@ -29,11 +29,11 @@ print(dch)
 #des['Fecha (UTC-05:00)'] = pd.to_datetime(des['Fecha (UTC-05:00)'], format='%d/%m/%Y %H:%M')
 
 ''' Seleccionar horizonte de tiempo por fecha'''
-f_s = '2018-01-01' 
-f_e = '2022-12-31'
+f_i = '2018-01-01' 
+f_f = '2022-12-31'
 
-data_chirps = dch.loc[f_s:f_e]
-data_estacion = des.loc[f_s:f_e]
+data_chirps = dch.loc[f_i:f_f]
+data_estacion = des.loc[f_i:f_f]
 
 ##p_estacion = des['Pacifico']
 
