@@ -2,7 +2,7 @@
 """
 Created on Wed Mar 13 19:29:17 2024
 
-Exploración de datos GCM CESM2-WACCM contra datos observaciones de estaciones meteorologicas
+Exploración de Precipitación GCM CESM2-WACCM contra datos observaciones de estaciones meteorologicas
 
 @author: Arturo A. Granada G.
 """
@@ -15,7 +15,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-file = 'Datos/GCM/CESM2 WACCM/Tas/tas_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_Valle_Cauca.nc'
+file = 'Datos/GCM/CESM2 WACCM/pr/pr_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_Valle_Cauca.nc'
 ds = xr.open_dataset(file)
 #longitud_tiempo = len(ds.time)
 #ds_recortado = ds.isel(time=slice(0, longitud_tiempo - 2)) #Se realiza corte de los primeros dias de enero del ultimo año
@@ -39,8 +39,8 @@ df_pacifico = pd.read_csv(r2, delimiter=';', index_col='Fecha', parse_dates=['Fe
 ds['time'] = ds.indexes['time'].to_datetimeindex()
 
 ''' 3. Cargamos los datos de temperatura del DataSet'''
-tas = ds['tas'] - 273.15
-tas.attrs['units'] = '°C' #Cambiamos el argumento a °C
+tas = ds['pr'] * 86400
+tas.attrs['units'] = 'mm/day' #Cambiamos el argumento a °C
 
 f_i = '2018-01-01'
 f_f = '2021-12-31'
@@ -90,15 +90,15 @@ pacifico_mes = pacifico_mes.loc[f_i:f_f]
 fig = go.Figure()
 
 ''' Agregar datos de temperatura'''
-fig.add_trace(go.Scatter(x = gcm_mes_c.index, y = gcm_mes_p['tas'], mode='lines', name='CESM2 WACCM', line=dict(color='#3366CC')))
-fig.add_trace(go.Scatter(x = pacifico_mes.index, y = pacifico_mes['Tmedia'], mode='lines', name='Obs. U. Pacífico', line=dict(color='#DC3912')))
-fig.update_layout(title = 'Temperatura SSP 3-7.0 CESM2-W vs Observaciones "U. Pacífico"',
+fig.add_trace(go.Scatter(x = df_temp_p.index, y = df_temp_p['tas'], mode='lines', name='CESM2 WACCM', line=dict(color='#3366CC')))
+fig.add_trace(go.Scatter(x = pacifico_dia.index, y = pacifico_dia['Tmedia'], mode='lines', name='Obs. U. Pacífico', line=dict(color='#DC3912')))
+fig.update_layout(title = 'Temperatura SSP2-2.5 CESM2-W vs Observaciones "U. Pacífico"',
                   title_font_size=22,
-                  legend=dict(title="Altura: 1613 m.s.n.m"),
-                  xaxis_title = 'Tiempo (Mes)',
+                  legend=dict(title="Altura: 16 m.s.n.m"),
+                  xaxis_title = 'Tiempo (Día)',
                   yaxis_title = 'Temperatura °C',
                   template='seaborn')
-#fig.show()
+fig.show()
 
 '''' Calculamos los valores nulos'''
 valores_nulos_c = df_temp_c.isnull().sum()
@@ -140,4 +140,4 @@ correlacion_CESM_c = cumbre_mes['Tmedia'].corr(gcm_mes_c['tas'])
 correlacion_CESM_p = pacifico_mes['Tmedia'].corr(gcm_mes_p['tas'])
 print('Correlacion temperatura CESM2 vs Observaciones estación La Cumbre: ', correlacion_CESM_c)
 print('Correlacion temperatura CESM2 vs Observaciones estación U. Pacífico: ', correlacion_CESM_p)
-#fig.write_image("Temperatura_Dia_Pacifico_CESM_370_OBS.png", width=800, height=500, scale=4)
+#fig.write_image("Temperatura_Dia_Pacifico_CESM_245_OBS.png", width=800, height=500, scale=4)

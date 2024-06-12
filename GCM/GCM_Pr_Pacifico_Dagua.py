@@ -99,7 +99,7 @@ gdf_dagua = gpn.read_file(geojson_dagua)
 clim = ds_roi['pr'].mean('time', keep_attrs=True)
 clim_v = ds_roi_v['pr'].mean('time', keep_attrs=True)
 
-''' Convertimos Kg/m2/s a mm/día '''
+''' Convertimos Kg/m2/s a mm/día ''' 
 clim.data = clim.data * 86400
 clim.attrs['units'] = 'mm/day'
 
