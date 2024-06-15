@@ -15,15 +15,15 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-file = 'Datos/GCM/CESM2 WACCM/pr/pr_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_Valle_Cauca.nc'
+file = 'Datos/CESM2 WACCM/Pr/pr_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_Valle_Cauca.nc'
 ds = xr.open_dataset(file)
 #longitud_tiempo = len(ds.time)
 #ds_recortado = ds.isel(time=slice(0, longitud_tiempo - 2)) #Se realiza corte de los primeros dias de enero del ultimo año
 #print(ds_recortado)
 #print(ds)
 ''' 2. Cargamos datos de las estaciones'''
-r1 = 'Datos/Junio 8/V_Climaticas_LaCumbre_RL_Hora.csv'  #Ruta del archivo
-r2 = 'Datos/Junio 8/V_Climaticas_UPacifico_Hora.csv'
+r1 = 'Datos/Junio/V_Climaticas_LaCumbre_RL_Hora.csv'  #Ruta del archivo
+r2 = 'Datos/Junio/V_Climaticas_UPacifico_Hora.csv'
 df_cumbre   = pd.read_csv(r1, delimiter=';', index_col='Fecha', parse_dates=['Fecha']) #Cargamos archivo
 df_pacifico = pd.read_csv(r2, delimiter=',', index_col='Fecha', parse_dates=['Fecha'])
 
@@ -62,29 +62,29 @@ df_pr_c = pr_c.to_dataframe()#.reset_index() #Convertimos a DF
 #print(df_pr_c)
 
 '''Transformar por fecha (Suma, Proemdio)'''
-cumbre_dia   = df_cumbre.resample('D').sum()
-pacifico_dia = df_pacifico.resample('D').sum()
+cumbre_dia   = df_cumbre.resample('D').median()
+pacifico_dia = df_pacifico.resample('D').median()
 
 cumbre_dia   = cumbre_dia.loc[f_i:f_f]
 pacifico_dia = pacifico_dia.loc[f_i:f_f]
 
 print(cumbre_dia)
-print(pacifico_dia)
+print(pacifico_dia['PrecipitacionT'])
 
 '''Transformar a Semana'''
-gcm_semana_c = df_pr_c.resample('W').sum()
-gcm_semana_p = df_pr_p.resample('W').sum()
-cumbre_semana = df_cumbre.resample('W').sum()
-pacifico_semana = df_pacifico.resample('W').sum()
+gcm_semana_c = df_pr_c.resample('W').median()
+gcm_semana_p = df_pr_p.resample('W').median()
+cumbre_semana = df_cumbre.resample('W').median()
+pacifico_semana = df_pacifico.resample('W').median()
 
 cumbre_semana = cumbre_semana.loc[f_i:f_f]
 pacifico_semana = pacifico_semana.loc[f_i:f_f]
 
 '''Transformar a Mensual'''
-gcm_mes_c = df_pr_c.resample('ME').sum()
-gcm_mes_p = df_pr_p.resample('ME').sum()
-cumbre_mes = df_cumbre.resample('ME').sum()
-pacifico_mes = df_pacifico.resample('ME').sum()
+gcm_mes_c = df_pr_c.resample('ME').median()
+gcm_mes_p = df_pr_p.resample('ME').median()
+cumbre_mes = df_cumbre.resample('ME').median()
+pacifico_mes = df_pacifico.resample('ME').median()
 
 cumbre_mes = cumbre_mes.loc[f_i:f_f]
 pacifico_mes = pacifico_mes.loc[f_i:f_f]
@@ -95,7 +95,7 @@ fig = go.Figure()
 ''' Agregar datos de temperatura'''
 fig.add_trace(go.Bar(x=df_pr_p.index, y=df_pr_p['pr'], name='CESM2 WACCM', marker_color='#316395'))
 fig.add_trace(go.Bar(x=pacifico_dia.index, y=pacifico_dia['PrecipitacionT'], name='Obs. U. Pacífico', marker_color='#DC3912'))
-fig.update_layout(title = 'Precipitación SSP2-2.5 CESM2-W vs Observaciones "U. Pacífico"',
+fig.update_layout(title = 'Precipitación SSP2-2.5 CESM2-W vs Mediciones "U. Pacífico"',
                   title_font_size=22,
                   legend=dict(title="Altura: 16 m.s.n.m"),
                   xaxis_title = 'Tiempo (Día)',
@@ -139,8 +139,8 @@ print(f'Error cuadrático medio Pacífico Mensual: {error_cuadraticomedio_p_m}')
 error_cuadraticomedio_c_m = ecm(cumbre_mes['Precipitacion'], gcm_mes_c['pr'])
 print(f'Error cuadrático medio Cumbre Mensual: {error_cuadraticomedio_c_m}')
 
-correlacion_CESM_c = cumbre_mes['Precipitacion'].corr(gcm_mes_c['pr'])
-correlacion_CESM_p = pacifico_mes['PrecipitacionT'].corr(gcm_mes_p['pr'])
-print('Correlación temperatura CESM2 vs Observaciones estación La Cumbre: ', correlacion_CESM_c)
-print('Correlación temperatura CESM2 vs Observaciones estación U. Pacífico: ', correlacion_CESM_p)
+correlacion_CESM_c = cumbre_semana['Precipitacion'].corr(gcm_semana_c['pr'])
+correlacion_CESM_p = pacifico_semana['PrecipitacionT'].corr(gcm_semana_p['pr'])
+print('Correlación temperatura CESM2 vs Observaciones estación La Cumbre semana: ', correlacion_CESM_c)
+print('Correlación temperatura CESM2 vs Observaciones estación U. Pacífico semana: ', correlacion_CESM_p)
 #fig.write_image("Temperatura_Dia_Pacifico_CESM_245_OBS.png", width=800, height=500, scale=4)
