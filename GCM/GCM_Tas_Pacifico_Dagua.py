@@ -36,7 +36,7 @@ import cftime
 
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-file = 'Datos/GCM/CESM2 WACCM/tas/tas_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_Valle_Cauca.nc'
+file = 'Datos/GCM/tas_3hr_GFDL-ESM4_ssp245_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca.nc'
 ds = xr.open_dataset(file)
 
 '''Cargamos los datos de temperatura'''
@@ -148,7 +148,7 @@ gdf_dagua = gpn.read_file(geojson_dagua)
 ''' CORTE PARA VALLE '''
 ''' Ploteamos la Temperatura para valle'''
 fig = plt.figure(figsize=[20,10], dpi=200)
-#ax = tasmean.add_subplot(222, projection=ccrs.PlateCarree(central_longitude=0))
+###ax = tasmean.add_subplot(222, projection=ccrs.PlateCarree(central_longitude=0))
 ax = plt.subplot(projection=ccrs.PlateCarree())
 salida = tasmean.plot.pcolormesh(ax = ax, 
                        ##levels = np.arange(0, 14, 1),
@@ -170,12 +170,12 @@ gdf_dagua.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs
 
 cbar = salida.colorbar
 cbar.ax.tick_params(labelsize=16)  # Ajustar el tamaño del texto de la barra de color
-#cbar.ax.set_aspect(20)  # Ajustar la proporción de la barra de color (altura vs ancho)
+##cbar.ax.set_aspect(20)  # Ajustar la proporción de la barra de color (altura vs ancho)
 cbar.set_label('Temperatura °C (SSP2-2.5)', fontsize=18, labelpad=20)  # Cambiar la etiqueta de la barra de color
 
 model = ds.attrs['source_id']
 title = f'{model} Temperatura promedio diaria (2018-2022)'
 plt.title(title, fontsize=30, pad=30, loc='center')
 #plt.show()
-plt.savefig('Temperatura_GCM.png')
+plt.savefig('Temperatura_GCM_3h.png')
 print('completado')

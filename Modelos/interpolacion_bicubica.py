@@ -9,16 +9,16 @@ import xarray as xr
 from scipy.ndimage import map_coordinates
 from scipy.interpolate import griddata
 
-r1 = 'Datos/CESM2 WACCM/Tas/tas_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_Valle_Cauca.nc'
+r1 = 'Datos/CESM2 WACCM/tas/tasmin_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_ValleDelCauca.nc'
 r2 = 'Datos/ERA5/ERA5T/ERA5-Land_2017_2022.nc'
 
 ds1 = xr.open_dataset(r1)
 ds2 = xr.open_dataset(r2)
 
-print(ds1)
+print(ds2)
 
 ''' Seleccionamos los valores de la variable'''
-data_100 = ds1['tas']
+data_100 = ds1['tasmin']
 data_10 = ds2['t2m']
 
 '''Definir coordenadas a reducir ERA5 Land'''
@@ -68,5 +68,5 @@ for fecha in ds1['time'].values:
 ds_final = xr.concat(dataset_interpolados, dim='time')
 
 ''' Exportamos archivo netCDF'''
-ds_final.to_netcdf("GCM_interpolado_temperatura_SSP2-45_11km.nc")
-
+ds_final.to_netcdf("GCM_interpolado_tasmin_SSP2-45_11km.nc")
+print('Proceso finalizado con exito')
