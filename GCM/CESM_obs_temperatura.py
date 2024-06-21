@@ -20,7 +20,7 @@ ds = xr.open_dataset(file)
 #longitud_tiempo = len(ds.time)
 #ds_recortado = ds.isel(time=slice(0, longitud_tiempo - 2)) #Se realiza corte de los primeros dias de enero del ultimo año
 #print(ds_recortado)
-print(ds)
+#print(ds)
 ''' 2. Cargamos datos de las estaciones'''
 r1 = 'Datos/Junio 8/V_Climaticas_LaCumbre_RL_Hora.csv'  #Ruta del archivo
 r2 = 'Datos/Junio 8/V_Climaticas_UPacifico_Hora.csv'
@@ -58,19 +58,25 @@ temp_p = tas.sel(lon=lon_1, lat=lat_1, method='nearest') #Seleccionamos pixel co
 temp_c = tas.sel(lon=lon_1, lat=lat_1, method='nearest')
 df_temp_p = temp_p.to_dataframe()#.reset_index() #Convertimos a DF
 df_temp_c = temp_c.to_dataframe().reset_index() #Convertimos a DF
-print(df_temp_p)
-print(df_temp_c)
+#print(df_temp_p)
+#print(df_temp_c)
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'tas_3h_GFDL-ESM4_ssp119.csv'
-df_temp_c.to_csv(title, sep=';', index=False)
+title = f'Cumbre_3h.csv'
+df_temp_c.to_csv(title, sep=';', index=True)
 
 '''Transformar por fecha (Suma, Proemdio)'''
-#cumbre_dia = df_cumbre.resample('D').mean()
+cumbre_dia = df_cumbre.resample('3h').mean() #first()
 #pacifico_dia = df_pacifico.resample('D').mean()
+print(cumbre_dia)
 
-#cumbre_dia = cumbre_dia.loc[f_i:f_f]
+cumbre_dia = cumbre_dia.loc[f_i:f_f]
 #pacifico_dia = pacifico_dia.loc[f_i:f_f]
+
+
+''' Exportar el DataFrame a un archivo CSV '''
+title = f'Cumbre_3h.csv'
+cumbre_dia.to_csv(title, sep=';', index=True)
 
 '''Transformar a Semana'''
 #gcm_semana_c = df_temp_c.resample('W').mean()
@@ -91,18 +97,18 @@ df_temp_c.to_csv(title, sep=';', index=False)
 #pacifico_mes = pacifico_mes.loc[f_i:f_f]
 
 ''' Plot con Plotly'''
-#fig = go.Figure()
+fig = go.Figure()
 
 ''' Agregar datos de temperatura'''
-#fig.add_trace(go.Scatter(x = df_temp_p.index, y = df_temp_p['tas'], mode='lines', name='CESM2 WACCM', line=dict(color='#3366CC')))
-#fig.add_trace(go.Scatter(x = pacifico_dia.index, y = pacifico_dia['Tmedia'], mode='lines', name='Obs. U. Pacífico', line=dict(color='#DC3912')))
-#fig.update_layout(title = 'Temperatura SSP2-2.5 CESM2-W vs Observaciones "U. Pacífico"',
-#                  title_font_size=22,
-#                  legend=dict(title="Altura: 16 m.s.n.m"),
-#                  xaxis_title = 'Tiempo (Día)',
-#                  yaxis_title = 'Temperatura °C',
-#                  template='seaborn')
-#fig.show()
+fig.add_trace(go.Scatter(x = df_temp_p.index, y = df_temp_p['tas'], mode='lines', name='CESM2 WACCM', line=dict(color='#3366CC')))
+fig.add_trace(go.Scatter(x = cumbre_dia.index, y = cumbre_dia['Tmedia'], mode='lines', name='Medición La Cumbre', line=dict(color='#DC3912')))
+fig.update_layout(title = 'Temperatura SSP2-2.5 CESM2-W vs Observaciones "U. Pacífico"',
+                  title_font_size=22,
+                  legend=dict(title="Altura: 16 m.s.n.m"),
+                  xaxis_title = 'Tiempo (Día)',
+                  yaxis_title = 'Temperatura °C',
+                  template='seaborn')
+fig.show()
 
 '''' Calculamos los valores nulos'''
 #valores_nulos_c = df_temp_c.isnull().sum()
