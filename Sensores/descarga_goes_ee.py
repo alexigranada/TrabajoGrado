@@ -43,6 +43,8 @@ escala_goes = 2000
 
 cumbre_full = banda.getRegion(cuenca_dagua, escala_goes).getInfo()
 
+print(cumbre_full)
+
 ''' Convertimos a DF'''
-df = pd.DataFrame(cumbre_full) 
-print(df)
+#df = pd.DataFrame(cumbre_full) 
+#print(df)
