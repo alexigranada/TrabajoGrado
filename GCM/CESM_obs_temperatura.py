@@ -15,8 +15,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-file = 'Datos/GCM/tas_3hr_GFDL-ESM4_ssp119_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca.nc'
-ds = xr.open_dataset(file)
+#file = 'Datos/GCM/CESM2 WACCM/tastas_day_CESM2-WACCM_historical_r1i1p1f1_gn_20000101-20150101_Valle_Cauca.nc'
+#ds = xr.open_dataset(file)
 #longitud_tiempo = len(ds.time)
 #ds_recortado = ds.isel(time=slice(0, longitud_tiempo - 2)) #Se realiza corte de los primeros dias de enero del ultimo año
 #print(ds_recortado)
@@ -36,16 +36,16 @@ df_pacifico = pd.read_csv(r2, delimiter=',', index_col='Fecha', parse_dates=['Fe
 #print(time_dia)
 
 '''Transformar la fecha del netCDF'''
-ds['time'] = ds.indexes['time'].to_datetimeindex()
+#ds['time'] = ds.indexes['time'].to_datetimeindex()
 
 ''' 3. Cargamos los datos de temperatura del DataSet'''
-tas = ds['tas'] - 273.15
-tas.attrs['units'] = '°C' #Cambiamos el argumento a °C
+#tas = ds['tas'] - 273.15
+#tas.attrs['units'] = '°C' #Cambiamos el argumento a °C
 
 f_i = '2018-01-01'
 f_f = '2021-12-31'
 
-tas = tas.loc[f_i:f_f]
+#tas = tas.loc[f_i:f_f]
 
 ''' Seleccionamos pixel de interes'''
 lat_1 = 3.5 #Latitud del pixel (Mirarlo en en el DF cortado)
@@ -54,29 +54,30 @@ lon_1 = 283.1 #Longitud del pixel
 #lat_2 = 3.298
 #lon_2 = 283.8
 
-temp_p = tas.sel(lon=lon_1, lat=lat_1, method='nearest') #Seleccionamos pixel con el método 'Valor más cercano'
-temp_c = tas.sel(lon=lon_1, lat=lat_1, method='nearest')
-df_temp_p = temp_p.to_dataframe()#.reset_index() #Convertimos a DF
-df_temp_c = temp_c.to_dataframe().reset_index() #Convertimos a DF
+#temp_p = tas.sel(lon=lon_1, lat=lat_1, method='nearest') #Seleccionamos pixel con el método 'Valor más cercano'
+#temp_c = tas.sel(lon=lon_1, lat=lat_1, method='nearest')
+#df_temp_p = temp_p.to_dataframe()#.reset_index() #Convertimos a DF
+#df_temp_c = temp_c.to_dataframe().reset_index() #Convertimos a DF
 #print(df_temp_p)
 #print(df_temp_c)
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'Cumbre_3h.csv'
-df_temp_c.to_csv(title, sep=';', index=True)
+#title = f'Cumbre_3h.csv'
+#df_temp_c.to_csv(title, sep=';', index=True)
 
 '''Transformar por fecha (Suma, Proemdio)'''
-cumbre_dia = df_cumbre.resample('3h').mean() #first()
-#pacifico_dia = df_pacifico.resample('D').mean()
-print(cumbre_dia)
+#cumbre_dia = df_cumbre.resample('3h').mean() #first()
+pacifico_dia = df_pacifico.resample('3h').mean()
+#print(cumbre_dia)
+''' Exportar el DataFrame a un archivo CSV '''
+title = f'Pacifico_estacion_3h.csv'
+pacifico_dia.to_csv(title, sep=';', index=True)
 
-cumbre_dia = cumbre_dia.loc[f_i:f_f]
+#cumbre_dia = cumbre_dia.loc[f_i:f_f]
 #pacifico_dia = pacifico_dia.loc[f_i:f_f]
 
 
-''' Exportar el DataFrame a un archivo CSV '''
-title = f'Cumbre_3h.csv'
-cumbre_dia.to_csv(title, sep=';', index=True)
+
 
 '''Transformar a Semana'''
 #gcm_semana_c = df_temp_c.resample('W').mean()

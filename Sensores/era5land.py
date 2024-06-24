@@ -19,17 +19,17 @@ ee.Initialize()
 print(ee.String('Hello from the Earth Engine servers!').getInfo())
 
 ''' Importar la colección MODIS LST '''
-lst = ee.ImageCollection( 'IDAHO_EPSCOR/TERRACLIMATE' ) #MODIS/061/MOD11A1 - MODIS/061/MOD21A1D - ECMWF/ERA5_LAND/HOURLY
+lst = ee.ImageCollection( 'ECMWF/ERA5_LAND/HOURLY' ) #MODIS/061/MOD11A1 - MODIS/061/MOD21A1D - ECMWF/ERA5_LAND/HOURLY
 
 ''' Fecha inicial de interés (inclusive) '''
-i_date = '2018-01-01' 
+i_date = '2015-01-01' 
 
 ''' Fecha final de interés (exclusiva) '''
-f_date = '2022-01-01' 
+f_date = '2015-05-01' 
 
 '''Selección de bandas y fechas apropiadas para LST '''
 #   'temperature_2m' - 'total_precipitation_hourly' - 'LST_Day_1km'
-banda = lst.select('pr').filterDate(i_date, f_date)
+banda = lst.select('temperature_2m').filterDate(i_date, f_date)
 
 ''' Definir la ubicación de interés como un punto. 
  Usaremos la ubicación de la Estación '''
@@ -39,31 +39,31 @@ cumbre_point = ee.Geometry.Point(punto_lon, punto_lat)
 
 '''Descarga para Poligono'''
 cuenca_dagua = ee.Geometry.Polygon(
-    [[[-77.4, 3.999], 
-      [-76.4, 3.999], 
-      [-76.4, 3.4], 
-      [-77.4, 3.4]]])
+    [[[-77.7, 5], 
+      [-76, 5], 
+      [-76, 3], 
+      [-77.7, 3]]])
 
 escala_era = 11132
 escala_modis = 1000
 escala_terraclimate = 4638.3
 
 #cumbre_full = banda.getRegion(cuenca_dagua, escala).getInfo()
-cumbre_full = banda.getRegion(cuenca_dagua, escala_terraclimate).getInfo()
-#print(cumbre_full[:50])# Preview the output
+cumbre_full = banda.getRegion(cuenca_dagua, escala_era).getInfo()
+print(cumbre_full[:50])# Preview the output
 
 ''' Convertimos a DF'''
 df = pd.DataFrame(cumbre_full) 
-print(df)
+#print(df)
 headers = df.iloc[0]   # Rearrange the header.
 df = pd.DataFrame(df.values[1:], columns=headers)   # Rearrange the header.
-#print(df.head(50))
-#df = df[['longitude', 'latitude', 'time', 'total_precipitation' ]].dropna() # Eliminar las filas con datos nulos.
-df['pr'] = pd.to_numeric(df['pr'], errors='coerce')    # Convert to numeric values.
+##print(df.head(50))
+df = df[['longitude', 'latitude', 'time', 'total_precipitation' ]].dropna() # Eliminar las filas con datos nulos.
+df['temperature_2m'] = pd.to_numeric(df['temperature_2m'], errors='coerce')    # Convert to numeric values.
 df['datetime'] = pd.to_datetime(df['time'], unit='ms')  # Convert datetime to datetime values.
 df = df[['longitude', 'latitude', 'datetime',  'pr']] # take interest part
-#df = df[['longitude', 'latitude','time', 'datetime',  'total_precipitation']] # take interest part
-#print(df.head(60))
+##df = df[['longitude', 'latitude','time', 'datetime',  'total_precipitation']] # take interest part
+##print(df.head(60))
 
 ''' Convertir °K a °C ERA'''
 def k_c (k):
@@ -81,14 +81,14 @@ def m_mm (m):
     return mm
 
 ''' Aplicamos la función'''
-#df['temperature_2m'] = df['temperature_2m'].apply(k_c)
+df['temperature_2m'] = df['temperature_2m'].apply(k_c)
 
-df['pr'] = df['pr']#.apply(k_c_Scale)
+##df['pr'] = df['pr']#.apply(k_c_Scale)
 print(df.head())
 
 '''Exportamos a CSV'''
-title = f'IDAHO_Precipitacion_Dagua_005.csv'
-df.to_csv(title, sep=';', index=False)
+#title = f'IDAHO_Precipitacion_Dagua_005.csv'
+#df.to_csv(title, sep=';', index=False)
 
 print('Proceso Finalizado')
 print('Finalizado sin errores')

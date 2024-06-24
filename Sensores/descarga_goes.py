@@ -22,7 +22,7 @@ year = 2018
 # Productos y bandas
 products = {
     'ABI-L2-RRQPEF': None,
-    'ABI-L2-ACHTF': None
+    'ABI-L2-LSTF': None
 }
 
 # Carpeta raíz de descarga
