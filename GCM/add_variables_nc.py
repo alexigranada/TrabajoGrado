@@ -9,7 +9,7 @@ Añadir variables a archivos NetCDF
 import xarray as xr
 import rioxarray
 
-r1 = 'Datos/tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca_11Km_Mask.nc'
+r1 = 'tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca_ERA.nc'
 r2 = 'Datos/DEM_RE_ERA_FINAL.tif'
 
 ds1 = xr.open_dataset(r1)

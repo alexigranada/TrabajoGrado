@@ -10,13 +10,13 @@ from scipy.ndimage import map_coordinates
 from scipy.interpolate import griddata
 from scipy.interpolate import interp2d
 
-r1 = 'Datos/GCM/tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca.nc'
-r2 = 'ERA5-Land_2015_2023_ValleDelCauca_3H_Mask.nc'
+r1 = 'Datos/tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca.nc'
+r2 = 'Datos/ERA5-Land_2015_2023_ValleDelCauca_3H_Mask.nc'
 
 ds1 = xr.open_dataset(r1)
 ds2 = xr.open_dataset(r2)
 
-print(ds2)
+#print(ds2)
 
 ''' Seleccionamos los valores de la variable'''
 data_100 = ds1['tas']
@@ -53,23 +53,35 @@ for fecha in ds1['time'].values:
 
     datos_interpolados = griddata(puntos, valores, (lon_new, lat_new), method='cubic')
 
-    ds_interpolado = xr.Dataset(
-    {
-        'tas': (['lat', 'lon'], datos_interpolados)
-    },
-    coords={
-        'lat': (['lat'], ds2['latitude'].values),
-        'lon': (['lon'], ds2['longitude'].values)
-    }
-    )
+    #ds_interpolado = xr.Dataset(
+    #{
+    #    'tas': (['time', 'lat', 'lon'], datos_interpolados)
+    #},
+    #coords={
+    #    'time': ds1['time'].values,
+    #    'lat': (['lat'], ds2['latitude'].values),
+    #    'lon': (['lon'], ds2['longitude'].values)
+    #}
+    #)
 
-    dataset_interpolados.append(ds_interpolado)
+    #dataset_interpolados.append(ds_interpolado)
+
+    dataset_interpolados.append(datos_interpolados)
 
 ''' Combinar todos los datasets interpolados en uno solo '''
-ds_final = xr.concat(dataset_interpolados, dim='time')
-print(ds_final)
+#ds_final = xr.concat(dataset_interpolados, dim='time')
+#print(ds_final)
+
+interpolated_data = xr.DataArray(dataset_interpolados, coords=[ds1['time'].values, lat_10, lon_10], dims=['time', 'lat', 'lon'],  attrs=ds1['tas'].attrs)
+
+# Crear un Dataset de xarray
+ds_final = xr.Dataset({'tas': interpolated_data}, attrs=ds1.attrs)
+
+ds_final['lat'].attrs = ds1['lat'].attrs
+ds_final['lon'].attrs = ds1['lon'].attrs
+ds_final['time'].attrs = ds1['time'].attrs
 
 ''' Exportamos archivo netCDF'''
-ds_final.to_netcdf("tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca_11Km.nc")
+ds_final.to_netcdf("tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca_ERA.nc")
 
-print('Proceso finalizado con exito')
+print('Proceso de interpolación finalizado con exito')
