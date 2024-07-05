@@ -36,7 +36,7 @@ import cftime
 
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-file = 'Datos/GCM/CESM2 WACCM/pr/pr_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_Valle_Cauca.nc'
+file = 'Datos/GCM/pr_3hr_GFDL-ESM4_ssp119_r1i1p1f1_gr1_201501010130-203412312230_ValleDelCauca.nc'
 ds = xr.open_dataset(file)
 
 ''' Cargamos los datos de precipitación '''
@@ -51,6 +51,11 @@ prmean.data = prmean.data * 86400
 
 ''' Cambiamos el argumento a mm/día '''
 prmean.attrs['units'] = 'mm/day'
+
+dia = prec.sel(time='2015-05-03')
+dia_mean = dia.sum('time', keep_attrs=True)
+dia_mean.data = dia_mean.data * 86400
+dia_mean.attrs['units'] = 'mm/day'
 
 ''' Ploteamos precipitación nivel mundial '''
 #fig = plt.figure(figsize=[24,10], dpi=200)
@@ -143,13 +148,16 @@ gdf_dagua = gpn.read_file(geojson_dagua)
 fig = plt.figure(figsize=[16,10], dpi=200)
 #ax = figMean.add_subplot(222, projection=ccrs.PlateCarree(central_longitude=0))
 ax = plt.subplot(projection=ccrs.PlateCarree())
-salida = prmean.plot.pcolormesh(ax = ax, 
-                       levels = np.arange(0, 14, 1),
-                       extend = 'max', #neither
+salida = dia_mean.plot.pcolormesh(ax = ax, 
+                       levels = np.arange(0, 170, 1),
+                       extend = 'neither', #max
                        transform = ccrs.PlateCarree(),
                        cbar_kwargs = {'label': prmean.units},
                        cmap = cmocean.cm.rain 
                        )
+''' Establecer los límites geográficos [lon_min, lon_max, lat_min, lat_max] '''
+ax.set_extent([281.9, 284.4, 2.75, 5.25])
+
 ''' Add coast- and gridlines '''
 ax.coastlines(color='black')
 gl = ax.gridlines(draw_labels=True, linewidth=0.5, color='gray', alpha=0.4, linestyle='--')
@@ -164,10 +172,10 @@ gdf_dagua.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs
 cbar = salida.colorbar
 cbar.ax.tick_params(labelsize=16)  # Ajustar el tamaño del texto de la barra de color
 #cbar.ax.set_aspect(20)  # Ajustar la proporción de la barra de color (altura vs ancho)
-cbar.set_label('Precipitación mm/día (SSP2-2.5)', fontsize=18, labelpad=20)  # Cambiar la etiqueta de la barra de color
+cbar.set_label('Precipitación mm/día (SSP1-2.6)', fontsize=18, labelpad=20)  # Cambiar la etiqueta de la barra de color
 
 model = ds.attrs['source_id']
-title = f'{model} Precipitación promedio diaria (2018-2022)'
+title = f'{model} Precipitación día'
 plt.title(title, fontsize=30, pad=30, loc='center')
 
 #plt.show()

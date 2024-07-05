@@ -36,12 +36,12 @@ import cftime
 
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-file = 'Datos/GCM/tas_3hr_GFDL-ESM4_ssp245_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca.nc'
+file = 'Datos/GCM/tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca.nc'
 ds = xr.open_dataset(file)
 
 '''Cargamos los datos de temperatura'''
 tas = ds['tas']
-print(tas)
+#print(tas)
 
 '''Promediamos la temperatura'''
 tasmean = tas.mean('time', keep_attrs=True)
@@ -51,6 +51,11 @@ tasmean.data = tasmean.data - 273.15
 
 '''Cambiamos el argumento a °C '''
 tasmean.attrs['units'] = '°C'
+dia = tas.sel(time='2015-01-01')
+dia_mean = dia.mean('time', keep_attrs=True)
+dia_mean.data = dia_mean.data - 273.15
+dia_mean.attrs['units'] = '°C'
+print(dia_mean)
 
 ''' Cargamos Shapes del Valle y la cuenca '''
 geojson_valle = 'Datos/Valle_Cauca_4326.geojson'
@@ -150,7 +155,7 @@ gdf_dagua = gpn.read_file(geojson_dagua)
 fig = plt.figure(figsize=[20,10], dpi=200)
 ###ax = tasmean.add_subplot(222, projection=ccrs.PlateCarree(central_longitude=0))
 ax = plt.subplot(projection=ccrs.PlateCarree())
-salida = tasmean.plot.pcolormesh(ax = ax, 
+salida = dia_mean.plot.pcolormesh(ax = ax, 
                        ##levels = np.arange(0, 14, 1),
                        ##extend = 'max', #neither
                        ##transform = ccrs.PlateCarree(),
@@ -158,7 +163,10 @@ salida = tasmean.plot.pcolormesh(ax = ax,
                        shading='auto',
                        cmap = 'coolwarm' 
                        )
-''' Add coast- and gridlines '''
+''' Establecer los límites geográficos [lon_min, lon_max, lat_min, lat_max] '''
+ax.set_extent([281.9, 284.4, 2.75, 5.25])
+
+''' Add coast - and gridlines '''
 ax.coastlines(color='black')
 gl = ax.gridlines(draw_labels=True, linewidth=0.5, color='gray', alpha=0.4, linestyle='--')
 gl.top_labels = False
@@ -171,10 +179,10 @@ gdf_dagua.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs
 cbar = salida.colorbar
 cbar.ax.tick_params(labelsize=16)  # Ajustar el tamaño del texto de la barra de color
 ##cbar.ax.set_aspect(20)  # Ajustar la proporción de la barra de color (altura vs ancho)
-cbar.set_label('Temperatura °C (SSP2-2.5)', fontsize=18, labelpad=20)  # Cambiar la etiqueta de la barra de color
+cbar.set_label('Temperatura °C (SSP1-2.6)', fontsize=18, labelpad=20)  # Cambiar la etiqueta de la barra de color
 
 model = ds.attrs['source_id']
-title = f'{model} Temperatura promedio diaria (2018-2022)'
+title = f'{model} Temperatura promedio día'
 plt.title(title, fontsize=30, pad=30, loc='center')
 #plt.show()
 plt.savefig('Temperatura_GCM_3h.png')
