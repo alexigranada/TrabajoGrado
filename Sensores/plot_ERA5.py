@@ -76,22 +76,23 @@ cbar.ax.tick_params(labelsize=20)  # Ajustar el tamaño del texto de la barra de
 cbar.ax.set_position([0.77, 0.109, 0.03, 0.77])  # [left, bottom, width, height]
 cbar.set_label('Precipitación mm/día', fontsize=24, labelpad=20)  # Cambiar la etiqueta de la barra de color
 
+''' Agregar estaciones al mapa (Puntos) '''
 estaciones = {
     'U. Pacífico': [-76.986, 3.848],
     'La Cumbre': [-76.564, 3.645],
     'Farallones': [-76.6, 3.35],
 }
 
-for estacion, (lon, lat) in estaciones.items():
-    ax.plot(lon, lat, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
-    ax.text(lon, lat, estacion, transform=ccrs.Geodetic(), fontsize=22, horizontalalignment='center', verticalalignment='bottom',)
+#for estacion, (lon, lat) in estaciones.items():
+#    ax.plot(lon, lat, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
+#    ax.text(lon, lat, estacion, transform=ccrs.Geodetic(), fontsize=22, horizontalalignment='center', verticalalignment='bottom',)
 
 #model = ds.attrs['source_id']
-title = f'ERA5-Land Precipitación promedio día'
+title = f'ERA5-Land Precipitación promedio por día'
 plt.title(title, fontsize=30, pad=30, loc='center')
 
 #plt.show()
-plt.savefig('Precipitacion_ERA.png')
+#plt.savefig('Precipitacion_ERA.png')
 
 ''' Ploteamos la Temperatura para valle'''
 fig = plt.figure(figsize=[16,10], dpi=200)
@@ -118,10 +119,10 @@ cbar.ax.set_position([0.77, 0.109, 0.03, 0.77])  # [left, bottom, width, height]
 cbar.set_label('Temperatura °C', fontsize=24, labelpad=20)  # Cambiar la etiqueta de la barra de color
 
 #model = ds.attrs['source_id']
-title = f'ERA5-Land Temperatura promedio día'
+title = f'ERA5-Land Temperatura promedio por día'
 plt.title(title, fontsize=30, pad=30, loc='center')
 #plt.show()
-#plt.savefig('Temperatura_ERA.png')
+plt.savefig('Temperatura_ERA.png')
 
 
 print('completado')
