@@ -66,42 +66,35 @@ ps['time'] = fecha
 uas['time'] = fecha
 vas['time'] = fecha
 
+''' Convertimos a DF'''
 df_tas = tas.to_dataframe().reset_index()
 ##df_pr = pr.to_dataframe().reset_index()
-df_huss = huss.to_dataframe().reset_index().set_index('time', inplace=True)
-df_mrsos = mrsos.to_dataframe().reset_index().set_index('time', inplace=True)
-df_ps = ps.to_dataframe().reset_index().set_index('time', inplace=True)
-df_uas = uas.to_dataframe().reset_index().set_index('time', inplace=True)
-df_vas = vas.to_dataframe().reset_index().set_index('time', inplace=True)
+df_huss = huss.to_dataframe().reset_index()
+df_mrsos = mrsos.to_dataframe().reset_index()
+df_ps = ps.to_dataframe().reset_index()
+df_uas = uas.to_dataframe().reset_index()
+df_vas = vas.to_dataframe().reset_index()
 
+''' Creamos la fecha como indice'''
 df_tas.set_index('time', inplace=True)
+df_huss.set_index('time', inplace=True)
+df_mrsos.set_index('time', inplace=True)
+df_ps.set_index('time', inplace=True)
+df_uas.set_index('time', inplace=True)
+df_vas.set_index('time', inplace=True)
 
-
-
+''' Seleccionamos el rango de fecha de interes'''
 f_i = '2015-01-01 03:00:00'
 f_f = '2023-12-31 21:00:00'
 
 df_tas = df_tas.loc[f_i:f_f]
-#df_huss = df_huss.loc[f_i:f_f]
-#df_mrsos = df_mrsos.loc[f_i:f_f]
-#df_ps = df_ps.loc[f_i:f_f]
-#df_uas = df_uas.loc[f_i:f_f]
-#df_vas = df_vas.loc[f_i:f_f]
+df_huss = df_huss.loc[f_i:f_f]
+df_mrsos = df_mrsos.loc[f_i:f_f]
+df_ps = df_ps.loc[f_i:f_f]
+df_uas = df_uas.loc[f_i:f_f]
+df_vas = df_vas.loc[f_i:f_f]
 
 print(df_tas)
-
-''' Creamos DF'''
-#df = ds.to_dataframe().reset_index()#Resetiamos indice como contador 
-
-#df.set_index('time', inplace=True)#Creamos la variable tiempo como indice
-#df['time'] = fecha
-
-''' Selecionamos la fecha de interes '''
-
-
-#df = df.iloc[f_i:f_f]
-#print(fecha)
-#print(df)
 
 ''' Matrix de correlación'''
 #features = ['tas', 'huss', 'mrsos', 'ps', 'uas', 'vas']
