@@ -10,7 +10,7 @@ from scipy.ndimage import map_coordinates
 from scipy.interpolate import griddata
 from scipy.interpolate import interp2d
 
-r1 = 'Datos/tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca.nc'
+r1 = 'Datos/GCM/GFDL SSP 126/rsus_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010130-203412312230_ValleDelCauca.nc'
 r2 = 'Datos/ERA5-Land_2015_2023_ValleDelCauca_3H_Mask.nc'
 
 ds1 = xr.open_dataset(r1)
@@ -19,7 +19,7 @@ ds2 = xr.open_dataset(r2)
 #print(ds2)
 
 ''' Seleccionamos los valores de la variable'''
-data_100 = ds1['tas']
+data_100 = ds1['rsus']
 data_10 = ds2['t2m']
 
 '''Definir coordenadas a reducir ERA5 Land'''
@@ -72,16 +72,16 @@ for fecha in ds1['time'].values:
 #ds_final = xr.concat(dataset_interpolados, dim='time')
 #print(ds_final)
 
-interpolated_data = xr.DataArray(dataset_interpolados, coords=[ds1['time'].values, lat_10, lon_10], dims=['time', 'lat', 'lon'],  attrs=ds1['tas'].attrs)
+interpolated_data = xr.DataArray(dataset_interpolados, coords=[ds1['time'].values, lat_10, lon_10], dims=['time', 'lat', 'lon'],  attrs=ds1['rsus'].attrs)
 
 # Crear un Dataset de xarray
-ds_final = xr.Dataset({'tas': interpolated_data}, attrs=ds1.attrs)
+ds_final = xr.Dataset({'rsus': interpolated_data}, attrs=ds1.attrs)
 
 ds_final['lat'].attrs = ds1['lat'].attrs
 ds_final['lon'].attrs = ds1['lon'].attrs
 ds_final['time'].attrs = ds1['time'].attrs
 
 ''' Exportamos archivo netCDF'''
-ds_final.to_netcdf("tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca_ERA.nc")
+ds_final.to_netcdf("rsus_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010130-203412312230_ValleDelCauca_ERA.nc")
 
 print('Proceso de interpolación finalizado con exito')
