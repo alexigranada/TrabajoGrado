@@ -175,7 +175,7 @@ cbar.ax.tick_params(labelsize=16)  # Ajustar el tamaño del texto de la barra de
 cbar.set_label('Precipitación mm/día (SSP1-2.6)', fontsize=18, labelpad=20)  # Cambiar la etiqueta de la barra de color
 
 model = ds.attrs['source_id']
-title = f'{model} Precipitación día'
+title = f'{model} Precipitación por día'
 plt.title(title, fontsize=30, pad=30, loc='center')
 
 #plt.show()

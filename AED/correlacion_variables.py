@@ -197,8 +197,17 @@ print(f'Correlación Spearmanr: {correlacion:.3f}, P-value: {p_value:.3f}')
 correlacion, p_value = pearsonr(df_diana['t2m'], df_vas['vas'])
 print(f'Correlación Pearson: {correlacion:.3f}, P-value: {p_value:.3f}')
 
-
-
-
-
-
+''' Ploteamos la correlación'''
+fig = go.Figure(data = go.Scatter(x = df_cumbre['t2m'] , y = df_tas['tas'], mode='markers', opacity=0.95))
+#title = f'Correlación Estación Pacífico'
+fig.update_layout(
+    #title = title,
+    title_font_size = 22,
+    xaxis = dict(title='Temperatura ERA5-Land'),
+    yaxis = dict(title='Temperatura GFDL-ESM4'),
+    template = 'seaborn',
+    #title_x = 0.5
+)
+fig.show()
+fig.write_image('Correlacion Cumbre Temperatura TAS.png', width=800, height=500, scale=4)
+print('Proceso de correlación terminado')
