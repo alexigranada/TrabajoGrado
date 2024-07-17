@@ -48,6 +48,7 @@ lon_farallones, lat_farallones = -76.6513 , 3.4158
 lon_univalle, lat_univalle = -76.5338 , 3.377
 lon_aBonilla, lat_aBonilla = -76.3822 , 3.5327
 lon_diana, lat_diana = -76.1855 , 3.3138
+lon_siloe, lat_siloe = -76.5605, 3.4252
 
 pacifico = ds0.sel(longitude = lon_pacifico, latitude = lat_pacifico, method='nearest')
 cumbre = ds0.sel(longitude = lon_cumbre, latitude= lat_cumbre, method='nearest')
@@ -55,6 +56,7 @@ farallones = ds0.sel(longitude = lon_farallones, latitude = lat_farallones, meth
 univalle = ds0.sel(longitude = lon_univalle, latitude = lat_univalle, method='nearest')
 aBonilla = ds0.sel(longitude = lon_aBonilla, latitude = lat_aBonilla, method='nearest')
 diana = ds0.sel(longitude = lon_diana, latitude = lat_diana, method='nearest')
+siloe = ds0.sel(longitude = lon_siloe, latitude = lat_siloe, method='nearest')
 
 ''' Seleccionamos variables GCM'''
 rlds = ds1['rlds']
@@ -69,6 +71,7 @@ farallones_t2m = farallones['t2m']
 univalle_t2m = univalle['t2m']
 aBonilla_t2m = aBonilla['t2m']
 diana_t2m = diana['t2m']
+siloe_t2m = siloe['t2m']
 
 '''Asignamos el formato de fecha para GCM'''
 f1 = '2015-01-01 03:00:00'
@@ -88,6 +91,7 @@ farallones_t2m = farallones_t2m.loc['2015-01-01 03:00':'2023-12-31 21:00']
 univalle_t2m = univalle_t2m.loc['2015-01-01 03:00':'2023-12-31 21:00']
 aBonilla_t2m = aBonilla_t2m.loc['2015-01-01 03:00':'2023-12-31 21:00']
 diana_t2m = diana_t2m.loc['2015-01-01 03:00':'2023-12-31 21:00']
+siloe_t2m = siloe_t2m.loc['2015-01-01 03:00':'2023-12-31 21:00']
 
 pacifico_t2m_era = pacifico_t2m.loc[~((pacifico_t2m['time'].dt.month == 2) & (pacifico_t2m['time'].dt.day == 29))]
 cumbre_t2m_era = cumbre_t2m.loc[~((cumbre_t2m['time'].dt.month == 2) & (cumbre_t2m['time'].dt.day == 29))]
@@ -95,6 +99,7 @@ farallones_t2m_era = farallones_t2m.loc[~((farallones_t2m['time'].dt.month == 2)
 univalle_t2m_era = univalle_t2m.loc[~((univalle_t2m['time'].dt.month == 2) & (univalle_t2m['time'].dt.day == 29))]
 aBonilla_t2m_era = aBonilla_t2m.loc[~((aBonilla_t2m['time'].dt.month == 2) & (aBonilla_t2m['time'].dt.day == 29))]
 diana_t2m_era = diana_t2m.loc[~((diana_t2m['time'].dt.month == 2) & (diana_t2m['time'].dt.day == 29))]
+siloe_t2m_era = siloe_t2m.loc[~((siloe_t2m['time'].dt.month == 2) & (siloe_t2m['time'].dt.day == 29))]
 
 ''' Convertimos a DF'''
 df_rlds = rlds.to_dataframe().reset_index()
@@ -108,6 +113,7 @@ df_farallones = farallones_t2m_era.to_dataframe().reset_index()
 df_univalle = univalle_t2m_era.to_dataframe().reset_index()
 df_aBonilla = aBonilla_t2m_era.to_dataframe().reset_index()
 df_diana = diana_t2m_era.to_dataframe().reset_index()
+df_siloe = siloe_t2m_era.to_dataframe().reset_index()
 
 ''' Creamos la fecha como indice'''
 df_rlds.set_index('time', inplace=True)
@@ -121,6 +127,7 @@ df_farallones.set_index('time', inplace=True)
 df_univalle.set_index('time', inplace=True)
 df_aBonilla.set_index('time', inplace=True)
 df_diana.set_index('time', inplace=True)
+df_siloe.set_index('time', inplace=True)
 
 ''' Seleccionamos el rango de fecha de interes'''
 f_i = '2015-01-01 03:00:00'

@@ -78,9 +78,13 @@ cbar.set_label('Precipitación mm/día', fontsize=24, labelpad=20)  # Cambiar la
 
 ''' Agregar estaciones al mapa (Puntos) '''
 estaciones = {
-    'U. Pacífico': [-76.986, 3.848],
-    'La Cumbre': [-76.564, 3.645],
-    'Farallones': [-76.6, 3.35],
+    'U. Pacífico': [-76.9869, 3.8480],
+    'La Cumbre': [-76.5647, 3.6451],
+    'Farallones': [-76.6513, 3.4158],
+    'Univalle': [-76.5338, 3.3777],
+    'Siloe': [-76.5605, 3.4252],
+    'Aero. A. Bonilla': [-76.3822, 3.5327],
+    'La Diana': [-76.1855, 3.3138]
 }
 
 #for estacion, (lon, lat) in estaciones.items():

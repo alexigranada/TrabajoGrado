@@ -15,7 +15,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 ''' 1. Cargar el conjunto de datos ERA5 '''
-file = 'Datos/ERA5/ERA5-Land_17-22.nc'
+file = 'Datos/ERA5_Land_T_P/ERA5-Land_2015_2023_ValleDelCauca.nc'
 rch = 'Datos/CHIRPS/Dagua.nc'
 
 ds = xr.open_dataset(file)
