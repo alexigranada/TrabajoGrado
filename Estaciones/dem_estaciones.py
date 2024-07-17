@@ -41,7 +41,7 @@ estaciones = {
 
 
 
-fig = plt.figure(figsize=[16,10], dpi=200)
+fig = plt.figure(figsize=[24,15], dpi=400)
 #ax = figMean.add_subplot(222, projection=ccrs.PlateCarree(central_longitude=0))
 ax = plt.subplot(projection=ccrs.PlateCarree())
 salida = dem.plot.pcolormesh(ax = ax, 
@@ -59,33 +59,33 @@ ax.set_extent([-77.6, -76.0, 3.0, 4.3])
 gl = ax.gridlines(draw_labels=True, linewidth=0.5, color='gray', alpha=0.4, linestyle='--')
 gl.top_labels = False
 gl.right_labels = False
-gl.xlabel_style = {'size': 16, 'color': 'black'}
-gl.ylabel_style = {'size': 16, 'color': 'black'} #'weight': 'bold'
+gl.xlabel_style = {'size': 18, 'color': 'black'}
+gl.ylabel_style = {'size': 18, 'color': 'black'} #'weight': 'bold'
 
 gdf_valle.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs.PlateCarree())
 gdf_dagua.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs.PlateCarree())
 
 
-ax.plot(-76.9869, 3.8480, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
-ax.text(-76.9869, 3.8480 + 0.07, 'U. Pacifico', transform=ccrs.Geodetic(), fontsize=16, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.7, edgecolor='none'))
+ax.plot(-76.9869, 3.8480, marker='o', color='red', markersize=8, transform=ccrs.Geodetic())
+ax.text(-76.9869, 3.8480 + 0.07, 'Unipacífico', transform=ccrs.Geodetic(), fontsize=18, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.7, edgecolor='none'))
 
-ax.plot(-76.5647, 3.6451, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
-ax.text(-76.5647, 3.6451 + 0.07, 'La Cumbre', transform=ccrs.Geodetic(), fontsize=16, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
+ax.plot(-76.5647, 3.6451, marker='o', color='red', markersize=8, transform=ccrs.Geodetic())
+ax.text(-76.5647, 3.6451 + 0.07, 'La Cumbre', transform=ccrs.Geodetic(), fontsize=18, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
 
-ax.plot(-76.6513, 3.4158, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
-ax.text(-76.6513 - 0.05, 3.4158, 'Farallones', transform=ccrs.Geodetic(), fontsize=16, horizontalalignment='right', verticalalignment='center', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
+ax.plot(-76.6513, 3.4158, marker='o', color='red', markersize=8, transform=ccrs.Geodetic())
+ax.text(-76.6513 - 0.05, 3.4158, 'Farallones', transform=ccrs.Geodetic(), fontsize=18, horizontalalignment='right', verticalalignment='center', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
 
-ax.plot(-76.5338, 3.3777, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
-ax.text(-76.5338, 3.3777 - 0.07, 'Univalle', transform=ccrs.Geodetic(), fontsize=16, horizontalalignment='center', verticalalignment='bottom', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
+ax.plot(-76.5338, 3.3777, marker='o', color='red', markersize=8, transform=ccrs.Geodetic())
+ax.text(-76.5338, 3.3777 - 0.07, 'Univalle', transform=ccrs.Geodetic(), fontsize=18, horizontalalignment='center', verticalalignment='bottom', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
 
-ax.plot(-76.5605, 3.4252, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
-ax.text(-76.5605, 3.4252 + 0.07, 'Siloe', transform=ccrs.Geodetic(), fontsize=16, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
+ax.plot(-76.5605, 3.4252, marker='o', color='red', markersize=8, transform=ccrs.Geodetic())
+ax.text(-76.5605, 3.4252 + 0.07, 'Siloe', transform=ccrs.Geodetic(), fontsize=18, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
 
-ax.plot(-76.1855, 3.3138, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
-ax.text(-76.1855, 3.3138 + 0.07, 'La Diana', transform=ccrs.Geodetic(), fontsize=16, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
+ax.plot(-76.1855, 3.3138, marker='o', color='red', markersize=8, transform=ccrs.Geodetic())
+ax.text(-76.1855, 3.3138 + 0.07, 'La Diana', transform=ccrs.Geodetic(), fontsize=18, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
 
-ax.plot(-76.3822, 3.5327, marker='o', color='red', markersize=6, transform=ccrs.Geodetic())
-ax.text(-76.3822 + 0.17, 3.5327 + 0.07, 'Aeropuerto A. Bonilla', transform=ccrs.Geodetic(), fontsize=15, horizontalalignment='center', verticalalignment='top', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
+ax.plot(-76.3822, 3.5327, marker='o', color='red', markersize=8, transform=ccrs.Geodetic())
+ax.text(-76.3822 + 0.17, 3.5327, 'Arpto A. Bonilla', transform=ccrs.Geodetic(), fontsize=18, horizontalalignment='center', verticalalignment='center', bbox=dict(facecolor='white', alpha=0.5, edgecolor='none'))
 
 cbar = salida.colorbar
 cbar.ax.tick_params(labelsize=16)  # Ajustar el tamaño del texto de la barra de color
@@ -94,7 +94,7 @@ cbar.set_label('Elevación (m)', fontsize=18, labelpad=20)  # Cambiar la etiquet
 
 #model = ds.attrs['source_id']
 title = f'Distribución de las estaciones locales'
-plt.title(title, fontsize=30, pad=30, loc='center')
+plt.title(title, fontsize=35, pad=30, loc='center')
 
 #plt.show()
 plt.savefig('Estaciones_DEM.png')

@@ -25,7 +25,7 @@ lst = ee.ImageCollection( 'ECMWF/ERA5_LAND/HOURLY' ) #MODIS/061/MOD11A1 - MODIS/
 i_date = '2015-01-01' 
 
 ''' Fecha final de interés (exclusiva) '''
-f_date = '2015-05-01' 
+f_date = '2024-01-01' 
 
 '''Selección de bandas y fechas apropiadas para LST '''
 #   'temperature_2m' - 'total_precipitation_hourly' - 'LST_Day_1km'
@@ -33,9 +33,9 @@ banda = lst.select('temperature_2m').filterDate(i_date, f_date)
 
 ''' Definir la ubicación de interés como un punto. 
  Usaremos la ubicación de la Estación '''
-punto_lon = -77.07027
-punto_lat = 3.4
-cumbre_point = ee.Geometry.Point(punto_lon, punto_lat)
+punto_lon = -76.65138
+punto_lat = 3.41583
+coord_point = ee.Geometry.Point(punto_lon, punto_lat)
 
 '''Descarga para Poligono'''
 cuenca_dagua = ee.Geometry.Polygon(
@@ -49,7 +49,7 @@ escala_modis = 1000
 escala_terraclimate = 4638.3
 
 #cumbre_full = banda.getRegion(cuenca_dagua, escala).getInfo()
-cumbre_full = banda.getRegion(cuenca_dagua, escala_era).getInfo()
+cumbre_full = banda.getRegion(coord_point, escala_era).getInfo()
 print(cumbre_full[:50])# Preview the output
 
 ''' Convertimos a DF'''
@@ -61,7 +61,7 @@ df = pd.DataFrame(df.values[1:], columns=headers)   # Rearrange the header.
 df = df[['longitude', 'latitude', 'time', 'total_precipitation' ]].dropna() # Eliminar las filas con datos nulos.
 df['temperature_2m'] = pd.to_numeric(df['temperature_2m'], errors='coerce')    # Convert to numeric values.
 df['datetime'] = pd.to_datetime(df['time'], unit='ms')  # Convert datetime to datetime values.
-df = df[['longitude', 'latitude', 'datetime',  'pr']] # take interest part
+df = df[['longitude', 'latitude', 'datetime',  'temperature_2m']] # take interest part
 ##df = df[['longitude', 'latitude','time', 'datetime',  'total_precipitation']] # take interest part
 ##print(df.head(60))
 
@@ -87,8 +87,8 @@ df['temperature_2m'] = df['temperature_2m'].apply(k_c)
 print(df.head())
 
 '''Exportamos a CSV'''
-#title = f'IDAHO_Precipitacion_Dagua_005.csv'
-#df.to_csv(title, sep=';', index=False)
+title = f'Temperatura_Farallones_ERA.csv'
+df.to_csv(title, sep=';', index=False)
 
 print('Proceso Finalizado')
 print('Finalizado sin errores')
