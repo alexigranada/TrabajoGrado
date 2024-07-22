@@ -23,10 +23,10 @@ ds3 = xr.open_dataset(r3)
 ds4 = xr.open_dataset(r4)
 
 ''' Promediamos por día'''
-dia_GCM119 = ds1.resample(time='12h').mean()
-dia_GCM126 = ds2.resample(time='12h').mean()
-dia_GCM245 = ds3.resample(time='12h').mean()
-dia_Era = ds4.resample(time='12h').mean()
+#dia_GCM119 = ds1.resample(time='12h').mean()
+#dia_GCM126 = ds2.resample(time='12h').mean()
+#dia_GCM245 = ds3.resample(time='12h').mean()
+#dia_Era = ds4.resample(time='12h').mean()
 
 '''Seleccionamos las variables y periodo de estudio'''
 f_i = '2015-01-01 03:00'
@@ -47,11 +47,11 @@ temp_ERA = temp_ERA.loc[~((temp_ERA['time'].dt.month == 2) & (temp_ERA['time'].d
 lon_GCM = 283.1
 lat_GCM = 3.5
 
-lon_ERA_cumbre = -76.5647
-lat_ERA_cumbre = 3.6451
+lon_ERA_cumbre = -76.5338
+lat_ERA_cumbre = 3.3777
 
-lon_ERA_pacifico = -76.9869 #-76.5647
-lat_ERA_pacifico = 3.8480 #3.6451
+lon_ERA_pacifico = -76.5338 #-76.5647
+lat_ERA_pacifico = 3.3777 #3.6451
 
 t_GCM_119 = temp_GFDL_119.sel(lon=lon_GCM, lat=lat_GCM, method='nearest')
 t_GCM_126 = temp_GFDL_126.sel(lon=lon_GCM, lat=lat_GCM, method='nearest')
@@ -60,53 +60,93 @@ t_ERA_cumbre = temp_ERA.sel(longitude=lon_ERA_cumbre, latitude=lat_ERA_cumbre, m
 t_ERA_pacifico = temp_ERA.sel(longitude=lon_ERA_pacifico, latitude=lat_ERA_pacifico, method='nearest')
 
 
-temp_GCM_119 = t_GCM_119.to_dataframe()#.reset_index() 
-temp_GCM_126 = t_GCM_126.to_dataframe()
-temp_GCM_245 = t_GCM_245.to_dataframe()
+temp_GCM_119 = t_GCM_119.to_dataframe().reset_index() 
+temp_GCM_126 = t_GCM_126.to_dataframe().reset_index()
+temp_GCM_245 = t_GCM_245.to_dataframe().reset_index()
 
-temp_Era_cumbre = t_ERA_cumbre.to_dataframe()#.reset_index() 
-temp_Era_pacifico = t_ERA_pacifico.to_dataframe()
+temp_Era_cumbre = t_ERA_cumbre.to_dataframe().reset_index() 
+temp_Era_pacifico = t_ERA_pacifico.to_dataframe().reset_index()
 
-def k_c (k):
-    c = k - 273.15
-    return c
+print('La Diana.')
+cor_person_Cumbre_119 = temp_Era_cumbre['t2m'].corr(temp_GCM_119['tas'])
+cor_spearman_Cumbre_119 = temp_Era_cumbre['t2m'].corr(temp_GCM_119['tas'], method='spearman')
+cor_person_Cumbre_126 = temp_Era_cumbre['t2m'].corr(temp_GCM_126['tas'])
+cor_spearman_Cumbre_126 = temp_Era_cumbre['t2m'].corr(temp_GCM_126['tas'], method='spearman')
+cor_person_Cumbre_245 = temp_Era_cumbre['t2m'].corr(temp_GCM_245['tas'])
+cor_spearman_Cumbre_245 = temp_Era_cumbre['t2m'].corr(temp_GCM_245['tas'], method='spearman')
 
-temp_GCM_119['tas'] = temp_GCM_119['tas'].apply(k_c)
-temp_GCM_126['tas'] = temp_GCM_126['tas'].apply(k_c)
-temp_GCM_245['tas'] = temp_GCM_245['tas'].apply(k_c)
+print(f'Correlación Pearson 119: {cor_person_Cumbre_119}')
+print(f'Correlación Pearson 126: {cor_person_Cumbre_126}')
+print(f'Correlación Pearson 245: {cor_person_Cumbre_245}')
+print('....................................................')
+print(f'Correlación Sperman 119: {cor_spearman_Cumbre_119}')
+print(f'Correlación Sperman 126: {cor_spearman_Cumbre_126}')
+print(f'Correlación Sperman 245: {cor_spearman_Cumbre_245}')
+
+
+print('================================================================')
+print('Siloe')
+cor_person_Cumbre_119 = temp_Era_pacifico['t2m'].corr(temp_GCM_119['tas'])
+cor_spearman_Cumbre_119 = temp_Era_pacifico['t2m'].corr(temp_GCM_119['tas'], method='spearman')
+cor_person_Cumbre_126 = temp_Era_pacifico['t2m'].corr(temp_GCM_126['tas'])
+cor_spearman_Cumbre_126 = temp_Era_pacifico['t2m'].corr(temp_GCM_126['tas'], method='spearman')
+cor_person_Cumbre_245 = temp_Era_pacifico['t2m'].corr(temp_GCM_245['tas'])
+cor_spearman_Cumbre_245 = temp_Era_pacifico['t2m'].corr(temp_GCM_245['tas'], method='spearman')
+
+print(f'Correlación Pearson 119: {cor_person_Cumbre_119}')
+print(f'Correlación Pearson 126: {cor_person_Cumbre_126}')
+print(f'Correlación Pearson 245: {cor_person_Cumbre_245}')
+print('.................................................................')
+print(f'Correlación Sperman 119: {cor_spearman_Cumbre_119}')
+print(f'Correlación Sperman 126: {cor_spearman_Cumbre_126}')
+print(f'Correlación Sperman 245: {cor_spearman_Cumbre_245}')
+
+
+
+
+
+#def k_c (k):
+#    c = k - 273.15
+#    return c
+
+#temp_GCM_119['tas'] = temp_GCM_119['tas'].apply(k_c)
+#temp_GCM_126['tas'] = temp_GCM_126['tas'].apply(k_c)
+#temp_GCM_245['tas'] = temp_GCM_245['tas'].apply(k_c)
 
 ''' Uniendo columnas por SSPs'''
-temp_GCM_SSP = pd.concat([temp_GCM_119['tas'], temp_GCM_126['tas'], temp_GCM_245['tas']], axis=1)
-temp_GCM_SSP = temp_GCM_SSP.rename(index={ 1: 'tas119', 2: 'tas126', 3: 'tas245'})
-print(temp_GCM_SSP)
+#temp_GCM_SSP = pd.concat([temp_GCM_119['tas'], temp_GCM_126['tas'], temp_GCM_245['tas']], axis=1)
+#temp_GCM_SSP = temp_GCM_SSP.rename(index={ 1: 'tas119', 2: 'tas126', 3: 'tas245'})
+#print(temp_GCM_SSP)
 
 ''' Exportamos datos SSPs a CSV'''
 #temp_GCM_SSP.to_csv('GCM_SSPs_3h.csv', sep=';')
+#temp_Era_cumbre.to_csv('Era_cumbre.csv', sep=';')
+#temp_Era_pacifico.to_csv('Era_pacifico.csv', sep=';')
 
-temp_Era_cumbre['t2m'] = temp_Era_cumbre['t2m'].apply(k_c)
-temp_Era_pacifico['t2m'] = temp_Era_pacifico['t2m'].apply(k_c)
+#temp_Era_cumbre['t2m'] = temp_Era_cumbre['t2m'].apply(k_c)
+#temp_Era_pacifico['t2m'] = temp_Era_pacifico['t2m'].apply(k_c)
 
 ''' Plot con Plotly'''
-fig = go.Figure()
+#fig = go.Figure()
 
 ''' Agregar datos de temperatura'''
-fig.add_trace(go.Scatter(x = temp_Era_cumbre.index, y = temp_Era_cumbre['t2m'], mode='lines', name='ERA5-Land La Cumbre', line=dict(color='#636EFA')))
-fig.add_trace(go.Scatter(x = temp_Era_pacifico.index, y = temp_Era_pacifico['t2m'], mode='lines', name='ERA5-Land U. Pacífico', line=dict(color='#EF553B')))
+#fig.add_trace(go.Scatter(x = temp_Era_cumbre.index, y = temp_Era_cumbre['t2m'], mode='lines', name='ERA5-Land La Cumbre', line=dict(color='#636EFA')))
+#fig.add_trace(go.Scatter(x = temp_Era_pacifico.index, y = temp_Era_pacifico['t2m'], mode='lines', name='ERA5-Land U. Pacífico', line=dict(color='#EF553B')))
 
-fig.add_trace(go.Scatter(x = temp_GCM_119.index, y = temp_GCM_119['tas'], mode='lines', name='GFDL SSP1-1.9', line=dict(color='#109618')))
-fig.add_trace(go.Scatter(x = temp_GCM_126.index, y = temp_GCM_126['tas'], mode='lines', name='GFDL SSP1-2.6', line=dict(color='#FF9900')))
-fig.add_trace(go.Scatter(x = temp_GCM_245.index, y = temp_GCM_245['tas'], mode='lines', name='GFDL SSP2-4.5', line=dict(color='#DC3912')))
-fig.update_layout(title = 'Temperatura estimada GFDL vs "ERA5-Land"',
-                  title_font_size=22,
-                  legend=dict(title="U. Pacifico: 16 m.s.n.m  La cumbre: 1613 m.s.n.m"),
-                  xaxis_title = 'Tiempo (3h)',
-                  yaxis_title = 'Temperatura °C',
-                  template='seaborn')
-fig.show()
+#fig.add_trace(go.Scatter(x = temp_GCM_119.index, y = temp_GCM_119['tas'], mode='lines', name='GFDL SSP1-1.9', line=dict(color='#109618')))
+#fig.add_trace(go.Scatter(x = temp_GCM_126.index, y = temp_GCM_126['tas'], mode='lines', name='GFDL SSP1-2.6', line=dict(color='#FF9900')))
+#fig.add_trace(go.Scatter(x = temp_GCM_245.index, y = temp_GCM_245['tas'], mode='lines', name='GFDL SSP2-4.5', line=dict(color='#DC3912')))
+#fig.update_layout(title = 'Temperatura estimada GFDL vs "ERA5-Land"',
+#                  title_font_size=22,
+#                  legend=dict(title="U. Pacifico: 16 m.s.n.m  La cumbre: 1613 m.s.n.m"),
+#                  xaxis_title = 'Tiempo (3h)',
+#                  yaxis_title = 'Temperatura °C',
+#                  template='seaborn')
+#fig.show()
 
 #temp_Era_cumbre.to_csv('ERA_pacifico_3h.csv', sep=';')
 #temp_GCM_cumbre.to_csv('GCM119_pacifico_dia.csv', sep=';')
 #temp_GCM245_cumbre.to_csv('GCM245_pacifico_dia.csv', sep=';')
 
-#correlacion_GCM_ERA_cumbre = a.corr(b)
+#correlacion_GCM_ERA_cumbre = temp_Era_cumbre['t2m'].corr(temp_GCM_119['tas'])
 #print(f'Correlación GCM 119 vs ERA5-Land: {correlacion_GCM_ERA_cumbre}')
