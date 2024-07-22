@@ -9,15 +9,15 @@ Unión de registros
 import pandas as pd #Leer datos
 import plotly.graph_objects as go
 
-ruta = 'Datos/Estaciones/Precipitacion/UPacifico.csv'
-data = pd.read_csv(ruta, delimiter=';') #, index_col='Fecha', parse_dates=['Fecha']
+ruta = 'Datos/Siloco.csv'
+data = pd.read_csv(ruta, delimiter=',') #, index_col='Fecha', parse_dates=['Fecha']
 
 #data.info()
 print(data)
 
 
 ''' Antes de concatenar ajustamos el formato de la fecha'''
-data['Fecha'] = pd.to_datetime(data['Fecha'], format="%d/%m/%Y  %H:%M")
+data['Fecha'] = pd.to_datetime(data['Fecha'], format="%Y-%m-%d  %H:%M:%S")
 
 #data['Fecha_dia'] = data['Fecha'].dt.date #Seleccionar solo el valor del día (Sin hora)
 #data['Fecha_dia'] = pd.to_datetime(data['Fecha_dia'], format="%Y-%m-%d")
@@ -34,7 +34,7 @@ data['Fecha'] = pd.to_datetime(data['Fecha'], format="%d/%m/%Y  %H:%M")
 ##data['Valor'] = pd.to_numeric(data['Valor'])#.str.replace(',','.'))
 
 ''' Crear un rango de fechas completo '''
-rango_completo_hora = pd.date_range(start='2018-01-01 0:00', end='2022-02-22 23:00', freq='h')
+rango_completo_hora = pd.date_range(start='2015-01-01 00:00:00', end='2020-05-04 03:00:00', freq='h')
 
 ''' Crear un DataFrame con las fechas completas '''
 df_completo_estacion_hora = pd.DataFrame({'Fecha': rango_completo_hora})
@@ -85,7 +85,7 @@ print(df_hora)
 #fig.show()
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'UPacifico_Hora_completo.csv'
+title = f'Siloe_Hora_completo.csv'
 df_hora.to_csv(title, sep=';', index=False)
 
 '''' Calculamos los valores nulos'''

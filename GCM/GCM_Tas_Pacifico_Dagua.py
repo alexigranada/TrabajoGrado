@@ -63,28 +63,28 @@ geojson_dagua = 'Datos/Cuenca_Dagua_4326.geojson'
 gdf_valle = gpn.read_file(geojson_valle)
 gdf_dagua = gpn.read_file(geojson_dagua)
 
-''' Ploteamos precipitación nivel mundial '''
-#fig = plt.figure(figsize=[24,10], dpi=200)
-##ax = fig.add_subplot(222, projection=ccrs.PlateCarree())
-#ax = plt.subplot(2, 2, 2, projection=ccrs.PlateCarree())
-#tasmean.plot.pcolormesh(ax=ax,
+''' Ploteamos la temperatura nivel mundial '''
+fig = plt.figure(figsize=[24,10], dpi=200)
+#ax = fig.add_subplot(222, projection=ccrs.PlateCarree())
+ax = plt.subplot(2, 2, 2, projection=ccrs.PlateCarree())
+tasmean.plot.pcolormesh(ax=ax,
                      ##levels      = np.arange(0, 14, 1),
                      ##extend      = 'max',
                      ##transform   = ccrs.PlateCarree(),
                      ##cbar_kwargs = {'label': tasmean.units},
-#                     cmap = 'coolwarm' #'viridis_r'
-#                     )
+                     cmap = 'coolwarm' #'viridis_r'
+                     )
 ''' Add coast- and gridlines '''
-#ax.coastlines(color='black')
-#gl = ax.gridlines(draw_labels=True, linewidth=1, color='gray', alpha=0.5, linestyle='--')
-#gl.top_labels = False
-#gl.right_labels = False
+ax.coastlines(color='black')
+gl = ax.gridlines(draw_labels=True, linewidth=1, color='gray', alpha=0.5, linestyle='--')
+gl.top_labels = False
+gl.right_labels = False
 #gdf_valle.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs.PlateCarree())
 #gdf_dagua.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs.PlateCarree())
-#model = ds.attrs['source_id']
-#title = f'[{model}] Temperatura promedio diaria (2000-2014)'
-#plt.title(title, fontsize=16, pad=20)
-#plt.show()
+model = ds.attrs['source_id']
+title = f'[{model}] Temperatura promedio diaria (2000-2014)'
+plt.title(title, fontsize=16, pad=20)
+plt.show()
 
 ''' 2. Definir la región de interés mediante coordenadas geográficas (latitud y longitud) '''
 #min_lon, max_lon = 270, 300
@@ -152,38 +152,38 @@ gdf_dagua = gpn.read_file(geojson_dagua)
 
 ''' CORTE PARA VALLE '''
 ''' Ploteamos la Temperatura para valle'''
-fig = plt.figure(figsize=[20,10], dpi=200)
+#fig = plt.figure(figsize=[20,10], dpi=200)
 ###ax = tasmean.add_subplot(222, projection=ccrs.PlateCarree(central_longitude=0))
-ax = plt.subplot(projection=ccrs.PlateCarree())
-salida = dia_mean.plot.pcolormesh(ax = ax, 
+#ax = plt.subplot(projection=ccrs.PlateCarree())
+#salida = dia_mean.plot.pcolormesh(ax = ax, 
                        ##levels = np.arange(0, 14, 1),
                        ##extend = 'max', #neither
                        ##transform = ccrs.PlateCarree(),
                        ##cbar_kwargs = {'label': tasmean.units},
-                       shading='auto',
-                       cmap = 'coolwarm' 
-                       )
+#                       shading='auto',
+#                       cmap = 'coolwarm' 
+#                       )
 ''' Establecer los límites geográficos [lon_min, lon_max, lat_min, lat_max] '''
-ax.set_extent([281.9, 284.4, 2.75, 5.25])
+#ax.set_extent([281.9, 284.4, 2.75, 5.25])
 
 ''' Add coast - and gridlines '''
-ax.coastlines(color='black')
-gl = ax.gridlines(draw_labels=True, linewidth=0.5, color='gray', alpha=0.4, linestyle='--')
-gl.top_labels = False
-gl.right_labels = False
-gl.xlabel_style = {'size': 16, 'color': 'black'}
-gl.ylabel_style = {'size': 16, 'color': 'black'} #'weight': 'bold'
-gdf_valle.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs.PlateCarree())
-gdf_dagua.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs.PlateCarree())
+#ax.coastlines(color='black')
+#gl = ax.gridlines(draw_labels=True, linewidth=0.5, color='gray', alpha=0.4, linestyle='--')
+#gl.top_labels = False
+#gl.right_labels = False
+#gl.xlabel_style = {'size': 16, 'color': 'black'}
+#gl.ylabel_style = {'size': 16, 'color': 'black'} #'weight': 'bold'
+#gdf_valle.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs.PlateCarree())
+#gdf_dagua.boundary.plot(ax=plt.gca(), color='black', linewidth=1, transform=ccrs.PlateCarree())
 
-cbar = salida.colorbar
-cbar.ax.tick_params(labelsize=16)  # Ajustar el tamaño del texto de la barra de color
+#cbar = salida.colorbar
+#cbar.ax.tick_params(labelsize=16)  # Ajustar el tamaño del texto de la barra de color
 ##cbar.ax.set_aspect(20)  # Ajustar la proporción de la barra de color (altura vs ancho)
-cbar.set_label('Temperatura °C (SSP1-2.6)', fontsize=18, labelpad=20)  # Cambiar la etiqueta de la barra de color
+#cbar.set_label('Temperatura °C (SSP1-2.6)', fontsize=18, labelpad=20)  # Cambiar la etiqueta de la barra de color
 
-model = ds.attrs['source_id']
-title = f'{model} Temperatura promedio día'
-plt.title(title, fontsize=30, pad=30, loc='center')
+#model = ds.attrs['source_id']
+#title = f'{model} Temperatura promedio día'
+#plt.title(title, fontsize=30, pad=30, loc='center')
 #plt.show()
-plt.savefig('Temperatura_GCM_3h.png')
-print('completado')
+#plt.savefig('Temperatura_GCM_3h.png')
+#print('completado')
