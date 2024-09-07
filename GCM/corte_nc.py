@@ -10,7 +10,7 @@ Exploración y corte de GCM de variables climatológicas a nivel mundial, para e
 import xarray as xr
 import numpy as np
 
-r = 'Datos/GFDL SSP 126/tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000.nc'
+r = 'Datos/GCM/pr_3hr_GFDL-ESM4_ssp245_r1i1p1f1_gr1_201501010130-203412312230.nc'
 ds = xr.open_dataset(r)
 print(ds['lon'].values)
 
@@ -25,7 +25,7 @@ ds_roi_v = ds.sel(lon=slice(min_lon_v, max_lon_v), lat=slice(min_lat_v, max_lat_
 print(ds_roi_v)
 
 ''' 5. Guardar el conjunto de datos recortado si es necesario '''
-ds_roi_v.to_netcdf('Datos/tas_3hr_GFDL-ESM4_ssp126_r1i1p1f1_gr1_201501010300-203501010000_ValleDelCauca.nc')
+ds_roi_v.to_netcdf('Datos/GCM/pr_3hr_GFDL-ESM4_ssp245_r1i1p1f1_gr1_201501010130-203412312230_ValleDelCauca.nc')
 
 print('Proceso de corte finalizado')
 print('Finalizado con exito')

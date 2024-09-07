@@ -11,8 +11,8 @@ Calculo de Temperatra Máx y Mín por medio de la temperatura media
     Esta distribución se caracteriza por la media y la desviación estandar.
     Rangos:
         1. El 68 % de los datos estan entre media +- DS
-        2. el 95 % de los datos estan entre media +- 2DS
-        2. el 99.7 % de los datos estan entre media +- 3DS
+        2. el 95 % de los datos estan entre media +- 2 DS
+        2. el 99.7 % de los datos estan entre media +- 3 DS
 '''
 
 import pandas as pd

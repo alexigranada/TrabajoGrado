@@ -15,17 +15,17 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 ''' 1. Cargar el conjunto de datos CMIP6 (ejemplo: temperatura media diaria) '''
-file = 'Datos/CESM2 WACCM/Pr/pr_day_CESM2-WACCM_ssp245_r3i1p1f1_gn_20150101-20241231_Valle_Cauca.nc'
+file = 'Datos/GCM/pr_3hr_GFDL-ESM4_ssp119_r1i1p1f1_gr1_201501010130-203412312230_ValleDelCauca.nc'
 ds = xr.open_dataset(file)
 #longitud_tiempo = len(ds.time)
 #ds_recortado = ds.isel(time=slice(0, longitud_tiempo - 2)) #Se realiza corte de los primeros dias de enero del ultimo año
 #print(ds_recortado)
 #print(ds)
 ''' 2. Cargamos datos de las estaciones'''
-r1 = 'Datos/Junio/V_Climaticas_LaCumbre_RL_Hora.csv'  #Ruta del archivo
-r2 = 'Datos/Junio/V_Climaticas_UPacifico_Hora.csv'
-df_cumbre   = pd.read_csv(r1, delimiter=';', index_col='Fecha', parse_dates=['Fecha']) #Cargamos archivo
-df_pacifico = pd.read_csv(r2, delimiter=',', index_col='Fecha', parse_dates=['Fecha'])
+#r1 = 'Datos/Junio/V_Climaticas_LaCumbre_RL_Hora.csv'  #Ruta del archivo
+#r2 = 'Datos/Junio/V_Climaticas_UPacifico_Hora.csv'
+#df_cumbre   = pd.read_csv(r1, delimiter=';', index_col='Fecha', parse_dates=['Fecha']) #Cargamos archivo
+#df_pacifico = pd.read_csv(r2, delimiter=',', index_col='Fecha', parse_dates=['Fecha'])
 
 #print(df_cumbre)
 #print(df_pacifico)
@@ -58,12 +58,12 @@ pr_p = pr.sel(lon=lon_1, lat=lat_1, method='nearest') #Seleccionamos pixel con e
 pr_c = pr.sel(lon=lon_2, lat=lat_2, method='nearest')
 df_pr_p = pr_p.to_dataframe()#.reset_index() #Convertimos a DF
 df_pr_c = pr_c.to_dataframe()#.reset_index() #Convertimos a DF
-#print(df_pr_p)
-#print(df_pr_c)
+print(df_pr_p)
+print(df_pr_c)
 
 '''Transformar por fecha (Suma, Proemdio)'''
-cumbre_dia   = df_cumbre.resample('D').median()
-pacifico_dia = df_pacifico.resample('D').median()
+#cumbre_dia   = df_cumbre.resample('D').median()
+#pacifico_dia = df_pacifico.resample('D').median()
 
 cumbre_dia   = cumbre_dia.loc[f_i:f_f]
 pacifico_dia = pacifico_dia.loc[f_i:f_f]

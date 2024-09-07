@@ -75,4 +75,4 @@ fig.update_layout(title = title,
                   template = 'seaborn',
                   title_x = 0.5)
 fig.show()
-fig.write_image("PyT_Promedio_hora_estaciones.png", width=1200, height=500, scale=4)
+#fig.write_image("PyT_Promedio_hora_estaciones.png", width=1200, height=500, scale=4)

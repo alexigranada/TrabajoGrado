@@ -9,11 +9,11 @@ Unión de registros
 import pandas as pd #Leer datos
 import plotly.graph_objects as go
 
-ruta = 'Datos/Siloco.csv'
+ruta = 'Datos/Precipitacion_Unipacifico.csv'
 data = pd.read_csv(ruta, delimiter=',') #, index_col='Fecha', parse_dates=['Fecha']
 
 #data.info()
-print(data)
+#print(data)
 
 
 ''' Antes de concatenar ajustamos el formato de la fecha'''
@@ -31,22 +31,33 @@ data['Fecha'] = pd.to_datetime(data['Fecha'], format="%Y-%m-%d  %H:%M:%S")
 ##d_t = pd.concat([data, data1, data2])
 
 ''' Pasamos la columna de Texto a numerico'''
-##data['Valor'] = pd.to_numeric(data['Valor'])#.str.replace(',','.'))
+#data['Ptotal'] = pd.to_numeric(data['Ptotal'].str.replace(',','.'))
+
+data.set_index('Fecha', inplace=True)
+data_hora = data.resample('h').sum()
+data_hora.reset_index(inplace=True)
+#print(data_hora)
+nulos = data_hora['Ptotal'].isnull().sum()
+#nulos = data['Tmedia'].isnull().sum()
+print(f'Nulos: {nulos}')
 
 ''' Crear un rango de fechas completo '''
-rango_completo_hora = pd.date_range(start='2015-01-01 00:00:00', end='2020-05-04 03:00:00', freq='h')
+rango_completo_hora = pd.date_range(start='2018-01-12 14:00:00', end='2022-02-22 19:00:00', freq='h')
 
 ''' Crear un DataFrame con las fechas completas '''
 df_completo_estacion_hora = pd.DataFrame({'Fecha': rango_completo_hora})
 
-df_hora = pd.merge(data, df_completo_estacion_hora,  on='Fecha', how='right')
+df_hora = pd.merge(data_hora, df_completo_estacion_hora,  on='Fecha', how='right')
+
 print('Estación hora:')
 print(df_hora)
-#df_hora.info()
+print(df_hora.describe())
+nulos = df_hora['Ptotal'].isnull().sum()
+print(f'Nulos: {nulos}')
 
 '''Promediamos o sumamos por hora'''
-#data.set_index('Fecha', inplace=True)
-#data_hora = data.resample('h').mean()
+#df_hora.set_index('Fecha', inplace=True)
+#data_hora = df_hora.resample('h').sum()
 #data_hora.reset_index(inplace=True)
 #print(data_hora)
 
@@ -85,7 +96,7 @@ print(df_hora)
 #fig.show()
 
 ''' Exportar el DataFrame a un archivo CSV '''
-title = f'Siloe_Hora_completo.csv'
+title = f'Unipacifico_Ptotal_Hora_completo.csv'
 df_hora.to_csv(title, sep=';', index=False)
 
 '''' Calculamos los valores nulos'''
